@@ -1,5 +1,6 @@
 #' @name K_small.tif
 #' @title Example of carrying capacity map (small)
+#' @docType data
 #'
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object that can be used as carrying
@@ -22,6 +23,7 @@ NULL
 
 #' @name K_small_changing.tif
 #' @title Example of changing carrying capacity maps (small)
+#' @docType data
 #'
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object that can be used as carrying
@@ -50,6 +52,7 @@ NULL
 
 #' @name K_big.tif
 #' @title Example of carrying capacity map (big)
+#' @docType data
 #'
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object that can be used as
@@ -73,6 +76,7 @@ NULL
 
 #' @name n1_small.tif
 #' @title Example of abundance map at first time step of the simulation (small)
+#' @docType data
 #'
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object that can be used
@@ -93,6 +97,7 @@ NULL
 
 #' @name n1_big.tif
 #' @title Example of abundance map at first time step of the simulation (big)
+#' @docType data
 #'
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object that can be used
