@@ -10,6 +10,8 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 [![R-CMD-check](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml)
+
+[![codecov](https://codecov.io/gh/popecol/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/popecol/rangr)
 <!-- badges: end -->
 
 The **rangr** package is designed to simulate species range dynamics.
