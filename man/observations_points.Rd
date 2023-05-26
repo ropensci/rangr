@@ -5,7 +5,7 @@
 \alias{observations_points}
 \title{Example of observation points list}
 \format{
-A data frame with 53940 rows and 10 variables:
+A data frame with 1500 rows and 3 variables:
 \describe{
 \item{x}{x coordinate}
 \item{y}{y coordinate}

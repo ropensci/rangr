@@ -5,7 +5,7 @@
 #' [`SpatRaster`][terra::SpatRaster-class] object that can be used as carrying
 #' capacity map to [`initialise`] data necessary to perform a [`sim`]ulation.
 #' This map is compatible with [`n1_small.tif`]
-#' - an [`SpatRaster`][terra::SpatRaster-class] object that can be used
+#' - [`SpatRaster`][terra::SpatRaster-class] object that can be used
 #' as simulation starting point.
 #'
 #' @format [`SpatRaster`][terra::SpatRaster-class] object with 15 rows
@@ -30,7 +30,7 @@ NULL
 #' use [`K_get_interpolation`] to generate a map for every time step
 #' of the simulation.
 #' These maps are compatible with [`n1_small.tif`]
-#' - an [`SpatRaster`][terra::SpatRaster-class] object that can be used
+#' - [`SpatRaster`][terra::SpatRaster-class] object that can be used
 #' as simulation starting point.
 #' Each subsequent map contains a virtual environment with greater
 #' carrying capacity than the previous one.
@@ -55,7 +55,7 @@ NULL
 #' [`SpatRaster`][terra::SpatRaster-class] object that can be used as
 #' carrying capacity map to [`initialise`] data necessary
 #' to perform a [`sim`]ulation. This map is compatible with [`n1_big.tif`]
-#'  - an [`SpatRaster`][terra::SpatRaster-class] object that can be used
+#' - [`SpatRaster`][terra::SpatRaster-class] object that can be used
 #'   as simulation starting point.
 #'
 #' @format [`SpatRaster`][terra::SpatRaster-class] object with 100 rows
@@ -119,7 +119,7 @@ NULL
 #' This data is compatible with [`n1_small.tif`]
 #' and [`K_small.tif`]/[`K_small_changing.tif`] maps.
 #'
-#' @format A data frame with 53940 rows and 10 variables:
+#' @format A data frame with 1500 rows and 3 variables:
 #' \describe{
 #'   \item{x}{x coordinate}
 #'   \item{y}{y coordinate}

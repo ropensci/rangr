@@ -20,7 +20,7 @@ use \code{\link{K_get_interpolation}} to generate a map for every time step
 of the simulation.
 These maps are compatible with \code{\link{n1_small.tif}}
 \itemize{
-\item an \code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used
+\item \code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used
 as simulation starting point.
 Each subsequent map contains a virtual environment with greater
 carrying capacity than the previous one.

@@ -17,7 +17,7 @@ Data generated in-house to serve as an example
 carrying capacity map to \code{\link{initialise}} data necessary
 to perform a \code{\link{sim}}ulation. This map is compatible with \code{\link{n1_big.tif}}
 \itemize{
-\item an \code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used
+\item \code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used
 as simulation starting point.
 }
 }
