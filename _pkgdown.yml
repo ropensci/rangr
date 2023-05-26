@@ -1,5 +1,4 @@
-url: https://popecol.github.io/rangr
-
+url: https://popecol.github.io/rangr/
 template:
-  params:
-    bootswatch: cosmo
+  bootstrap: 5
+
