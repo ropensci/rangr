@@ -1,0 +1,5 @@
+url: https://popecol.github.io/rangr
+
+template:
+  params:
+    bootswatch: cosmo

@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+dispr.Rproj
+inst/doc
+*.RData
+doc
+Meta
+dev_scripts/
+test

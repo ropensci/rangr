@@ -1,0 +1,37 @@
+Package: rangr
+Type: Package
+Title: Mechanistic Simulation of Species Range Dynamics
+Version: 0.1.0
+Authors@R: c(
+    person("Katarzyna", "Markowska", email = "katarzyna.markowska@amu.edu.pl", role = c("aut", "cre")),
+    person("Lechosław", "Kuczyński", email = "lechu@amu.edu.pl", role = "aut"))
+Description: Set of tools for simulating species range dynamics.
+License: MIT + file LICENSE
+Imports:
+    methods,
+    data.table,
+    parallel,
+    pbapply,
+    grDevices,
+    graphics,
+    stats,
+    utils,
+    zoo,
+    terra,
+    raster
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    covr,
+    bookdown
+VignetteBuilder: knitr
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)
+Depends: 
+    R (>= 3.5.0)
+Config/testthat/edition: 3
+URL: https://github.com/popecol/rangr
+BugReports: https://github.com/popecol/rangr/issues

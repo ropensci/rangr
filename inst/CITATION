@@ -1,0 +1,15 @@
+citHeader("To cite rangr in publications use:")
+
+citEntry(
+  entry = "manual",
+  title = "rangr: simulating range dynamics of virtual species",
+  author = c(
+    person("Katarzyna", "Markowska"),
+    person("Lechosław", "Kuczyński")),
+  year = "2023",
+  note = "R package version 0.1.0",
+  url = "https://github.com/popecol/rangr",
+  textVersion = paste(
+    "Markowska K. and Kuczyński L. (2023). rangr: simulating range dynamics of virtual species. R package version 0.1.0. https://popecol.github.io/rangr/"
+  )
+)

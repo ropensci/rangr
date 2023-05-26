@@ -1,0 +1,80 @@
+#' Population growth functions
+#'
+#' Population growth functions that can be used during simulation
+#' conducted by [`sim`].
+#' The user needs to specify the name of a growth function while initialising
+#' `sim_data` object using [`initialise`].
+#'
+#' `x` can be a vector, matrix, [`SpatRaster`][terra::SpatRaster-class]
+#' or any other `R` object for which basic arithmetic operations make sense.
+#' These functions are intended to be used in [`sim`] function and there `x`
+#' is a matrix of the same dimensions as [`SpatRaster`][terra::SpatRaster-class]
+#' object specified in `n1_map` parameter.
+#'
+#' @name growth
+#'
+#' @param x number of individuals
+#' @param r intrinsic population growth rate
+#' @param K carrying capacity
+#' @param A coefficient of Allee effect (A <= 0: weak, A > 0: strong, NA: none)
+#' @param ... not used, added for compatibility reasons
+#'
+#'
+#' @references Boukal, D. S., & Berec, L. (2002). Single-species models
+#' of the Allee effect: extinction boundaries, sex ratios and mate encounters.
+#' Journal of Theoretical Biology, 218(3), 375-394.
+#'  https://doi.org/10.1006/jtbi.2002.3084
+#'
+#' @return Object of the same dimensions as `x` containing expected number
+#' of individuals in the next time step.
+#' @export
+#'
+#' @examples
+#' x <- 1:10
+#' exponential(x, r = 0.4)
+#'
+#' ricker(x, r = 2, K = 5)
+#' ricker(x, r = 2, K = 5, A = -5)
+#'
+#' gompertz(x, r = 1.2, K = 5)
+#' gompertz(x, r = 1.2, K = 5, A = 5)
+#'
+exponential <- function(x, r, ...) {
+
+  x <- x * exp(r)
+  x[is.nan(x)] <- 0
+
+  return(x)
+}
+
+
+#' @rdname growth
+#' @export
+#'
+ricker <- function(x, r, K, A = NA) {
+
+  if (is.na(A)) {
+    x <- x * exp(r * (1 - x / K))
+  } else {
+    x <- x * exp(r * (1 - x / K) * (x / K - A / K))
+  }
+  x[is.nan(x)] <- 0
+
+  return(x)
+}
+
+
+#' @rdname growth
+#' @export
+#'
+gompertz <- function(x, r, K, A = NA) {
+
+  if (is.na(A)) {
+    x <- x * exp(r * (1 - log1p(x) / log1p(K)))
+  } else {
+    x <- x * exp(r * (1 - log1p(x) / log1p(K)) * (x / K - A / K))
+  }
+  x[is.nan(x)] <- 0
+
+  return(x)
+}
