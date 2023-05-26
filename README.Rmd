@@ -25,6 +25,11 @@ library(rangr)
 ```
 
 # rangr
+<!-- badges: start -->
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+
+[![R-CMD-check](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 
 
 The **rangr** package is designed to simulate species range dynamics. This tool mimics the essential processes that shape population size and spatial distributions: local dynamics, dispersal and habitat selection. Simulations may be conducted in a spatially-explicit and dynamic environment, which facilitates population projections as they respond to climate or land-use changes. By using different sampling schemes and observational error distributions, the structure of the original survey data can be reproduced or a purely random sampling can be mimicked.
