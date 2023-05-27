@@ -254,3 +254,6 @@ To cite `rangr` use `citation()` function:
 library(rangr)
 citation("rangr")
 ```
+
+The study is supported by the National Science Centre, Poland, grant no.
+2018/29/B/NZ8/00066.
