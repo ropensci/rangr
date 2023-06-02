@@ -21,6 +21,9 @@ climate or land-use changes. By using different sampling schemes and
 observational error distributions, the structure of the original survey
 data can be reproduced or a purely random sampling can be mimicked.
 
+The study is supported by the National Science Centre, Poland, grant no.
+2018/29/B/NZ8/00066.
+
 # Installation
 
 ## Released version
