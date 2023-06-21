@@ -5,6 +5,7 @@ test_that("growth_functions works", {
   A1 <- -5
   A2 <- 5
 
+  #' @srrstats {G5.4, G5.4a} correctness tests: trivial cases
   # exponential
   expect_true(all(exponential(x, r = log(1.4)) >= 0))
   expect_length(exponential(x, r = log(1.2)), size)

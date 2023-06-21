@@ -5,7 +5,7 @@ Version: 0.1.0
 Authors@R: c(
     person("Katarzyna", "Markowska", email = "katarzyna.markowska@amu.edu.pl", role = c("aut", "cre")),
     person("Lechosław", "Kuczyński", email = "lechu@amu.edu.pl", role = "aut"))
-Description: Set of tools for simulating species range dynamics.
+Description: Species range dynamics simulation toolset.
 License: MIT + file LICENSE
 Imports:
     methods,
@@ -18,7 +18,8 @@ Imports:
     utils,
     zoo,
     terra,
-    raster
+    raster,
+    assertthat
 Suggests: 
     knitr,
     rmarkdown,
@@ -29,7 +30,7 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.3
-Roxygen: list(markdown = TRUE)
+Roxygen: list (markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
 Depends: 
     R (>= 3.5.0)
 Config/testthat/edition: 3

@@ -5,7 +5,7 @@
 #' specified by `time_points` that can be one point in time or many.
 #'
 #' @param sim_results `sim_results` object created by [`sim`]
-#' @param time_points numeric or numeric vector; specifies points in time from
+#' @param time_points numeric vector of length 1 or more; specifies points in time from
 #' which [`SpatRaster`][terra::SpatRaster-class] will be created - as default
 #' the last year of simulation; if `length(time_points) > 0`
 #' [`SpatRaster`][terra::SpatRaster-class] will be returned with layers for
@@ -48,12 +48,20 @@
 #'
 #' }
 #'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {G2.1a} documented types expectation
+#'
 to_rast <- function(
     sim_results, time_points = sim_results$simulated_time, template = NULL) {
 
+  assert_that(inherits(sim_results, "sim_results"))
 
   if(is.null(template)) {
 
+    #' @srrstats {G2.9} make default raster and show warning
+
+    warning("No template provided. Returned SpatRaster lacks geographical information (you can use one of the input maps from the sim_data object as template)")
     out <- rast(sim_results$N_map[, , time_points])
 
   } else {

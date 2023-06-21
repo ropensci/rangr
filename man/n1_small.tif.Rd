@@ -20,4 +20,5 @@ and \code{\link{K_small_changing.tif}} maps.
 }
 \examples{
 system.file("input_maps/n1_small.tif", package = "rangr")
+
 }

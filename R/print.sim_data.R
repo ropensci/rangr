@@ -25,6 +25,8 @@
 #' )
 #' print(sim_data)
 #'
+#' @srrstats {G1.4} uses roxygen documentation
+#'
 print.sim_data <- function(x, ...) {
 
   # prepare output

@@ -109,6 +109,8 @@ test_that("target_ids_in_disp works", {
   test_id_x_y <-
     test_data_table_01[test_data_table_01[, "id"] == test_id, c("id", "x", "y")]
   test_rast <- rast(test_path("fixtures", "test_rast.tif"))
+  # reclassify to remove NaNs (that were NAs before saving)
+  test_rast <- classify(test_rast, cbind(NaN, NA))
   test_id_within <- test_data_table_01[!is.na(test_data_table_01[, "K"]), "id"]
   test_resolution <- res(test_rast)[1]
 
@@ -160,6 +162,8 @@ test_that("sq_disp works", {
       !is.na(test_data_table_01[, "K"]) & test_data_table_01[, "N"] > 0, "id"]
   test_dlist_01 <- readRDS(test_path("fixtures", "test_dlist_mini.rds"))
   test_rast <- rast(test_path("fixtures", "test_rast.tif"))
+  # reclassify to remove NaNs (that were NAs before saving)
+  test_rast <- classify(test_rast, cbind(NaN, NA))
   test_resolution <- res(test_rast)[1]
 
   test_dens_dep_01 <- "K2N"
@@ -238,6 +242,8 @@ test_that("disp works", {
   test_data_table_01 <-
     readRDS(test_path("fixtures", "test_data_table_mini.rds"))
   test_rast <- rast(test_path("fixtures", "test_rast.tif"))
+  # reclassify to remove NaNs (that were NAs before saving)
+  test_rast <- classify(test_rast, cbind(NaN, NA))
   test_id_rast <- rast(test_path("fixtures", "test_id_rast.tif"))
   test_N_t <- as.matrix(test_rast, , wide = TRUE)
   test_kernel_01 <- function(n) match.fun("rexp")(n, rate = 1 / 1e3)

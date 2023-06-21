@@ -25,6 +25,8 @@
 #' sim_res <- sim(obj = sim_data, time = 20, burn = 5)
 #' print(sim_res)
 #'
+#' @srrstats {G1.4} uses roxygen documentation
+#'
 print.sim_results <- function(x, ...) {
 
   # prepare output

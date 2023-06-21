@@ -40,14 +40,14 @@
 #'
 #' @param obj `sim_data` object created by [`initialise`] containing all
 #' simulation parameters and necessary data
-#' @param time positive integer; number of time steps simulated
-#' @param burn positive integer; the number of burn-in time steps that are
+#' @param time positive integer vector of length 1; number of time steps simulated
+#' @param burn positive integer vector of length 1; the number of burn-in time steps that are
 #' discarded from the output
 #' @param cl an optional cluster object created by
 #' [`makeCluster`][parallel::makeCluster()] needed for parallel calculations
-#' @param progress_bar logical; determines if progress bar for simulation
+#' @param progress_bar logical vector of length 1 determines if progress bar for simulation
 #' should be displayed
-#' @param quiet logical; determines if warnings should be displayed
+#' @param quiet logical vector of length 1; determines if warnings should be displayed
 #'
 #' @return This function returns an object of class `sim_results` which is
 #' a list containing the following components:
@@ -115,12 +115,39 @@
 #'
 #' }
 #'
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {G2.1a} documented types expectation
+#'
 sim <- function(
     obj, time, burn = 0, cl = NULL, progress_bar = FALSE, quiet = TRUE) {
 
-  if (time <= 1) {
-    stop("Invalid \"time\" argument: must be greater than 1")
-  }
+  #' @srrstats {G2.0, G2.2} assert input length
+  #' @srrstats {G2.1, G2.6} assert input type
+  # Validation of arguments
+  ## obj
+  assert_that(inherits(obj, "sim_data"))
+
+  ## time
+  assert_that(length(time) == 1)
+  assert_that(is.numeric(time))
+  assert_that(time > 1)
+
+  ## burn
+  assert_that(length(burn) == 1)
+  assert_that(is.numeric(burn))
+  assert_that(burn >= 0)
+
+  ## progress_bar
+  assert_that(length(progress_bar) == 1)
+  assert_that(is.logical(progress_bar))
+
+  ## quiet
+  assert_that(length(quiet) == 1)
+  assert_that(is.logical(quiet))
+
+
   # options
   options(warn = -1)
 
@@ -268,18 +295,21 @@ sim <- function(
 #' Environmental stochasticity is applied if `K_sd > 0`
 #' using [`rlnorm`][stats::rlnorm()].
 #'
-#' @param K_map matrix or [`SpatRaster`][terra::SpatRaster-class] object;
+#' @param K_map numeric matrix or [`SpatRaster`][terra::SpatRaster-class] object;
 #' see 'Details' for more information
-#' @param t integer; positive integer value that represent the number
+#' @param t integer vector of length 1; positive integer value that represent the number
 #' of current time step
-#' @param changing_env logical; indicates if environment is static or changing
+#' @param changing_env logical vector of length 1; indicates if environment is static or changing
 #' during the simulation
 #'
 #' @return Matrix with carrying capacity for the time steps specified
 #' by `t` parameter.
 #'
-#' @noRd
 #'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#'
+#' @noRd
 #'
 get_K <- function(K_map, t, changing_env) {
 
@@ -302,11 +332,16 @@ get_K <- function(K_map, t, changing_env) {
 #' should be checked.
 #'
 #'
-#' @param N 3-dimensional array; first two dimensions corresponds to space,
+#' @param N 3-dimensional integer array; first two dimensions corresponds to space,
 #' the third one is time and the values represent the number of specimens
-#' @param t number; positive integer value that represents time step
+#' @param t integer vector of length 1; positive integer value that represents time step
 #'
 #' @return `TRUE` if population is extinct or `FALSE` otherwise
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#'
 #' @noRd
 #'
 extinction_check <- function(N, t) {

@@ -5,7 +5,7 @@
 #' @param sim_data  `sim_data` object from [`initialise`] containing simulation
 #' parameters
 #' @param sim_results `sim_results` object; returned by [`sim`] function
-#' @param type string; describes the sampling type:
+#' @param type character vector of length 1; describes the sampling type (case-sensitive):
 #' \itemize{
 #'   \item "random_one_layer" - cells from which the population numbers
 #'   will be sampled are selected randomly; selected cells will be the same
@@ -22,37 +22,37 @@
 #'   the same observer for several years and whether it will not be made at all
 #'   is defined using a geometric distribution ([`rgeom`][stats::rgeom()])
 #' }
-#' @param sdlog standard deviation (on a log scale) of the random noise in
+#' @param sdlog numeric vector of length 1; standard deviation (on a log scale) of the random noise in
 #' observation process generated from the log-normal distribution
 #' ([`rlnorm`][stats::rlnorm()])
 #' @param ... other necessary internal parameters:
 #' \itemize{
 #'   \item{`prop`
 #'
-#'   numeric; proportion of cells to be sampled (default `prop = 0.1`);
+#'   numeric vector of length 1; proportion of cells to be sampled (default `prop = 0.1`);
 #'   used when `type = "random_one_layer" or "random_all_layers"`,}
 #'
 #'   \item{`points`
 #'
-#'   `data.frame` with 3 columns ("x", "y" and "time_step") containing
+#'   `data.frame` or `matrix` with 3 named numeric columns ("x", "y" and "time_step") containing
 #'   coordinates and time steps from which observations should be obtained;
 #'   used when `type = "from_data"`,}
 #'
 #'   \item{`cells_coords`
 #'
-#'   matrix object with two columns: "x" and "y"; survey plots coordinates;
+#'   `data.frame` or `matrix` with 2 named columns: "x" and "y"; survey plots coordinates;
 #'   used when `type = "monitoring_based"`}
 #'
 #'   \item{`prob`
 #'
-#'    numeric; a parameter defining the shape of - [`rgeom`][stats::rgeom()]
+#'    numeric vector of length 1; a parameter defining the shape of - [`rgeom`][stats::rgeom()]
 #'    distribution - it defines whether an observation will be made by the same
 #'    observer for several years and whether it will not be made at all
 #'    (default `prob = 0.3`); used when `type = "monitoring_based"`}
 #'
 #'   \item{`progress_bar`
 #'
-#'    logical; determines if progress bar for observational process should be
+#'    logical vector of length 1; determines if progress bar for observational process should be
 #'    displayed (default `progress_bar = FALSE`);
 #'    used when `type = "monitoring_based"`}
 #' }
@@ -127,15 +127,24 @@
 #' )
 #' }
 #'
-
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {G2.1a, G2.3, G2.3b} documented types expectation
+#' @srrstats {G2.7} points and cells_coords can be a dataframe or matrix
+#'
+#'
 get_observations <- function(
     sim_data, sim_results, type = c("random_one_layer", "random_all_layers",
     "from_data", "monitoring_based"), sdlog = log(1), ...) {
 
+  #' @srrstats {G2.0, G2.2} assert input length
+  #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
   # arguments validation
   type <- match.arg(type)
-  stopifnot(inherits(sim_data, "sim_data"))
-  stopifnot(inherits(sim_results, "sim_results"))
+  assert_that(inherits(sim_data, "sim_data"))
+  assert_that(inherits(sim_results, "sim_results"))
+  assert_that(length(sdlog) == 1)
+  assert_that(is.numeric(sdlog))
 
   # transform N_map to raster based on id
   N_rast <- rast(
@@ -172,14 +181,26 @@ get_observations <- function(
 #'
 #' @param N_rast [`SpatRaster`][terra::SpatRaster-class] object
 #' with abundances for each time step
-#' @param prop numeric; proportion of cells to be sampled
-#' @param type string; sampling type from [get_observations] function
+#' @param prop numeric vector of length 1; proportion of cells to be sampled
+#' @inheritParams get_observation
 #'
 #' @return `data.frame` object with coordinates, time steps, abundances
 #' without noise
 #'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#'
 #' @noRd
+#'
 get_observations_random <- function(N_rast, type, prop = 0.1) {
+
+  #' @srrstats {G2.0, G2.2} assert input length
+  #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+  assert_that(length(prop) == 1)
+  assert_that(is.numeric(prop))
+  assert_that(prop > 0 && prop <= 1,
+              msg = "prop parameter must be greater than 0 but less than or equal to 1")
 
   # set sample size
   size <- ncell(N_rast) * prop
@@ -226,7 +247,7 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
 #' [get_observations] calls this function if sampling type
 #' equals to "from_data".
 #'
-#' @param points `data.frame` with 3 columns ("x", "y" and "time_step")
+#' @param points `data.frame` or `matrix` with 3 named numeric columns ("x", "y" and "time_step")
 #' containing coordinates and time steps from which observations
 #' should be obtained`
 #' @inheritParams get_observations_random
@@ -234,8 +255,26 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
 #' @return `data.frame` object with coordinates, time steps numbers,
 #' abundances without noise
 #'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#'
 #' @noRd
+#'
 get_observations_from_data <- function(N_rast, points) {
+
+  #' @srrstats {G2.0, G2.2} assert input length
+  #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+  #' @srrstats {G2.8} matrix to dataframe
+  assert_that(is.data.frame(points) || is.matrix(points))
+  points <- as.data.frame(points)
+  assert_that(ncol(points) == 3)
+  assert_that(nrow(points) > 0)
+  assert_that(
+    all(names(points) == c("x", "y", "time_step")),
+    msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"")
+  assert_that(
+    all(sapply(points, is.numeric)),
+    msg = "some element of point are not numeric")
 
   value <- unlist(lapply(
     seq_len(nlyr(N_rast)),
@@ -259,16 +298,36 @@ get_observations_from_data <- function(N_rast, points) {
 #'
 #' @param cells_coords matrix object with two columns: "x" and "y"
 #' @param prob probability of success in each trial - [stats::rgeom()] parameter
-#' @param progress_bar logical; determines if progress bar for observation
+#' @param progress_bar logical vector of length 1; determines if progress bar for observation
 #' should be displayed (if `type = "monitoring_based"`)
 #' @inheritParams get_observations_random
 #'
 #' @return `data.frame` object with coordinates, time steps, abundances without
 #' noise and observer_id
 #'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#'
 #' @noRd
+#'
 get_observations_monitoring_based <- function(
     N_rast, cells_coords, prob = 0.3, progress_bar = FALSE) {
+
+  #' @srrstats {G2.0, G2.2} assert input length
+  #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+  #' @srrstats {G2.8} matrix to dataframe
+  assert_that(is.data.frame(cells_coords) || is.matrix(cells_coords))
+  cells_coords <- as.data.frame(cells_coords)
+  assert_that(ncol(cells_coords) == 2)
+  assert_that(nrow(cells_coords) > 0)
+  assert_that(
+    all(names(cells_coords) == c("x", "y")),
+    msg = "columns in cells_coords parameter should have the following names: \"x\", \"y\"")
+  assert_that(
+    all(sapply(cells_coords, is.numeric)),
+    msg = "some element of cells_coords are not numeric")
+
 
   ncells <- nrow(cells_coords)
   time_steps <- nlyr(N_rast)

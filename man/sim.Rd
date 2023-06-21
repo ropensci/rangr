@@ -10,18 +10,18 @@ sim(obj, time, burn = 0, cl = NULL, progress_bar = FALSE, quiet = TRUE)
 \item{obj}{\code{sim_data} object created by \code{\link{initialise}} containing all
 simulation parameters and necessary data}
 
-\item{time}{positive integer; number of time steps simulated}
+\item{time}{positive integer vector of length 1; number of time steps simulated}
 
-\item{burn}{positive integer; the number of burn-in time steps that are
+\item{burn}{positive integer vector of length 1; the number of burn-in time steps that are
 discarded from the output}
 
 \item{cl}{an optional cluster object created by
 \code{\link[parallel:makeCluster]{makeCluster}} needed for parallel calculations}
 
-\item{progress_bar}{logical; determines if progress bar for simulation
+\item{progress_bar}{logical vector of length 1 determines if progress bar for simulation
 should be displayed}
 
-\item{quiet}{logical; determines if warnings should be displayed}
+\item{quiet}{logical vector of length 1; determines if warnings should be displayed}
 }
 \value{
 This function returns an object of class \code{sim_results} which is
@@ -124,5 +124,6 @@ plot(to_rast(
 ), range = range(sim_1$N_map, na.rm = TRUE))
 
 }
+
 
 }

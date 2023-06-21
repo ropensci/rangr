@@ -13,6 +13,8 @@
 #' the maximum distance at which this pre-calculation is done. If `max_dist`
 #' is `NULL` then it is set to 0.9 quantile from the `kernel_fun`.
 #'
+#' NA in input maps stands for cells that are outside the study area.
+#'
 #' [`K_get_interpolation`] function can be used to prepare `K_map` that changes
 #' in time. This may be useful, when simulating environmental change or
 #' exploring the effects of ecological disturbances.
@@ -22,20 +24,21 @@
 #' numbers in every square at the first time step
 #' @param K_map [`SpatRaster`][terra::SpatRaster-class] object; carrying
 #' capacity map (if K is constant across time) or maps (if K is time-varying)
-#' @param K_sd a real number >= 0 (default 0); this parameter can be used if
-#' additional environmental stochasticity is required; if `K_sd > 0`,
-#' a random numbers are generated from a log-normal distribution with
-#' the mean `K_map` and standard deviation `K_sd`
-#' @param r a real number; intrinsic population growth rate
-#' @param r_sd a real number `>= 0` (default `0`); if additional demographic
-#' stochasticity is required, `r_sd > 0` is the standard deviation for a normal
-#' distribution around `r` (defined for each time step)
-#' @param growth string; the name of a population growth function,
-#' either defined in [`growth`] or provided by the user
-#' @param A a real number; strength of the Allee effect
+#' @param K_sd numeric vector of length 1 with value `>= 0` (default 0);
+#' this parameter can be used if additional environmental stochasticity
+#' is required; if `K_sd > 0`, a random numbers are generated from a log-normal
+#' distribution with the mean `K_map` and standard deviation `K_sd`
+#' @param r numeric vector of length 1; intrinsic population growth rate
+#' @param r_sd numeric vector of length 1 with value `>= 0` (default `0`);
+#' if additional demographic stochasticity is required, `r_sd > 0` is
+#' the standard deviation for a normal distribution around `r`
+#' (defined for each time step)
+#' @param growth character vector of length 1; the name of a population growth
+#' function, either defined in [`growth`] or provided by the user (case-sensitive)
+#' @param A numeric vector of length 1; strength of the Allee effect
 #' (see the [`growth`] function)
-#' @param dens_dep a string specifying if the probability of settling in
-#' a target square is:
+#' @param dens_dep character vector of length 1 specifying if the probability
+#' of settling in a target square is (case-sensitive):
 #' \itemize{
 #'   \item{"none" - fully random,}
 #'   \item{"K" - proportional to the carrying capacity of a target square,}
@@ -43,25 +46,25 @@
 #'   carrying capacity of a target square to the number of individuals
 #'   already present in a target square}
 #' }
-#' @param border a string defining how to deal with borders:
+#' @param border character vector of length 1 defining how to deal with borders (case-sensitive):
 #' \itemize{
 #'   \item "absorbing" - individuals that disperse outside the study area
 #'   are removed from the population
 #'   \item "reprising" - cells outside the study area are not allowed
 #'   as targets for dispersal
 #' }
-#' @param kernel_fun string; name of a random number generation function
-#' defining a dispersal kernel
+#' @param kernel_fun character vector of length 1; name of a random number
+#' generation function defining a dispersal kernel (case-sensitive)
 #' @param ... any parameters required by `kernel_fun`
-#' @param max_dist integer; maximum distance of dispersal to pre-calculate
+#' @param max_dist numeric vector of length 1; maximum distance of dispersal to pre-calculate
 #' target cells
-#' @param calculate_dist logical; determines if target cells will
+#' @param calculate_dist logical vector of length 1; determines if target cells will
 #' be precalculated
 #' @param dlist list; target cells at a specified distance calculated
 #' for every cell within the study area
-#' @param progress_bar logical; determines if progress bar for calculating
+#' @param progress_bar logical vector of length 1; determines if progress bar for calculating
 #' distances should be displayed (used only if dlist is `NULL`)
-#' @param quiet logical; determines if messages for calculating distances
+#' @param quiet logical vector of length 1; determines if messages for calculating distances
 #' should be displayed (used only if dlist is `NULL`)
 #' @param cl cluster object created by [`makeCluster`][parallel::makeCluster()]
 #'
@@ -70,6 +73,7 @@
 #' [`sim`] function.
 #'
 #' @export
+#'
 #'
 #' @examples
 #' \dontrun{
@@ -125,29 +129,25 @@
 #' stopCluster(cl)
 #' }
 #'
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {G2.1a, G2.3, G2.3b} documented types expectation
+#'
 initialise <- function(
     n1_map, K_map, K_sd = 0, r, r_sd = 0, growth = "gompertz", A = NA,
     dens_dep = c("K2N", "K", "none"), border = c("absorbing", "reprising"),
     kernel_fun = "rexp", ..., max_dist = NA, calculate_dist = TRUE,
     dlist = NULL, progress_bar = FALSE, quiet = TRUE, cl = NULL) {
 
-  # validation of arguments
-  dens_dep <- match.arg(dens_dep)
-  border <- match.arg(border)
+  #' @srrstats {G2.0, G2.2} assert input length
+  #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+  # Validation of arguments
+  ## input maps
+  assert_that(inherits(K_map, "SpatRaster"))
+  assert_that(inherits(n1_map, "SpatRaster"))
 
-  changing_env <- nlyr(K_map) != 1
-  K_n1_map_check(K_map, n1_map, changing_env)
-
-  # classify NaN to NA for input maps
-  n1_map <- classify(n1_map, cbind(NaN, NA))
-  K_map <- classify(K_map, cbind(NaN, NA))
-
-  # define other data
-  ncells <- ncell(n1_map)
-  id <- n1_map
-  values(id) <- matrix(1:ncells, nrow(n1_map), ncol(n1_map))
-
-  resolution <- res(id)
+  resolution <- res(n1_map)
   if(resolution[1] != resolution[2]) {
     stop("Currently, rangr only supports rasters with square cells.\n",
          "You may want to change the resolution of your input maps ",
@@ -155,6 +155,86 @@ initialise <- function(
   } else {
     resolution <- resolution[1]
   }
+
+  changing_env <- nlyr(K_map) != 1
+  K_n1_map_check(K_map, n1_map, changing_env)
+
+  ## K_sd
+  assert_that(length(K_sd) == 1)
+  assert_that(is.numeric(K_sd))
+  assert_that(K_sd >= 0)
+
+  ## r
+  assert_that(length(r) == 1)
+  assert_that(is.numeric(r))
+
+  ## r_sd
+  assert_that(length(r_sd) == 1)
+  assert_that(is.numeric(r_sd))
+  assert_that(r_sd >= 0)
+
+  ## growth
+  assert_that(length(growth) == 1)
+  assert_that(is.character(growth))
+
+  ## A
+  assert_that(length(A) == 1)
+  assert_that(
+    is.numeric(A) | is.na(A),
+    msg = "parameter A can be set either as NA or as a single number")
+
+  ## dens_dep
+  dens_dep <- match.arg(dens_dep)
+
+  ## border
+  border <- match.arg(border)
+
+  ## kernel_fun
+  assert_that(length(kernel_fun) == 1)
+  assert_that(is.character(kernel_fun))
+
+  ## max_dist
+  assert_that(length(max_dist) == 1)
+  assert_that(
+    (is.numeric(max_dist) && !(max_dist < 0)) || is.na(max_dist),
+    msg = "parameter max_dist can be set either as NA or as a single positive number")
+
+  ## calculate_dist
+  assert_that(length(calculate_dist) == 1)
+  assert_that(is.logical(calculate_dist))
+
+
+  ## dlist
+  assert_that(
+    is.list(dlist) || is.null(dlist),
+    msg = "parameter dlist can be set either as NULL or as a list with integers")
+
+  ## progress_bar
+  assert_that(length(progress_bar) == 1)
+  assert_that(is.logical(progress_bar))
+
+  ## quiet
+  assert_that(length(quiet) == 1)
+  assert_that(is.logical(quiet))
+
+
+
+  #' @srrstats {G2.16} Check for NaNs and convert them to Nas
+  # classify NaN to NA for input maps
+  if (any(is.nan(values(n1_map))) || any(is.nan(values(K_map)))) {
+
+    message("NaN values were found in input maps and replaced with NA (cells outside the study area)")
+    n1_map <- classify(n1_map, cbind(NaN, NA))
+    K_map <- classify(K_map, cbind(NaN, NA))
+
+  }
+
+  # define other data
+  ncells <- ncell(n1_map)
+  id <- n1_map
+  values(id) <- matrix(1:ncells, nrow(n1_map), ncol(n1_map))
+
+
 
   dynamics <- function(x, r, K, A) match.fun(growth)(x, r, K, A)
   kernel <- function(n) match.fun(kernel_fun)(n, ...)
@@ -249,9 +329,12 @@ initialize <- initialise
 #' In case of any mistake in given data, suitable error message is printed.
 #'
 #' @inheritParams initialise
-#' @param changing_env logical; determines if carrying capacity map is changing
+#' @param changing_env logical vector of length 1; determines if carrying capacity map is changing
 #' during the [`sim`]ulation
 #'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
 #'
 #' @noRd
 #'
@@ -264,11 +347,11 @@ K_n1_map_check <- function(K_map, n1_map, changing_env) {
 
   # check if values are non-negative
   if (!all(values(n1_map) >= 0, na.rm = TRUE)) {
-    stop("n1_map can contain only non-negative values or NAs")
+    stop("n1_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)")
   }
 
   if (!all(values(K_map) >= 0, na.rm = TRUE)) {
-    stop("K_map can contain only non-negative values or NAs")
+    stop("K_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)")
   }
 }
 
@@ -282,6 +365,9 @@ K_n1_map_check <- function(K_map, n1_map, changing_env) {
 #'
 #' @return Numeric vector with values of all cells carrying capacity
 #' in the first time step.
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
 #'
 #' @noRd
 #'
@@ -305,12 +391,16 @@ K_get_init_values <- function(K_map, changing_env) {
 #' @param id [`SpatRaster`][terra::SpatRaster-class]; contains all cells ids
 #' @param data_table matrix; contains information about all cells in current
 #' time points
-#' @param resolution integer; dimension of one cell of `id`
+#' @param resolution integer vector of length 1; dimension of one cell of `id`
 #' @param id_within numeric vector; ids of cells inside the study area
 #' @inheritParams initialise
 #'
 #' @return List of target cells ids for each target cells in any distance
 #' within `max_dist`.
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
 #'
 #' @noRd
 #'
@@ -344,6 +434,9 @@ calc_dist <- function(
 #'
 #' @return List of available target cells from each cell within the study area,
 #' divided by distance
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
 #'
 #' @noRd
 #'
@@ -395,13 +488,17 @@ dist_list <- function(
 #' [target_ids] finds all target cells available from given focal cell,
 #' that lie within the maximum distance threshold (`max_dist`).
 #'
-#' @param idx integer; id of cell
-#' @param data matrix; necessary data (defined in [dist_list])
-#' @param id_within vector; indexes of cells inside study area
+#' @param idx integer vector of length 1; id of cell
+#' @param data integer matrix; necessary data (defined in [dist_list])
+#' @param id_within integer vector; indexes of cells inside study area
 #' (defined in [dist_list])
 #' @inheritParams dist_list
 #'
 #' @return List of target cells for each distance or `NULL` if there isn't any
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
 #'
 #' @noRd
 #'
@@ -456,6 +553,9 @@ target_ids <- function(idx, id, data, resolution, max_dist, id_within) {
 #'
 #' @return numeric vector; numbers of target cells on every possible distance
 #' range
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
 #'
 #' @noRd
 #'

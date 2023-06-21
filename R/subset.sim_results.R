@@ -1,7 +1,7 @@
 #' Subset of the given time points from `sim_results` object
 #'
 #' @param x `sim_results` object; returned by [`sim`] function
-#' @param from numeric; indicates the starting time point from which all
+#' @param from numeric vector of length 1; indicates the starting time point from which all
 #' time point should be kept
 #' @param time_points numeric vector; indicates all time points to keep
 #' @param ... further arguments to be passed to or from other methods
@@ -39,6 +39,9 @@
 #'
 #' sim_results_cropped <- subset(sim_results, time_points = c(1:2))
 #' summary(sim_results_cropped)
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G2.0a} documented lengths expectation
 #'
 subset.sim_results <- function(x, from = NULL, time_points = NULL, ...) {
 

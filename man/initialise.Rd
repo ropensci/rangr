@@ -52,25 +52,26 @@ numbers in every square at the first time step}
 \item{K_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object; carrying
 capacity map (if K is constant across time) or maps (if K is time-varying)}
 
-\item{K_sd}{a real number >= 0 (default 0); this parameter can be used if
-additional environmental stochasticity is required; if \code{K_sd > 0},
-a random numbers are generated from a log-normal distribution with
-the mean \code{K_map} and standard deviation \code{K_sd}}
+\item{K_sd}{numeric vector of length 1 with value \verb{>= 0} (default 0);
+this parameter can be used if additional environmental stochasticity
+is required; if \code{K_sd > 0}, a random numbers are generated from a log-normal
+distribution with the mean \code{K_map} and standard deviation \code{K_sd}}
 
-\item{r}{a real number; intrinsic population growth rate}
+\item{r}{numeric vector of length 1; intrinsic population growth rate}
 
-\item{r_sd}{a real number \verb{>= 0} (default \code{0}); if additional demographic
-stochasticity is required, \code{r_sd > 0} is the standard deviation for a normal
-distribution around \code{r} (defined for each time step)}
+\item{r_sd}{numeric vector of length 1 with value \verb{>= 0} (default \code{0});
+if additional demographic stochasticity is required, \code{r_sd > 0} is
+the standard deviation for a normal distribution around \code{r}
+(defined for each time step)}
 
-\item{growth}{string; the name of a population growth function,
-either defined in \code{\link{growth}} or provided by the user}
+\item{growth}{character vector of length 1; the name of a population growth
+function, either defined in \code{\link{growth}} or provided by the user (case-sensitive)}
 
-\item{A}{a real number; strength of the Allee effect
+\item{A}{numeric vector of length 1; strength of the Allee effect
 (see the \code{\link{growth}} function)}
 
-\item{dens_dep}{a string specifying if the probability of settling in
-a target square is:
+\item{dens_dep}{character vector of length 1 specifying if the probability
+of settling in a target square is (case-sensitive):
 \itemize{
 \item{"none" - fully random,}
 \item{"K" - proportional to the carrying capacity of a target square,}
@@ -79,7 +80,7 @@ carrying capacity of a target square to the number of individuals
 already present in a target square}
 }}
 
-\item{border}{a string defining how to deal with borders:
+\item{border}{character vector of length 1 defining how to deal with borders (case-sensitive):
 \itemize{
 \item "absorbing" - individuals that disperse outside the study area
 are removed from the population
@@ -87,24 +88,24 @@ are removed from the population
 as targets for dispersal
 }}
 
-\item{kernel_fun}{string; name of a random number generation function
-defining a dispersal kernel}
+\item{kernel_fun}{character vector of length 1; name of a random number
+generation function defining a dispersal kernel (case-sensitive)}
 
 \item{...}{any parameters required by \code{kernel_fun}}
 
-\item{max_dist}{integer; maximum distance of dispersal to pre-calculate
+\item{max_dist}{numeric vector of length 1; maximum distance of dispersal to pre-calculate
 target cells}
 
-\item{calculate_dist}{logical; determines if target cells will
+\item{calculate_dist}{logical vector of length 1; determines if target cells will
 be precalculated}
 
 \item{dlist}{list; target cells at a specified distance calculated
 for every cell within the study area}
 
-\item{progress_bar}{logical; determines if progress bar for calculating
+\item{progress_bar}{logical vector of length 1; determines if progress bar for calculating
 distances should be displayed (used only if dlist is \code{NULL})}
 
-\item{quiet}{logical; determines if messages for calculating distances
+\item{quiet}{logical vector of length 1; determines if messages for calculating distances
 should be displayed (used only if dlist is \code{NULL})}
 
 \item{cl}{cluster object created by \code{\link[parallel:makeCluster]{makeCluster}}}
@@ -128,6 +129,8 @@ a cluster object created by \code{\link[parallel:makeCluster]{makeCluster}} is
 specified using the \code{cl} parameter. The parameter \code{max_dist} sets
 the maximum distance at which this pre-calculation is done. If \code{max_dist}
 is \code{NULL} then it is set to 0.9 quantile from the \code{kernel_fun}.
+
+NA in input maps stands for cells that are outside the study area.
 
 \code{\link{K_get_interpolation}} function can be used to prepare \code{K_map} that changes
 in time. This may be useful, when simulating environmental change or
@@ -186,5 +189,6 @@ sim_data_4 <- initialise(
 )
 stopCluster(cl)
 }
+
 
 }

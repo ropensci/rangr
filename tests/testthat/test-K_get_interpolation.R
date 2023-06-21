@@ -6,6 +6,7 @@ test_that("K_get_interpolation works", {
     K_get_interpolation(K_small_changing, c(1, 10, 15), time = 15), "SpatRaster")
 })
 
+
 test_that("K_check works", {
   K_small_changing <- rast(system.file("input_maps/K_small_changing.tif",
                                        package = "rangr"))
@@ -17,13 +18,42 @@ test_that("K_check works", {
   expect_type(K_check(K_small_changing, c(1, 10, 15), time = 15), "list")
   expect_length(K_check(K_small_changing, c(1, 10, 15), time = 15), 2)
 
-  expect_error(K_check(K_small, NULL, NULL))
-  expect_error(K_check(K_small_changing, NULL, NULL))
-  expect_error(K_check(K_small_changing, c(1, 10), NULL))
-  expect_error(K_check(K_small_changing, c(5, 10, 15), NULL))
-  expect_error(K_check(K_small_changing, c(1, 10, -12), NULL))
-  expect_error(K_check(K_small_changing, c(1, 5.5, 15), NULL))
-  expect_error(K_check(K_small_changing, c(1, 5, 15), 20))
+  #' @srrstats {G5.2, G5.2a, G5.2b} tests of errors and warnings (with messages)
+  #' @srrstats {G5.8, G5.8a, G5.8b, G5.8c} edge condition tests: zero-length data, unsupported data types, NA fields
+
+  expect_error(
+    K_check(K_small_changing, NULL, NULL),
+    "Either \"K_time_points\" or \"time\" must be specified")
+
+
+  expect_error(
+    K_check(subset(K_small_changing, 1:2), NULL, numeric()),
+    "length(time) not equal to 1",
+    fixed = TRUE)
+
+  expect_error(
+    K_check(K_small_changing, numeric(), NULL),
+    "Incorrect number of elements in \"K_time_points\"")
+
+  expect_error(
+    K_check(K_small_changing, c(1, 10), NULL),
+    "Incorrect number of elements in \"K_time_points\"")
+
+  expect_error(
+    K_check(K_small_changing, c(5, 10, 15), NULL),
+    "First element of \"K_time_points\" should be equal to 1")
+
+  expect_error(
+    K_check(K_small_changing, c(1, 10, -12), NULL),
+    "Elements of \"K_time_points\" must be positive integers")
+
+  expect_error(
+    K_check(K_small_changing, c(1, 5.5, 15), NULL),
+    "Elements of \"K_time_points\" must be integers")
+
+  expect_error(
+    K_check(K_small_changing, c(1, 5, 15), 20),
+    "Last element of \"K_time_points\" should be equal to \"time\"")
 
 
   expect_warning(

@@ -18,6 +18,9 @@
 #'
 #' @examples
 #' system.file("input_maps/K_small.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G5.1} dataset used in examples is exported and documented
 NULL
 
 
@@ -47,6 +50,9 @@ NULL
 #'
 #' @examples
 #' system.file("input_maps/K_small_changing.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G5.1} dataset used in examples is exported and documented
 NULL
 
 
@@ -70,6 +76,8 @@ NULL
 #'
 #' @examples
 #' system.file("input_maps/K_big.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
 NULL
 
 
@@ -92,6 +100,8 @@ NULL
 #'
 #' @examples
 #' system.file("input_maps/n1_small.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
 NULL
 
 
@@ -112,6 +122,9 @@ NULL
 #'
 #' @examples
 #' system.file("input_maps/n1_big.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G5.1} dataset used in examples is exported and documented
 NULL
 
 
@@ -132,4 +145,7 @@ NULL
 #' }
 #'
 #' @source Data generated in-house to serve as an example
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G5.1} dataset used in examples is exported and documented
 "observations_points"

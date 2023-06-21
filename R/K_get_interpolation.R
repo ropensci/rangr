@@ -19,8 +19,8 @@
 #'
 #' @param K_map [`SpatRaster`][terra::SpatRaster-class] object with
 #' carrying capacity maps for each `K_time_points`
-#' @param K_time_points vector of integers; time for each layer in `K_map`
-#' @param time integer; number of total time steps required (this is defined
+#' @param K_time_points integer vector; time for each layer in `K_map`
+#' @param time integer vector of length 1; number of total time steps required (this is defined
 #' when evoking the function `sim`).
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] object with number of layers
@@ -56,6 +56,10 @@
 #'
 #' }
 #'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {G2.1a} documented types expectation
+#'
 K_get_interpolation <- function(K_map, K_time_points = NULL, time = NULL) {
 
   # arguments validation
@@ -85,20 +89,20 @@ K_get_interpolation <- function(K_map, K_time_points = NULL, time = NULL) {
 #' @return List with two elements corresponding to `K_time_points`
 #' and `time` respectively.
 #'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#'
 #' @noRd
 #'
 K_check <- function(K_map, K_time_points, time) {
 
-  if (!inherits(K_map, "SpatRaster")) {
-    stop("K_map should be SpatRaster class")
-  }
 
-  if (is.null(time) & is.null(K_time_points)) {
-    stop(
-      "Either \"K_time_points\" or \"time\" must be specified ",
-      "to perform interpolation"
-    )
-  }
+  #' @srrstats {G2.1, G2.6} assert input type
+  assert_that(inherits(K_map, "SpatRaster"))
+
+  assert_that(
+    !is.null(time) || (!is.null(K_time_points)),
+    msg = "Either \"K_time_points\" or \"time\" must be specified")
 
   # number of layers
   nls <- nlyr(K_map)
@@ -112,40 +116,56 @@ K_check <- function(K_map, K_time_points, time) {
     )
   )
 
-
+  #' @srrstats {G2.0, G2.2} assert input length
   # check time_points and number of layers
   if (nls != ntp) { # number of layers and number of time points are different
 
-    if (!(nls %in% c(1, 2) & ntp == 0)) {
-      stop(("Incorrect number of elements in \"K_time_points\""))
-    }
+    assert_that(
+      nls %in% c(1, 2) & ntp == 0,
+      msg = "Incorrect number of elements in \"K_time_points\"")
+
   } else { # number of layers and number of time points are equal
 
-    if (K_time_points[1] != 1) {
-      stop("First element of \"K_time_points\" should be equal to 1")
-    }
+    assert_that(
+      K_time_points[1] == 1,
+      msg = "First element of \"K_time_points\" should be equal to 1")
 
-    if (!all(K_time_points > 0)) {
-      stop("Elements of \"K_time_points\" must be positive numbers")
-    }
+    assert_that(
+      all(K_time_points > 0),
+      msg = "Elements of \"K_time_points\" must be positive integers")
 
-    if (!all(K_time_points %% 1 == 0)) {
-      stop("Elements of \"K_time_points\" be whole numbers")
-    }
+
+    assert_that(all(K_time_points %% 1 == 0),
+      msg = "Elements of \"K_time_points\" must be integers")
+
   }
 
 
   # set default value for time if possible
   if (is.null(time)) {
+
+    #' @srrstats {G2.9} add default time and show warning
+
     warning(
       "Argument \"time\" is no specified - ",
       "last number from \"K_time_points\" is used as \"time\""
     )
     time <- K_time_points[ntp]
-  } else if (ntp == 0 & nls == 2) {
-    K_time_points <- c(1, time) # default time points for 2-layered K_map
-  } else if (K_time_points[ntp] != time) {
-    stop("Last element of \"K_time_points\" should be equal to \"time\"")
+
+  } else {
+
+    #' @srrstats {G2.0, G2.2} assert input length
+    #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+    assert_that(length(time) == 1)
+    assert_that(is.numeric(time))
+
+    if (ntp == 0 & nls == 2) {
+      K_time_points <- c(1, time) # default time points for 2-layered K_map
+    } else {
+      assert_that(
+        K_time_points[ntp] == time,
+        msg = "Last element of \"K_time_points\" should be equal to \"time\"")
+    }
   }
 
   return(list(K_time_points = K_time_points, time = time))
@@ -167,6 +187,9 @@ K_check <- function(K_map, K_time_points, time) {
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] with as many layers as
 #' specified in `time`
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
 #'
 #' @noRd
 #'

@@ -2,6 +2,8 @@ test_that("update works", {
   # test data
   test_sim_data <- readRDS(test_path("fixtures", "test_sim_data.rds"))
   test_rast <- rast(test_path("fixtures", "test_rast.tif"))
+  # reclassify to remove NaNs (that were NAs before saving)
+  test_rast <- classify(test_rast, cbind(NaN, NA))
   test_id_rast <- rast(test_path("fixtures", "test_id_rast.tif"))
   test_sim_data$id <- test_id_rast
   test_sim_data$K_map <- test_rast

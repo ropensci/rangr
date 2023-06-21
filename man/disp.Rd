@@ -32,8 +32,8 @@ in current time points}
 
 \item{kernel}{a function defining dispersal kernel}
 
-\item{dens_dep}{a string specifying if the probability of settling in
-a target square is:
+\item{dens_dep}{character vector of length 1 specifying if the probability
+of settling in a target square is (case-sensitive):
 \itemize{
 \item{"none" - fully random,}
 \item{"K" - proportional to the carrying capacity of a target square,}
@@ -50,7 +50,7 @@ study area}
 
 \item{within_mask}{logical matrix that specifies boundaries of the study area}
 
-\item{border}{a string defining how to deal with borders:
+\item{border}{character vector of length 1 defining how to deal with borders (case-sensitive):
 \itemize{
 \item "absorbing" - individuals that disperse outside the study area
 are removed from the population
@@ -62,7 +62,7 @@ as targets for dispersal
 specifying the maximum range at which identifiers of target dispersal cells
 are determined in advance (see \code{\link{initialise}})}
 
-\item{resolution}{spatial resolution of \code{id} raster}
+\item{resolution}{integer vector of length 1; spatial resolution of \code{id} raster}
 
 \item{ncells_in_circle}{numeric vector; number of cells on each distance}
 
@@ -131,5 +131,6 @@ disp_output <- disp(
 
 # immigration and emigration matrices
 names(disp_output)
+
 
 }

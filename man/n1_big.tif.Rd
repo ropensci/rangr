@@ -19,4 +19,5 @@ to perform a \code{\link{sim}}ulation. This map is compatible with \code{\link{K
 }
 \examples{
 system.file("input_maps/n1_big.tif", package = "rangr")
+
 }

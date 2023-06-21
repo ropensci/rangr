@@ -26,6 +26,8 @@
 #' )
 #' summary(sim_data)
 #'
+#' @srrstats {G1.4} uses roxygen documentation
+#'
 summary.sim_data <- function(object, ...) {
 
   # prepare summaries
@@ -89,6 +91,8 @@ summary.sim_data <- function(object, ...) {
 #' )
 #' summary_sim_data <- summary(sim_data)
 #' print(summary_sim_data)
+#'
+#' @srrstats {G1.4} uses roxygen documentation
 #'
 print.summary.sim_data <- function(x, ...) {
 

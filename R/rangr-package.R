@@ -2,6 +2,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom assertthat assert_that
 #' @importFrom data.table melt
 #' @importFrom data.table setDT
 #' @importFrom graphics abline
@@ -36,6 +37,7 @@
 #' @importFrom terra plot
 #' @importFrom terra rast
 #' @importFrom terra res
+#' @importFrom terra res<-
 #' @importFrom terra setValues
 #' @importFrom terra spatSample
 #' @importFrom terra subset

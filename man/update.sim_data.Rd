@@ -12,7 +12,7 @@
 \item{...}{further arguments passed to or from other methods;
 currently none specified}
 
-\item{evaluate}{logical; if \code{TRUE} evaluate the new call else return the call}
+\item{evaluate}{logical vector of length 1 if \code{TRUE} evaluate the new call else return the call}
 }
 \value{
 If \code{evaluate = TRUE} the updated \code{sim_data} object,

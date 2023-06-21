@@ -10,9 +10,9 @@ K_get_interpolation(K_map, K_time_points = NULL, time = NULL)
 \item{K_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with
 carrying capacity maps for each \code{K_time_points}}
 
-\item{K_time_points}{vector of integers; time for each layer in \code{K_map}}
+\item{K_time_points}{integer vector; time for each layer in \code{K_map}}
 
-\item{time}{integer; number of total time steps required (this is defined
+\item{time}{integer vector of length 1; number of total time steps required (this is defined
 when evoking the function \code{sim}).}
 }
 \value{

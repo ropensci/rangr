@@ -9,7 +9,7 @@ to_rast(sim_results, time_points = sim_results$simulated_time, template = NULL)
 \arguments{
 \item{sim_results}{\code{sim_results} object created by \code{\link{sim}}}
 
-\item{time_points}{numeric or numeric vector; specifies points in time from
+\item{time_points}{numeric vector of length 1 or more; specifies points in time from
 which \code{\link[terra:SpatRaster-class]{SpatRaster}} will be created - as default
 the last year of simulation; if \code{length(time_points) > 0}
 \code{\link[terra:SpatRaster-class]{SpatRaster}} will be returned with layers for

@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{\code{sim_results} object; returned by \code{\link{sim}} function}
 
-\item{from}{numeric; indicates the starting time point from which all
+\item{from}{numeric vector of length 1; indicates the starting time point from which all
 time point should be kept}
 
 \item{time_points}{numeric vector; indicates all time points to keep}

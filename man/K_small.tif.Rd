@@ -24,4 +24,5 @@ as simulation starting point.
 }
 \examples{
 system.file("input_maps/K_small.tif", package = "rangr")
+
 }

@@ -29,4 +29,5 @@ carrying capacity than the previous one.
 }
 \examples{
 system.file("input_maps/K_small_changing.tif", package = "rangr")
+
 }

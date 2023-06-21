@@ -19,7 +19,7 @@
 #' @param A coefficient of Allee effect (A <= 0: weak, A > 0: strong, NA: none)
 #' @param ... not used, added for compatibility reasons
 #'
-#'
+#' @srrstats {G1.0} Reference for Allee effect:
 #' @references Boukal, D. S., & Berec, L. (2002). Single-species models
 #' of the Allee effect: extinction boundaries, sex ratios and mate encounters.
 #' Journal of Theoretical Biology, 218(3), 375-394.
@@ -38,6 +38,8 @@
 #'
 #' gompertz(x, r = 1.2, K = 5)
 #' gompertz(x, r = 1.2, K = 5, A = 5)
+#'
+#' @srrstats {G1.4} uses roxygen documentation
 #'
 exponential <- function(x, r, ...) {
 

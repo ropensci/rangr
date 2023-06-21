@@ -6,7 +6,7 @@
 \alias{rangr-package}
 \title{rangr: Mechanistic Simulation of Species Range Dynamics}
 \description{
-Set of tools for simulating species range dynamics.
+Species range dynamics simulation toolset.
 }
 \seealso{
 Useful links:

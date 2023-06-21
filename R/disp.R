@@ -34,7 +34,7 @@
 #' @param max_dist a distance (in the same units as used in the raster `id`)
 #' specifying the maximum range at which identifiers of target dispersal cells
 #' are determined in advance (see [`initialise`])
-#' @param resolution spatial resolution of `id` raster
+#' @param resolution integer vector of length 1; spatial resolution of `id` raster
 #' @param ncells_in_circle numeric vector; number of cells on each distance
 #' @param cl if simulation is done in parallel, the name of a cluster object
 #' created by [`makeCluster`][parallel::makeCluster()]
@@ -83,6 +83,12 @@
 #'
 #' # immigration and emigration matrices
 #' names(disp_output)
+#'
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {G2.1a} documented types expectation
+#'
 #'
 disp <- function(
     N_t, id, data_table, kernel, dens_dep, dlist, id_within, within_mask,
@@ -159,12 +165,16 @@ disp <- function(
 #' of vectors where list's indexes correspond to source cell, vector indexes
 #' specify emigration distance and values - number of individuals.
 #'
-#' @param N_pos integer or integer vector; number of individuals in every cell
+#' @param N_pos integer vector of length 1 or more; number of individuals in every cell
 #' (cases with zero individuals  aren't listed)
 #' @inheritParams disp
 #'
 #' @return List of numeric vectors; number of emigrating individuals
 #' from each cell to each distance.
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
 #'
 #' @noRd
 #'
@@ -188,11 +198,15 @@ dists_tab <- function(N_pos, kernel, resolution) {
 #' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
 #' to find cells that individuals will emigrate to.
 #'
-#' @param i integer; number of current source cell in relation to `disp_dist`
+#' @param i integer vector of length 1; number of current source cell in relation to `disp_dist`
 #' @inheritParams disp_linear
 #'
 #' @return Indexes of cells that individuals emigrate to. One occurrence of
 #' the particular cell equals to one specimen that emigrates to it.
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
 #'
 #' @noRd
 #'
@@ -246,17 +260,22 @@ sq_disp <- function(
 #' Second reason is that the user has chosen to not pre-calculate target cells
 #' (by setting `calculate_dist` to`FALSE` in [`initialise`]).
 #'
-#' @param id_x_y vector; index and coordinates of source cell
+#' @param id_x_y integer vector; index and coordinates of source cell
 #' @param id [`SpatRaster`][terra::SpatRaster-class] object; cells indexes
 #' from `sim_data` object created by [`sim`]
-#' @param id_within vector; indexes of cells inside study area
-#' @param resolution number; resolution
-#' @param min integer; the closest distance for which target cells
+#' @param id_within integer vector; indexes of cells inside study area
+#' @param resolution integer vector of length 1; resolution
+#' @param min integer vector of length 1; the closest distance for which target cells
 #' will be returned
-#' @param max integer; the farthest distance for which target cells
+#' @param max integer vector of length 1; the farthest distance for which target cells
 #' will be returned
 #'
 #' @return List of target cells for each distance or `NULL` if there isn't any
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {G2.1a} documented types expectation
 #'
 #' @noRd
 #'
@@ -315,6 +334,8 @@ target_ids_in_disp <- function(id_x_y, id, id_within, resolution, min, max) {
 #' emigrate to. One occurrence of the particular cell equals to
 #' one specimen that emigrates to it.
 #'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
 #'
 #' @noRd
 #'

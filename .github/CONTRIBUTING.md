@@ -8,6 +8,8 @@ editor_options:
 
 This outlines how to propose a change to rangr.
 
+Note that this package is in an initially stable state of development, with a great deal of active subsequent development envisioned.
+
 ## Fixing typos
 
 You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the *source* file.
