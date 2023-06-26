@@ -34,7 +34,8 @@
 #' @param max_dist a distance (in the same units as used in the raster `id`)
 #' specifying the maximum range at which identifiers of target dispersal cells
 #' are determined in advance (see [`initialise`])
-#' @param resolution integer vector of length 1; spatial resolution of `id` raster
+#' @param resolution integer vector of length 1; spatial resolution of
+#' `id` raster
 #' @param ncells_in_circle numeric vector; number of cells on each distance
 #' @param cl if simulation is done in parallel, the name of a cluster object
 #' created by [`makeCluster`][parallel::makeCluster()]
@@ -166,7 +167,8 @@ disp <- function(
 #' of vectors where list's indexes correspond to source cell, vector indexes
 #' specify emigration distance and values - number of individuals.
 #'
-#' @param N_pos integer vector of length 1 or more; number of individuals in every cell
+#' @param N_pos integer vector of length 1 or more; number of individuals in
+#' every cell
 #' (cases with zero individuals  aren't listed)
 #' @inheritParams disp
 #'
@@ -199,7 +201,8 @@ dists_tab <- function(N_pos, kernel, resolution) {
 #' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
 #' to find cells that individuals will emigrate to.
 #'
-#' @param i integer vector of length 1; number of current source cell in relation to `disp_dist`
+#' @param i integer vector of length 1; number of current source cell
+#' in relation to `disp_dist`
 #' @inheritParams disp_linear
 #'
 #' @return Indexes of cells that individuals emigrate to. One occurrence of
@@ -266,10 +269,10 @@ sq_disp <- function(
 #' from `sim_data` object created by [`sim`]
 #' @param id_within integer vector; indexes of cells inside study area
 #' @param resolution integer vector of length 1; resolution
-#' @param min integer vector of length 1; the closest distance for which target cells
-#' will be returned
-#' @param max integer vector of length 1; the farthest distance for which target cells
-#' will be returned
+#' @param min integer vector of length 1; the closest distance for which
+#' target cells will be returned
+#' @param max integer vector of length 1; the farthest distance for which
+#' target cells will be returned
 #'
 #' @return List of target cells for each distance or `NULL` if there isn't any
 #'
@@ -324,7 +327,8 @@ target_ids_in_disp <- function(id_x_y, id, id_within, resolution, min, max) {
 #' `one_dist_sq_disp` simulates dispersal in one cell to given distance
 #'
 #' @param j integer; distance
-#' @param id_int integer; index of the cell from which the emigration takes place
+#' @param id_int integer; index of the cell from which the emigration takes
+#' place
 #' @param dlist_pos list of numeric vectors; target cells available
 #' from current cell
 #' @param disp_dist_i integer vector; number of individuals that disperse

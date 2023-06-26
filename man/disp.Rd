@@ -50,7 +50,8 @@ study area}
 
 \item{within_mask}{logical matrix that specifies boundaries of the study area}
 
-\item{border}{character vector of length 1 defining how to deal with borders (case-sensitive):
+\item{border}{character vector of length 1 defining how to deal
+with borders (case-sensitive):
 \itemize{
 \item "absorbing" - individuals that disperse outside the study area
 are removed from the population
@@ -62,7 +63,8 @@ as targets for dispersal
 specifying the maximum range at which identifiers of target dispersal cells
 are determined in advance (see \code{\link{initialise}})}
 
-\item{resolution}{integer vector of length 1; spatial resolution of \code{id} raster}
+\item{resolution}{integer vector of length 1; spatial resolution of
+\code{id} raster}
 
 \item{ncells_in_circle}{numeric vector; number of cells on each distance}
 

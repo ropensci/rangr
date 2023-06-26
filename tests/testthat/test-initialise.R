@@ -11,7 +11,9 @@ test_that("initialise works", {
 
 
   #' @srrstats {G5.2, G5.2a, G5.2b} tests of errors and warnings (with messages)
-  #' @srrstats {G5.8, G5.8c, G5.8d} edge condition tests: unsupported data types, data outside the scope - negative values in the input maps
+  #' @srrstats {G5.8, G5.8c, G5.8d} edge condition tests: unsupported data
+  #' types, data outside the scope - negative values in the input maps
+
   # input maps
   expect_error(
     initialise(
@@ -64,7 +66,7 @@ test_that("initialise works", {
       K_map = test_rast,
       r = log(1.2)
     ),
-    "n1_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)",
+    "n1_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)", #nolint
     fixed = TRUE)
 
   expect_error(
@@ -73,7 +75,7 @@ test_that("initialise works", {
       K_map = test_rast_neg,
       r = log(1.2)
     ),
-    "K_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)",
+    "K_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)", #nolint
     fixed = TRUE)
 
   expect_error(
@@ -427,7 +429,8 @@ test_that("K_get_init_values works", {
   test_rast_many_layers <- c(test_rast_layer1, test_rast_layer2)
   test_values_layer1 <- values(test_rast_layer1)
 
-  expect_equal(K_get_init_values(test_rast_many_layers, TRUE), test_values_layer1)
+  expect_equal(
+    K_get_init_values(test_rast_many_layers, TRUE), test_values_layer1)
 })
 
 

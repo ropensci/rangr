@@ -20,8 +20,8 @@
 #' @param K_map [`SpatRaster`][terra::SpatRaster-class] object with
 #' carrying capacity maps for each `K_time_points`
 #' @param K_time_points integer vector; time for each layer in `K_map`
-#' @param time integer vector of length 1; number of total time steps required (this is defined
-#' when evoking the function `sim`).
+#' @param time integer vector of length 1; number of total time steps required
+#' (this is defined when evoking the function `sim`).
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] object with number of layers
 #' equal to `time`
@@ -60,7 +60,8 @@
 #' @srrstats {G2.0a} documented lengths expectation
 #' @srrstats {G2.1a, SP2.6} documented types expectation
 #' @srrstats {SP1.1} documented dimensional domain of applicability
-#' @srrstats {SP2.0, SP2.0b} check if K_map is [`SpatRaster`][terra::SpatRaster-class] and error otherwise
+#' @srrstats {SP2.0, SP2.0b} check if K_map is
+#' [`SpatRaster`][terra::SpatRaster-class] and error otherwise
 #' @srrstats {SP2.3} load data in spatial formats
 #' @srrstats {SP4.0, SP4.0a} returns object of the same class as the input
 #' @srrstats {SP4.1} returned object has the same unit as the input

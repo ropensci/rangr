@@ -1,4 +1,5 @@
-#' @srrstats {G5.1} The test data sets can be easily reproduced using this file available on github
+#' @srrstats {G5.1} The test data sets can be easily reproduced using this file
+#' available on github
 
 # Warning: Use this file only with a stable package version! Make sure
 # Ensure that the generated data is correct before you save it.

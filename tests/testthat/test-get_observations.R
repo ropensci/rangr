@@ -42,7 +42,9 @@ test_that("get_observations works", {
     paste(test_points$x, test_points$y, sep = ".")
 
   #' @srrstats {G5.2, G5.2a, G5.2b} tests of errors and warnings (with messages)
-  #' @srrstats {G5.8, G5.8a, G5.8b, G5.8c} edge condition tests: zero-length data, unsupported data types, NA fields
+  #' @srrstats {G5.8, G5.8a, G5.8b, G5.8c} edge condition tests:
+  #' zero-length data, unsupported data types, NA fields
+
   # tests
   # input parameters
   expect_error(
@@ -123,14 +125,14 @@ test_that("get_observations works", {
                          X = test_points[, 1],
                          Y = test_points[, 2],
                          time = test_points[, 3])),
-    "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"",
+    "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"", #nolint
     fixed = TRUE)
 
   expect_error(
     get_observations(test_sim_data, test_sim_res,
                      type = "from_data", points =
                        data.frame(
-                         x = c(test_points[1:(nrow(test_points) - 1), 1], "character"),
+                         x = c(test_points[1:(nrow(test_points) - 1), 1], "character"), #nolint
                          y = test_points[, 2],
                          time_step = test_points[, 3])),
     "some element of point are not numeric",
@@ -163,14 +165,14 @@ test_that("get_observations works", {
                        data.frame(
                          X = test_points[, 1],
                          Y = test_points[, 2])),
-    "columns in cells_coords parameter should have the following names: \"x\", \"y\"",
+    "columns in cells_coords parameter should have the following names: \"x\", \"y\"", #nolint
     fixed = TRUE)
 
   expect_error(
     get_observations(test_sim_data, test_sim_res,
                      type = "monitoring_based", cells_coords =
                        data.frame(
-                         x = c(test_points[1:(nrow(test_points) - 1), 1], "character"),
+                         x = c(test_points[1:(nrow(test_points) - 1), 1], "character"), #nolint
                          y = test_points[, 2])),
     "some element of cells_coords are not numeric",
     fixed = TRUE)

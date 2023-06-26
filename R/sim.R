@@ -40,14 +40,18 @@
 #'
 #' @param obj `sim_data` object created by [`initialise`] containing all
 #' simulation parameters and necessary data
-#' @param time positive integer vector of length 1; number of time steps simulated
-#' @param burn positive integer vector of length 1; the number of burn-in time steps that are
+#' @param time positive integer vector of length 1; number of time steps
+#' simulated
+#' @param burn positive integer vector of length 1; the number of burn-in time
+#' steps that are
 #' discarded from the output
 #' @param cl an optional cluster object created by
 #' [`makeCluster`][parallel::makeCluster()] needed for parallel calculations
-#' @param progress_bar logical vector of length 1 determines if progress bar for simulation
+#' @param progress_bar logical vector of length 1 determines if progress bar
+#' for simulation
 #' should be displayed
-#' @param quiet logical vector of length 1; determines if warnings should be displayed
+#' @param quiet logical vector of length 1; determines if warnings should
+#' be displayed
 #'
 #' @return This function returns an object of class `sim_results` which is
 #' a list containing the following components:
@@ -157,7 +161,7 @@ sim <- function(
 
   # Extract data from the sim_data object
   K_map <- obj$K_map # carrying capacity
-  K_sd <- obj$K_sd # sd of carrying capacity (additional cell specific variation)
+  K_sd <- obj$K_sd # sd of carrying capacity (additional cell specific variation) #nolint
   dynamics <- obj$dynamics # population growth function
   n1_map <- obj$n1_map # population numbers at the first time step
   r <- obj$r # intrinsic population growth rate
@@ -211,7 +215,7 @@ sim <- function(
     # Demographic processes
     mu[, , t - 1] <- dynamics(N[, , t - 1], r[t - 1], K, A)
 
-    # demographic stochasticity (random numbers drown from a Poisson distribution)
+    # demographic stochasticity (random numbers drown from a Poisson distribution) #nolint
     # of no. of individuals in each square predicted by the deterministic model)
     N[, , t] <- rpois(ncells, mu[, , t - 1])
 
@@ -299,12 +303,12 @@ sim <- function(
 #' Environmental stochasticity is applied if `K_sd > 0`
 #' using [`rlnorm`][stats::rlnorm()].
 #'
-#' @param K_map numeric matrix or [`SpatRaster`][terra::SpatRaster-class] object;
-#' see 'Details' for more information
-#' @param t integer vector of length 1; positive integer value that represent the number
-#' of current time step
-#' @param changing_env logical vector of length 1; indicates if environment is static or changing
-#' during the simulation
+#' @param K_map numeric matrix or [`SpatRaster`][terra::SpatRaster-class]
+#' object; see 'Details' for more information
+#' @param t integer vector of length 1; positive integer value that represent
+#' the number of current time step
+#' @param changing_env logical vector of length 1; indicates if environment
+#' is static or changing during the simulation
 #'
 #' @return Matrix with carrying capacity for the time steps specified
 #' by `t` parameter.
@@ -336,9 +340,11 @@ get_K <- function(K_map, t, changing_env) {
 #' should be checked.
 #'
 #'
-#' @param N 3-dimensional integer array; first two dimensions corresponds to space,
-#' the third one is time and the values represent the number of specimens
-#' @param t integer vector of length 1; positive integer value that represents time step
+#' @param N 3-dimensional integer array; first two dimensions corresponds
+#' to space, the third one is time and the values represent the number
+#' of specimens
+#' @param t integer vector of length 1; positive integer value that represents
+#' time step
 #'
 #' @return `TRUE` if population is extinct or `FALSE` otherwise
 #'

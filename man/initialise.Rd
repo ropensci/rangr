@@ -46,11 +46,12 @@ initialize(
 )
 }
 \arguments{
-\item{n1_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer; population
-numbers in every square at the first time step}
+\item{n1_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer;
+population numbers in every square at the first time step}
 
-\item{K_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer; carrying
-capacity map (if K is constant across time) or maps (if K is time-varying)}
+\item{K_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer;
+carrying capacity map (if K is constant across time) or maps (if K is
+time-varying)}
 
 \item{K_sd}{numeric vector of length 1 with value \verb{>= 0} (default 0);
 this parameter can be used if additional environmental stochasticity
@@ -65,7 +66,8 @@ the standard deviation for a normal distribution around \code{r}
 (defined for each time step)}
 
 \item{growth}{character vector of length 1; the name of a population growth
-function, either defined in \code{\link{growth}} or provided by the user (case-sensitive)}
+function, either defined in \code{\link{growth}} or provided by
+the user (case-sensitive)}
 
 \item{A}{numeric vector of length 1; strength of the Allee effect
 (see the \code{\link{growth}} function)}
@@ -80,7 +82,8 @@ carrying capacity of a target square to the number of individuals
 already present in a target square}
 }}
 
-\item{border}{character vector of length 1 defining how to deal with borders (case-sensitive):
+\item{border}{character vector of length 1 defining how to deal
+with borders (case-sensitive):
 \itemize{
 \item "absorbing" - individuals that disperse outside the study area
 are removed from the population
@@ -93,20 +96,20 @@ generation function defining a dispersal kernel (case-sensitive)}
 
 \item{...}{any parameters required by \code{kernel_fun}}
 
-\item{max_dist}{numeric vector of length 1; maximum distance of dispersal to pre-calculate
-target cells}
+\item{max_dist}{numeric vector of length 1; maximum distance of dispersal
+to pre-calculate target cells}
 
-\item{calculate_dist}{logical vector of length 1; determines if target cells will
-be precalculated}
+\item{calculate_dist}{logical vector of length 1; determines if target cells
+will be precalculated}
 
 \item{dlist}{list; target cells at a specified distance calculated
 for every cell within the study area}
 
-\item{progress_bar}{logical vector of length 1; determines if progress bar for calculating
-distances should be displayed (used only if dlist is \code{NULL})}
+\item{progress_bar}{logical vector of length 1; determines if progress bar
+for calculating distances should be displayed (used only if dlist is \code{NULL})}
 
-\item{quiet}{logical vector of length 1; determines if messages for calculating distances
-should be displayed (used only if dlist is \code{NULL})}
+\item{quiet}{logical vector of length 1; determines if messages for
+calculating distances should be displayed (used only if dlist is \code{NULL})}
 
 \item{cl}{cluster object created by \code{\link[parallel:makeCluster]{makeCluster}}}
 }

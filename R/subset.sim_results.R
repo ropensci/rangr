@@ -1,8 +1,8 @@
 #' Subset of the given time points from `sim_results` object
 #'
 #' @param x `sim_results` object; returned by [`sim`] function
-#' @param from numeric vector of length 1; indicates the starting time point from which all
-#' time point should be kept
+#' @param from numeric vector of length 1; indicates the starting time point
+#' from which all time point should be kept
 #' @param time_points numeric vector; indicates all time points to keep
 #' @param ... further arguments to be passed to or from other methods
 #'

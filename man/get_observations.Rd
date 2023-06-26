@@ -18,7 +18,8 @@ parameters}
 
 \item{sim_results}{\code{sim_results} object; returned by \code{\link{sim}} function}
 
-\item{type}{character vector of length 1; describes the sampling type (case-sensitive):
+\item{type}{character vector of length 1; describes the sampling type
+(case-sensitive):
 \itemize{
 \item "random_one_layer" - cells from which the population numbers
 will be sampled are selected randomly; selected cells will be the same
@@ -36,39 +37,41 @@ the same observer for several years and whether it will not be made at all
 is defined using a geometric distribution (\code{\link[stats:Geometric]{rgeom}})
 }}
 
-\item{sdlog}{numeric vector of length 1; standard deviation (on a log scale) of the random noise in
-observation process generated from the log-normal distribution
-(\code{\link[stats:Lognormal]{rlnorm}})}
+\item{sdlog}{numeric vector of length 1; standard deviation (on a log scale)
+of the random noise in observation process generated from the log-normal
+distribution (\code{\link[stats:Lognormal]{rlnorm}})}
 
 \item{...}{other necessary internal parameters:
 \itemize{
 \item{\code{prop}
 
-numeric vector of length 1; proportion of cells to be sampled (default \code{prop = 0.1});
+numeric vector of length 1; proportion of cells to be sampled
+(default \code{prop = 0.1});
 used when \verb{type = "random_one_layer" or "random_all_layers"},}
 
 \item{\code{points}
 
-\code{data.frame} or \code{matrix} with 3 named numeric columns ("x", "y" and "time_step") containing
-coordinates and time steps from which observations should be obtained;
-used when \code{type = "from_data"},}
+\code{data.frame} or \code{matrix} with 3 named numeric columns ("x", "y"
+and "time_step") containing coordinates and time steps from which
+observations should be obtained; used when \code{type = "from_data"},}
 
 \item{\code{cells_coords}
 
-\code{data.frame} or \code{matrix} with 2 named columns: "x" and "y"; survey plots coordinates;
-used when \code{type = "monitoring_based"}}
+\code{data.frame} or \code{matrix} with 2 named columns: "x" and "y"; survey plots
+coordinates; used when \code{type = "monitoring_based"}}
 
 \item{\code{prob}
 
-numeric vector of length 1; a parameter defining the shape of - \code{\link[stats:Geometric]{rgeom}}
-distribution - it defines whether an observation will be made by the same
-observer for several years and whether it will not be made at all
-(default \code{prob = 0.3}); used when \code{type = "monitoring_based"}}
+numeric vector of length 1; a parameter defining the shape of -
+\code{\link[stats:Geometric]{rgeom}} distribution - it defines whether an observation
+will be made by the same observer for several years and whether it
+will not be made at all (default \code{prob = 0.3});
+used when \code{type = "monitoring_based"}}
 
 \item{\code{progress_bar}
 
-logical vector of length 1; determines if progress bar for observational process should be
-displayed (default \code{progress_bar = FALSE});
+logical vector of length 1; determines if progress bar for observational
+process should be displayed (default \code{progress_bar = FALSE});
 used when \code{type = "monitoring_based"}}
 }}
 }

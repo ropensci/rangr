@@ -3,7 +3,8 @@
 #' @param object `sim_data` object; returned by [`initialise`] function
 #' @param ... further arguments passed to or from other methods;
 #' currently none specified
-#' @param evaluate logical vector of length 1 if `TRUE` evaluate the new call else return the call
+#' @param evaluate logical vector of length 1 if `TRUE` evaluate the new call
+#' else return the call
 #'
 #' @return If `evaluate = TRUE` the updated `sim_data` object,
 #' otherwise the updated call.

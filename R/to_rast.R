@@ -5,9 +5,9 @@
 #' specified by `time_points` that can be one point in time or many.
 #'
 #' @param sim_results `sim_results` object created by [`sim`]
-#' @param time_points numeric vector of length 1 or more; specifies points in time from
-#' which [`SpatRaster`][terra::SpatRaster-class] will be created - as default
-#' the last year of simulation; if `length(time_points) > 0`
+#' @param time_points numeric vector of length 1 or more; specifies points in
+#' time from which [`SpatRaster`][terra::SpatRaster-class] will be created
+#' - as default the last year of simulation; if `length(time_points) > 0`
 #' [`SpatRaster`][terra::SpatRaster-class] will be returned with layers for
 #' each element of `time_points`
 #' @param template [`SpatRaster`][terra::SpatRaster-class] object; can be used
@@ -53,8 +53,10 @@
 #' @srrstats {G2.1a, SP2.6} documented types expectation
 #' @srrstats {SP2.0a} conversion to [`SpatRaster`][terra::SpatRaster-class]
 #' @srrstats {SP2.3} load data in spatial formats
-#' @srrstats {SP4.0, SP4.0b} returns [`SpatRaster`][terra::SpatRaster-class] object
-#' @srrstats {SP4.1} returned object has the same unit as the input (if the template is provided)
+#' @srrstats {SP4.0, SP4.0b} returns [`SpatRaster`][terra::SpatRaster-class]
+#' object
+#' @srrstats {SP4.1} returned object has the same unit as the input
+#' (if the template is provided)
 #' @srrstats {SP4.2} returned values are documented
 #'
 to_rast <- function(
@@ -67,7 +69,7 @@ to_rast <- function(
 
     #' @srrstats {G2.9} make default raster and show warning
 
-    warning("No template provided. Returned SpatRaster lacks geographical information (you can use one of the input maps from the sim_data object as template)")
+    warning("No template provided. Returned SpatRaster lacks geographical information (you can use one of the input maps from the sim_data object as template)") #nolint
     out <- rast(sim_results$N_map[, , time_points])
 
   } else {

@@ -5,7 +5,8 @@
 #' @param sim_data  `sim_data` object from [`initialise`] containing simulation
 #' parameters
 #' @param sim_results `sim_results` object; returned by [`sim`] function
-#' @param type character vector of length 1; describes the sampling type (case-sensitive):
+#' @param type character vector of length 1; describes the sampling type
+#' (case-sensitive):
 #' \itemize{
 #'   \item "random_one_layer" - cells from which the population numbers
 #'   will be sampled are selected randomly; selected cells will be the same
@@ -22,38 +23,40 @@
 #'   the same observer for several years and whether it will not be made at all
 #'   is defined using a geometric distribution ([`rgeom`][stats::rgeom()])
 #' }
-#' @param sdlog numeric vector of length 1; standard deviation (on a log scale) of the random noise in
-#' observation process generated from the log-normal distribution
-#' ([`rlnorm`][stats::rlnorm()])
+#' @param sdlog numeric vector of length 1; standard deviation (on a log scale)
+#' of the random noise in observation process generated from the log-normal
+#' distribution ([`rlnorm`][stats::rlnorm()])
 #' @param ... other necessary internal parameters:
 #' \itemize{
 #'   \item{`prop`
 #'
-#'   numeric vector of length 1; proportion of cells to be sampled (default `prop = 0.1`);
+#'   numeric vector of length 1; proportion of cells to be sampled
+#'   (default `prop = 0.1`);
 #'   used when `type = "random_one_layer" or "random_all_layers"`,}
 #'
 #'   \item{`points`
 #'
-#'   `data.frame` or `matrix` with 3 named numeric columns ("x", "y" and "time_step") containing
-#'   coordinates and time steps from which observations should be obtained;
-#'   used when `type = "from_data"`,}
+#'   `data.frame` or `matrix` with 3 named numeric columns ("x", "y"
+#'   and "time_step") containing coordinates and time steps from which
+#'   observations should be obtained; used when `type = "from_data"`,}
 #'
 #'   \item{`cells_coords`
 #'
-#'   `data.frame` or `matrix` with 2 named columns: "x" and "y"; survey plots coordinates;
-#'   used when `type = "monitoring_based"`}
+#'   `data.frame` or `matrix` with 2 named columns: "x" and "y"; survey plots
+#'   coordinates; used when `type = "monitoring_based"`}
 #'
 #'   \item{`prob`
 #'
-#'    numeric vector of length 1; a parameter defining the shape of - [`rgeom`][stats::rgeom()]
-#'    distribution - it defines whether an observation will be made by the same
-#'    observer for several years and whether it will not be made at all
-#'    (default `prob = 0.3`); used when `type = "monitoring_based"`}
+#'    numeric vector of length 1; a parameter defining the shape of -
+#'    [`rgeom`][stats::rgeom()] distribution - it defines whether an observation
+#'    will be made by the same observer for several years and whether it
+#'    will not be made at all (default `prob = 0.3`);
+#'    used when `type = "monitoring_based"`}
 #'
 #'   \item{`progress_bar`
 #'
-#'    logical vector of length 1; determines if progress bar for observational process should be
-#'    displayed (default `progress_bar = FALSE`);
+#'    logical vector of length 1; determines if progress bar for observational
+#'    process should be displayed (default `progress_bar = FALSE`);
 #'    used when `type = "monitoring_based"`}
 #' }
 #'
@@ -203,7 +206,7 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
   assert_that(length(prop) == 1)
   assert_that(is.numeric(prop))
   assert_that(prop > 0 && prop <= 1,
-              msg = "prop parameter must be greater than 0 but less than or equal to 1")
+              msg = "prop parameter must be greater than 0 but less than or equal to 1") #nolint
 
   # set sample size
   size <- ncell(N_rast) * prop
@@ -250,9 +253,9 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
 #' [get_observations] calls this function if sampling type
 #' equals to "from_data".
 #'
-#' @param points `data.frame` or `matrix` with 3 named numeric columns ("x", "y" and "time_step")
-#' containing coordinates and time steps from which observations
-#' should be obtained`
+#' @param points `data.frame` or `matrix` with 3 named numeric columns ("x", "y"
+#' and "time_step") containing coordinates and time steps from which
+#' observations should be obtained`
 #' @inheritParams get_observations_random
 #'
 #' @return `data.frame` object with coordinates, time steps numbers,
@@ -274,9 +277,9 @@ get_observations_from_data <- function(N_rast, points) {
   assert_that(nrow(points) > 0)
   assert_that(
     all(names(points) == c("x", "y", "time_step")),
-    msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"")
+    msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"") #nolint
   assert_that(
-    all(sapply(points, is.numeric)),
+    all(lapply(points, is.numeric)),
     msg = "some element of point are not numeric")
 
   value <- unlist(lapply(
@@ -301,8 +304,8 @@ get_observations_from_data <- function(N_rast, points) {
 #'
 #' @param cells_coords matrix object with two columns: "x" and "y"
 #' @param prob probability of success in each trial - [stats::rgeom()] parameter
-#' @param progress_bar logical vector of length 1; determines if progress bar for observation
-#' should be displayed (if `type = "monitoring_based"`)
+#' @param progress_bar logical vector of length 1; determines if progress bar
+#' for observation should be displayed (if `type = "monitoring_based"`)
 #' @inheritParams get_observations_random
 #'
 #' @return `data.frame` object with coordinates, time steps, abundances without
@@ -326,9 +329,9 @@ get_observations_monitoring_based <- function(
   assert_that(nrow(cells_coords) > 0)
   assert_that(
     all(names(cells_coords) == c("x", "y")),
-    msg = "columns in cells_coords parameter should have the following names: \"x\", \"y\"")
+    msg = "columns in cells_coords parameter should have the following names: \"x\", \"y\"") #nolint
   assert_that(
-    all(sapply(cells_coords, is.numeric)),
+    all(lapply(cells_coords, is.numeric)),
     msg = "some element of cells_coords are not numeric")
 
 

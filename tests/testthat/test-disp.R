@@ -36,14 +36,14 @@ test_that("one_dist_sq_disp works", {
   expect_lte(
     length(one_dist_sq_disp(
       test_j_01, test_id, test_dlist_pos_01, test_disp_dist_i_01,
-      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_01
+      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_01 #nolint
     )),
     test_disp_dist_i_01[test_j_01])
 
   expect_equal(
     length(one_dist_sq_disp(
       test_j_01, test_id, test_dlist_pos_01, test_disp_dist_i_01,
-      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_02
+      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_02 #nolint
     )),
     test_disp_dist_i_01[test_j_01])
 
@@ -51,20 +51,20 @@ test_that("one_dist_sq_disp works", {
   expect_null(
     one_dist_sq_disp(
       test_j_02, test_id, test_dlist_pos_01, test_disp_dist_i_01,
-      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_02
+      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_02 #nolint
     ))
 
   # no cell available
   expect_null(
     one_dist_sq_disp(
       test_j_03, test_id, test_dlist_pos_01, test_disp_dist_i_01,
-      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_01
+      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_01 #nolint
     ))
 
   expect_equal(
     one_dist_sq_disp(
       test_j_01, test_id, test_dlist_pos_02, test_disp_dist_i_01,
-      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_02
+      test_data_table_01, test_dens_dep_01, test_ncells_in_circle, test_border_02 #nolint
     ),
     rep(test_id, times = test_disp_dist_i_01[test_j_01]))
 
@@ -73,21 +73,21 @@ test_that("one_dist_sq_disp works", {
   expect_equal(
     one_dist_sq_disp(
       test_j_01, test_id, test_dlist_pos_01, test_disp_dist_i_01,
-      test_data_table_02, test_dens_dep_01, test_ncells_in_circle, test_border_02
+      test_data_table_02, test_dens_dep_01, test_ncells_in_circle, test_border_02 #nolint
     ),
     rep(test_id, times = test_disp_dist_i_01[test_j_01]))
 
   expect_equal(
     one_dist_sq_disp(
       test_j_01, test_id, test_dlist_pos_01, test_disp_dist_i_01,
-      test_data_table_02, test_dens_dep_02, test_ncells_in_circle, test_border_01
+      test_data_table_02, test_dens_dep_02, test_ncells_in_circle, test_border_01 #nolint
     ),
     rep(test_id, times = test_disp_dist_i_01[test_j_01]))
 
   expect_false(
     all(one_dist_sq_disp(
       test_j_01, test_id, test_dlist_pos_01, test_disp_dist_i_01,
-      test_data_table_02, test_dens_dep_03, test_ncells_in_circle, test_border_02
+      test_data_table_02, test_dens_dep_03, test_ncells_in_circle, test_border_02 #nolint
     ) ==
       rep(test_id, times = test_disp_dist_i_01[test_j_01])))
 
@@ -96,7 +96,7 @@ test_that("one_dist_sq_disp works", {
   expect_equal(
     one_dist_sq_disp(
       test_j_02, test_id, test_dlist_pos_01, test_disp_dist_i_02,
-      test_data_table_01, test_dens_dep_03, test_ncells_in_circle, test_border_02
+      test_data_table_01, test_dens_dep_03, test_ncells_in_circle, test_border_02 #nolint
     ),
     rep(test_dlist_pos_01[[test_j_02]], times = test_disp_dist_i_02[test_j_02]))
 })

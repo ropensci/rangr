@@ -22,10 +22,11 @@
 #' exploring the effects of ecological disturbances.
 #'
 #'
-#' @param n1_map [`SpatRaster`][terra::SpatRaster-class] object with one layer; population
-#' numbers in every square at the first time step
-#' @param K_map [`SpatRaster`][terra::SpatRaster-class] object with one layer; carrying
-#' capacity map (if K is constant across time) or maps (if K is time-varying)
+#' @param n1_map [`SpatRaster`][terra::SpatRaster-class] object with one layer;
+#' population numbers in every square at the first time step
+#' @param K_map [`SpatRaster`][terra::SpatRaster-class] object with one layer;
+#' carrying capacity map (if K is constant across time) or maps (if K is
+#' time-varying)
 #' @param K_sd numeric vector of length 1 with value `>= 0` (default 0);
 #' this parameter can be used if additional environmental stochasticity
 #' is required; if `K_sd > 0`, a random numbers are generated from a log-normal
@@ -36,7 +37,8 @@
 #' the standard deviation for a normal distribution around `r`
 #' (defined for each time step)
 #' @param growth character vector of length 1; the name of a population growth
-#' function, either defined in [`growth`] or provided by the user (case-sensitive)
+#' function, either defined in [`growth`] or provided by
+#' the user (case-sensitive)
 #' @param A numeric vector of length 1; strength of the Allee effect
 #' (see the [`growth`] function)
 #' @param dens_dep character vector of length 1 specifying if the probability
@@ -48,7 +50,8 @@
 #'   carrying capacity of a target square to the number of individuals
 #'   already present in a target square}
 #' }
-#' @param border character vector of length 1 defining how to deal with borders (case-sensitive):
+#' @param border character vector of length 1 defining how to deal
+#' with borders (case-sensitive):
 #' \itemize{
 #'   \item "absorbing" - individuals that disperse outside the study area
 #'   are removed from the population
@@ -58,16 +61,16 @@
 #' @param kernel_fun character vector of length 1; name of a random number
 #' generation function defining a dispersal kernel (case-sensitive)
 #' @param ... any parameters required by `kernel_fun`
-#' @param max_dist numeric vector of length 1; maximum distance of dispersal to pre-calculate
-#' target cells
-#' @param calculate_dist logical vector of length 1; determines if target cells will
-#' be precalculated
+#' @param max_dist numeric vector of length 1; maximum distance of dispersal
+#' to pre-calculate target cells
+#' @param calculate_dist logical vector of length 1; determines if target cells
+#' will be precalculated
 #' @param dlist list; target cells at a specified distance calculated
 #' for every cell within the study area
-#' @param progress_bar logical vector of length 1; determines if progress bar for calculating
-#' distances should be displayed (used only if dlist is `NULL`)
-#' @param quiet logical vector of length 1; determines if messages for calculating distances
-#' should be displayed (used only if dlist is `NULL`)
+#' @param progress_bar logical vector of length 1; determines if progress bar
+#' for calculating distances should be displayed (used only if dlist is `NULL`)
+#' @param quiet logical vector of length 1; determines if messages for
+#' calculating distances should be displayed (used only if dlist is `NULL`)
 #' @param cl cluster object created by [`makeCluster`][parallel::makeCluster()]
 #'
 #' @return Object of class `sim_data` which inherits from `list`. This object
@@ -137,9 +140,11 @@
 #' @srrstats {G2.1a, G2.3, G2.3b, SP2.6} documented types expectation
 #' @srrstats {SP1.0} specified domain of applicability
 #' @srrstats {SP1.1} documented dimensional domain of applicability
-#' @srrstats {SP2.0, SP2.0b} check if K_map and n1_map is [`SpatRaster`][terra::SpatRaster-class] and error otherwise
+#' @srrstats {SP2.0, SP2.0b} check if K_map and n1_map is
+#' [`SpatRaster`][terra::SpatRaster-class] and error otherwise
 #' @srrstats {SP2.3} load data in spatial formats
-#' @srrstats {SP2.8, SP2.9} simple pre-processing routine that validates and transforms input data while maintaining necessary metadata
+#' @srrstats {SP2.8, SP2.9} simple pre-processing routine that validates and
+#' transforms input data while maintaining necessary metadata
 #' @srrstats {SP4.0, SP4.0b} returns sim_data object
 #' @srrstats {SP4.1} returned object has the same unit as the input
 #' @srrstats {SP4.2} returned values are documented
@@ -208,7 +213,7 @@ initialise <- function(
   assert_that(length(max_dist) == 1)
   assert_that(
     (is.numeric(max_dist) && !(max_dist < 0)) || is.na(max_dist),
-    msg = "parameter max_dist can be set either as NA or as a single positive number")
+    msg = "parameter max_dist can be set either as NA or as a single positive number") #nolint
 
   ## calculate_dist
   assert_that(length(calculate_dist) == 1)
@@ -218,7 +223,7 @@ initialise <- function(
   ## dlist
   assert_that(
     is.list(dlist) || is.null(dlist),
-    msg = "parameter dlist can be set either as NULL or as a list with integers")
+    msg = "parameter dlist can be set either as NULL or as a list with integers") #nolint
 
   ## progress_bar
   assert_that(length(progress_bar) == 1)
@@ -234,7 +239,7 @@ initialise <- function(
   # classify NaN to NA for input maps
   if (any(is.nan(values(n1_map))) || any(is.nan(values(K_map)))) {
 
-    message("NaN values were found in input maps and replaced with NA (cells outside the study area)")
+    message("NaN values were found in input maps and replaced with NA (cells outside the study area)") #nolint
     n1_map <- classify(n1_map, cbind(NaN, NA))
     K_map <- classify(K_map, cbind(NaN, NA))
 
@@ -276,7 +281,7 @@ initialise <- function(
 
 
   id_within <- data_table[!is.na(data_table[, "K"]), "id"]
-  within_mask <- as.matrix(!is.na(n1_map), wide = TRUE) # bool matrix -  the study area
+  within_mask <- as.matrix(!is.na(n1_map), wide = TRUE) # bool matrix -  the study area #nolint
 
   if (is.null(dlist)) {
     dlist <- calc_dist(
@@ -340,8 +345,8 @@ initialize <- initialise
 #' In case of any mistake in given data, suitable error message is printed.
 #'
 #' @inheritParams initialise
-#' @param changing_env logical vector of length 1; determines if carrying capacity map is changing
-#' during the [`sim`]ulation
+#' @param changing_env logical vector of length 1; determines if carrying
+#' capacity map is changing during the [`sim`]ulation
 #'
 #'
 #' @srrstats {G1.4a} uses roxygen documentation (internal function)
@@ -358,11 +363,11 @@ K_n1_map_check <- function(K_map, n1_map, changing_env) {
 
   # check if values are non-negative
   if (!all(values(n1_map) >= 0, na.rm = TRUE)) {
-    stop("n1_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)")
+    stop("n1_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)") #nolint
   }
 
   if (!all(values(K_map) >= 0, na.rm = TRUE)) {
-    stop("K_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)")
+    stop("K_map can contain only non-negative values or NAs (which will be automatically reclassified to NA)") #nolint
   }
 }
 

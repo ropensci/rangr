@@ -8,14 +8,14 @@
 #' @param time_points numeric vector; specifies points in time from which
 #' plots will be generated
 #' @param ... further arguments passed to [`terra::plot`]
-#' @param range numeric vector of length 2; range of values to be used for the legend
-#' (if `type = "continuous"`), which by default is calculated from N_map slot
-#' of `sim_result` object
-#' @param type character vector of length 1; type of map: "continuous" (default), "classes"
-#' or "interval"  (case-sensitive)
+#' @param range numeric vector of length 2; range of values to be used for the
+#' legend (if `type = "continuous"`), which by default is calculated from
+#' the N_map slot of `sim_result` object
+#' @param type character vector of length 1; type of map:
+#' "continuous" (default), "classes" or "interval"  (case-sensitive)
 #'
-#' @returns [`SpatRaster`][terra::SpatRaster-class] object with as many layers as
-#' the length of `time_points` parameter
+#' @returns [`SpatRaster`][terra::SpatRaster-class] object with as many layers
+#' as the length of `time_points` parameter
 #'
 #' @export
 #' @method plot sim_results

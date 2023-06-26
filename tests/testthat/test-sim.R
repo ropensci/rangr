@@ -74,7 +74,7 @@ test_that("sim works", {
   expect_true(test_sim_res_ext$extinction)
   expect_lt(dim(test_sim_res_ext$N)[3], test_time)
   expect_message(sim(test_initialised_obj_ext, time = test_time, quiet = FALSE),
-   "^Population extinct after \\d+/\\d+ time steps \\(including burned: \\d+/\\d+\\)\\s*$"
+   "^Population extinct after \\d+/\\d+ time steps \\(including burned: \\d+/\\d+\\)\\s*$" #nolint
   )
 
   # incorrect number of layers/time steps (with changing environment)
@@ -86,7 +86,7 @@ test_that("sim works", {
   # incorrect burn
   expect_error(
     sim(test_initialised_obj_ext, time = test_time, burn = 20),
-    "Simulation failed to reach specified time steps treshold (by \"burn\" parameter) - nothing to return.",
+    "Simulation failed to reach specified time steps treshold (by \"burn\" parameter) - nothing to return.", #nolint
     fixed = TRUE)
 
   #' @srrstats {G5.3} test for NaNs in sim_results

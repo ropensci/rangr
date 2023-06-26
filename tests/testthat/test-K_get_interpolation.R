@@ -3,7 +3,8 @@ test_that("K_get_interpolation works", {
                                        package = "rangr"))
 
   expect_s4_class(
-    K_get_interpolation(K_small_changing, c(1, 10, 15), time = 15), "SpatRaster")
+    K_get_interpolation(
+      K_small_changing, c(1, 10, 15), time = 15), "SpatRaster")
 })
 
 
@@ -19,7 +20,8 @@ test_that("K_check works", {
   expect_length(K_check(K_small_changing, c(1, 10, 15), time = 15), 2)
 
   #' @srrstats {G5.2, G5.2a, G5.2b} tests of errors and warnings (with messages)
-  #' @srrstats {G5.8, G5.8a, G5.8b, G5.8c} edge condition tests: zero-length data, unsupported data types, NA fields
+  #' @srrstats {G5.8, G5.8a, G5.8b, G5.8c} edge condition tests:
+  #' zero-length data, unsupported data types, NA fields
 
   expect_error(
     K_check(K_small_changing, NULL, NULL),
@@ -58,7 +60,7 @@ test_that("K_check works", {
 
   expect_warning(
     K_check(K_small_changing, c(1, 5, 15), NULL),
-    "Argument \"time\" is no specified - last number from \"K_time_points\" is used as \"time\""
+    "Argument \"time\" is no specified - last number from \"K_time_points\" is used as \"time\"" #nolint
   )
 
   expect_equal(test_K_checked_01$time, 15)

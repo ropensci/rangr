@@ -15,18 +15,18 @@ can be used as template to create returned object}
 \item{time_points}{numeric vector; specifies points in time from which
 plots will be generated}
 
-\item{range}{numeric vector of length 2; range of values to be used for the legend
-(if \code{type = "continuous"}), which by default is calculated from N_map slot
-of \code{sim_result} object}
+\item{range}{numeric vector of length 2; range of values to be used for the
+legend (if \code{type = "continuous"}), which by default is calculated from
+the N_map slot of \code{sim_result} object}
 
-\item{type}{character vector of length 1; type of map: "continuous" (default), "classes"
-or "interval"  (case-sensitive)}
+\item{type}{character vector of length 1; type of map:
+"continuous" (default), "classes" or "interval"  (case-sensitive)}
 
 \item{...}{further arguments passed to \code{\link[terra:plot]{terra::plot}}}
 }
 \value{
-\code{\link[terra:SpatRaster-class]{SpatRaster}} object with as many layers as
-the length of \code{time_points} parameter
+\code{\link[terra:SpatRaster-class]{SpatRaster}} object with as many layers
+as the length of \code{time_points} parameter
 }
 \description{
 Plots abundances obtained during simulation.
