@@ -65,7 +65,11 @@ Example maps available in rangr:
 -   `K_small_changing.tif`
 -   `K_big.tif`
 
-You can find additional information about these data sets in help files:
+```{r SP1.0, eval=FALSE, include=FALSE}
+#' @srrstats {SP1.0} Specified domain of applicability
+```
+
+Note that the input maps must be in the Cartesian coordinate system. You can find additional information about these data sets in help files:
 
 ```{r help_input_maps, eval=FALSE}
 library(rangr)

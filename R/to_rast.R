@@ -50,11 +50,17 @@
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a} documented types expectation
+#' @srrstats {G2.1a, SP2.6} documented types expectation
+#' @srrstats {SP2.0a} conversion to [`SpatRaster`][terra::SpatRaster-class]
+#' @srrstats {SP2.3} load data in spatial formats
+#' @srrstats {SP4.0, SP4.0b} returns [`SpatRaster`][terra::SpatRaster-class] object
+#' @srrstats {SP4.1} returned object has the same unit as the input (if the template is provided)
+#' @srrstats {SP4.2} returned values are documented
 #'
 to_rast <- function(
     sim_results, time_points = sim_results$simulated_time, template = NULL) {
 
+  #' @srrstats {SP2.7} validate input class
   assert_that(inherits(sim_results, "sim_results"))
 
   if(is.null(template)) {

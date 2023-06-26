@@ -42,6 +42,7 @@
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
+#' @srrstats {SP2.3} load data in spatial formats
 #'
 subset.sim_results <- function(x, from = NULL, time_points = NULL, ...) {
 

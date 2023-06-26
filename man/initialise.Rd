@@ -46,10 +46,10 @@ initialize(
 )
 }
 \arguments{
-\item{n1_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object; population
+\item{n1_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer; population
 numbers in every square at the first time step}
 
-\item{K_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object; carrying
+\item{K_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer; carrying
 capacity map (if K is constant across time) or maps (if K is time-varying)}
 
 \item{K_sd}{numeric vector of length 1 with value \verb{>= 0} (default 0);
@@ -117,7 +117,8 @@ contains all necessary information to perform a simulation using
 }
 \description{
 This function generates a \code{sim_data} object which contains all the necessary
-information needed to run a simulation by the \code{\link{sim}} function.
+information needed to run a simulation by the \code{\link{sim}} function. Note that the
+input maps (\code{n1_map} and \code{K_map}) must be in the Cartesian coordinate system.
 }
 \details{
 The most time-consuming part of computations performed by the \code{\link{sim}}

@@ -13,13 +13,14 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 <!-- badges: end -->
 
 The **rangr** package is designed to simulate species range dynamics.
-This tool mimics the essential processes that shape population size and
-spatial distributions: local dynamics, dispersal and habitat selection.
-Simulations may be conducted in a spatially-explicit and dynamic
-environment, which facilitates population projections as they respond to
-climate or land-use changes. By using different sampling schemes and
-observational error distributions, the structure of the original survey
-data can be reproduced or a purely random sampling can be mimicked.
+This new tool mimics the essential processes that shape population size
+and spatial distributions: local dynamics, dispersal and habitat
+selection. Simulations may be conducted in a spatially-explicit and
+dynamic environment, which facilitates population projections as they
+respond to climate or land-use changes. By using different sampling
+schemes and observational error distributions, the structure of the
+original survey data can be reproduced or a purely random sampling can
+be mimicked.
 
 The study is supported by the National Science Centre, Poland, grant no.
 2018/29/B/NZ8/00066.
@@ -52,7 +53,8 @@ Example maps available in rangr:
 - `K_small_changing.tif`
 - `K_big.tif`
 
-You can find additional information about these data sets in help files:
+Note that the input maps must be in the Cartesian coordinate system. You
+can find additional information about these data sets in help files:
 
 ``` r
 library(rangr)
@@ -97,6 +99,7 @@ sim_data_01 <- initialise(
   r = log(2),
   rate = 1 / 1e3
 )
+#> NaN values were found in input maps and replaced with NA (cells outside the study area)
 ```
 
 Here, we set the intrinsic population growth rate to `log(2)` and the

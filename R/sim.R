@@ -118,13 +118,17 @@
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a} documented types expectation
+#' @srrstats {G2.1a, SP2.6} documented types expectation
+#' @srrstats {SP2.3} load data in spatial formats
+#' @srrstats {SP4.0, SP4.0b} returns sim_results object
+#' @srrstats {SP4.1} returned object has the same unit as the input
+#' @srrstats {SP4.2} returned values are documented
 #'
 sim <- function(
     obj, time, burn = 0, cl = NULL, progress_bar = FALSE, quiet = TRUE) {
 
   #' @srrstats {G2.0, G2.2} assert input length
-  #' @srrstats {G2.1, G2.6} assert input type
+  #' @srrstats {G2.1, G2.6, SP2.7} assert input type
   # Validation of arguments
   ## obj
   assert_that(inherits(obj, "sim_data"))

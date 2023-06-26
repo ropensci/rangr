@@ -129,8 +129,11 @@
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a, G2.3, G2.3b} documented types expectation
+#' @srrstats {G2.1a, G2.3, G2.3b, SP2.6} documented types expectation
 #' @srrstats {G2.7} points and cells_coords can be a dataframe or matrix
+#' @srrstats {SP2.3} load data in spatial formats
+#' @srrstats {SP4.1} returned object has the same unit as the input
+#' @srrstats {SP4.2} returned values are documented
 #'
 #'
 get_observations <- function(
@@ -138,7 +141,7 @@ get_observations <- function(
     "from_data", "monitoring_based"), sdlog = log(1), ...) {
 
   #' @srrstats {G2.0, G2.2} assert input length
-  #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+  #' @srrstats {G2.1, G2.3, G2.3a, G2.6, SP2.7} assert input type
   # arguments validation
   type <- match.arg(type)
   assert_that(inherits(sim_data, "sim_data"))

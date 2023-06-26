@@ -1,7 +1,9 @@
 #' Prepare data required to perform a simulation
 #'
 #' This function generates a `sim_data` object which contains all the necessary
-#' information needed to run a simulation by the [`sim`] function.
+#' information needed to run a simulation by the [`sim`] function. Note that the
+#' input maps (`n1_map` and `K_map`) must be in the Cartesian coordinate system.
+#'
 #'
 #' The most time-consuming part of computations performed by the [`sim`]
 #' function is the simulation of dispersal. To speed it up, a list containing
@@ -20,9 +22,9 @@
 #' exploring the effects of ecological disturbances.
 #'
 #'
-#' @param n1_map [`SpatRaster`][terra::SpatRaster-class] object; population
+#' @param n1_map [`SpatRaster`][terra::SpatRaster-class] object with one layer; population
 #' numbers in every square at the first time step
-#' @param K_map [`SpatRaster`][terra::SpatRaster-class] object; carrying
+#' @param K_map [`SpatRaster`][terra::SpatRaster-class] object with one layer; carrying
 #' capacity map (if K is constant across time) or maps (if K is time-varying)
 #' @param K_sd numeric vector of length 1 with value `>= 0` (default 0);
 #' this parameter can be used if additional environmental stochasticity
@@ -132,16 +134,25 @@
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a, G2.3, G2.3b} documented types expectation
+#' @srrstats {G2.1a, G2.3, G2.3b, SP2.6} documented types expectation
+#' @srrstats {SP1.0} specified domain of applicability
+#' @srrstats {SP1.1} documented dimensional domain of applicability
+#' @srrstats {SP2.0, SP2.0b} check if K_map and n1_map is [`SpatRaster`][terra::SpatRaster-class] and error otherwise
+#' @srrstats {SP2.3} load data in spatial formats
+#' @srrstats {SP2.8, SP2.9} simple pre-processing routine that validates and transforms input data while maintaining necessary metadata
+#' @srrstats {SP4.0, SP4.0b} returns sim_data object
+#' @srrstats {SP4.1} returned object has the same unit as the input
+#' @srrstats {SP4.2} returned values are documented
 #'
+
 initialise <- function(
     n1_map, K_map, K_sd = 0, r, r_sd = 0, growth = "gompertz", A = NA,
     dens_dep = c("K2N", "K", "none"), border = c("absorbing", "reprising"),
     kernel_fun = "rexp", ..., max_dist = NA, calculate_dist = TRUE,
     dlist = NULL, progress_bar = FALSE, quiet = TRUE, cl = NULL) {
 
-  #' @srrstats {G2.0, G2.2} assert input length
-  #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+  #' @srrstats {G2.0, G2.2, G2.13} assert input length
+  #' @srrstats {G2.1, G2.3, G2.3a, G2.6, SP2.7} assert input type
   # Validation of arguments
   ## input maps
   assert_that(inherits(K_map, "SpatRaster"))

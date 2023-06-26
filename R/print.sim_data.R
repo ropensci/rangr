@@ -26,6 +26,7 @@
 #' print(sim_data)
 #'
 #' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {SP2.3} load data in spatial formats
 #'
 print.sim_data <- function(x, ...) {
 

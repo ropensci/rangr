@@ -28,6 +28,8 @@
 #' sim_results <- sim(sim_data, time = 10)
 #' summary(sim_results)
 #'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {SP2.3} load data in spatial formats
 summary.sim_results <- function(object, ...) {
 
   # prepare summaries
@@ -95,6 +97,8 @@ summary.sim_results <- function(object, ...) {
 #' summary_sim_results <- summary(sim_results)
 #' print(summary_sim_results)
 #'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {SP2.3} load data in spatial formats
 print.summary.sim_results <- function(x, ...) {
 
   cat("Summary of sim_results object\n\n")

@@ -38,7 +38,10 @@
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a, G2.3, G2.3b} documented types expectation
+#' @srrstats {G2.1a, G2.3, G2.3b, SP2.6} documented types expectation
+#' @srrstats {G2.13} check for missing data
+#' @srrstats {SP2.3} load data in spatial formats
+#' @srrstats {SP5.0} `plot` method for sim_result
 #'
 plot.sim_results <- function(
     x, template = NULL, time_points = NULL, range, type, ...) {

@@ -10,3 +10,5 @@ Meta
 dev_scripts/
 test
 docs
+/doc/
+/Meta/

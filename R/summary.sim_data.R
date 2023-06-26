@@ -27,6 +27,7 @@
 #' summary(sim_data)
 #'
 #' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {SP2.3} load data in spatial formats
 #'
 summary.sim_data <- function(object, ...) {
 
@@ -93,6 +94,7 @@ summary.sim_data <- function(object, ...) {
 #' print(summary_sim_data)
 #'
 #' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {SP2.3} load data in spatial formats
 #'
 print.summary.sim_data <- function(x, ...) {
 

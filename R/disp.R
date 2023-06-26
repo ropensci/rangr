@@ -87,7 +87,8 @@
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a} documented types expectation
+#' @srrstats {G2.1a, SP2.6} documented types expectation
+#' @srrstats {SP2.3} load data in spatial formats
 #'
 #'
 disp <- function(
@@ -275,7 +276,7 @@ sq_disp <- function(
 #'
 #' @srrstats {G1.4a} uses roxygen documentation (internal function)
 #' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a} documented types expectation
+#' @srrstats {G2.1a, SP2.6} documented types expectation
 #'
 #' @noRd
 #'
