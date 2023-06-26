@@ -72,14 +72,14 @@ plots will be generated</p></dd>
 
 
 <dt>range</dt>
-<dd><p>numeric; range of values to be used for the legend
+<dd><p>numeric vector of length 2; range of values to be used for the legend
 (if <code>type = "continuous"</code>), which by default is calculated from N_map slot
 of <code>sim_result</code> object</p></dd>
 
 
 <dt>type</dt>
-<dd><p>character; type of map: "continuous" (default), "classes"
-or "interval"</p></dd>
+<dd><p>character vector of length 1; type of map: "continuous" (default), "classes"
+or "interval"  (case-sensitive)</p></dd>
 
 
 <dt>...</dt>
@@ -108,6 +108,7 @@ the length of <code>time_points</code> parameter</p>
 <span class="r-in"><span>  r <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">1e3</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> NaN values were found in input maps and replaced with NA (cells outside the study area)</span>
 <span class="r-in"><span><span class="va">sim_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="sim.html">sim</a></span><span class="op">(</span><span class="va">sim_data</span>, time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_res</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot.sim_results-1.png" alt="" width="700" height="433"></span>
@@ -119,7 +120,7 @@ the length of <code>time_points</code> parameter</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> source(s)   : memory</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> names       : t_1, t_4, t_7, t_10 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> min values  :   0,   0,   0,    0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> max values  :  10,  14,  14,   16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> max values  :  10,  13,  14,   20 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

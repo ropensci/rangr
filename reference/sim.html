@@ -68,11 +68,11 @@ simulation parameters and necessary data</p></dd>
 
 
 <dt>time</dt>
-<dd><p>positive integer; number of time steps simulated</p></dd>
+<dd><p>positive integer vector of length 1; number of time steps simulated</p></dd>
 
 
 <dt>burn</dt>
-<dd><p>positive integer; the number of burn-in time steps that are
+<dd><p>positive integer vector of length 1; the number of burn-in time steps that are
 discarded from the output</p></dd>
 
 
@@ -82,12 +82,12 @@ discarded from the output</p></dd>
 
 
 <dt>progress_bar</dt>
-<dd><p>logical; determines if progress bar for simulation
+<dd><p>logical vector of length 1 determines if progress bar for simulation
 should be displayed</p></dd>
 
 
 <dt>quiet</dt>
-<dd><p>logical; determines if warnings should be displayed</p></dd>
+<dd><p>logical vector of length 1; determines if warnings should be displayed</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -185,6 +185,7 @@ For more details, see the <code><a href="disp.html">disp</a></code> function.</p
 <span class="r-in"><span><span class="op">)</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">sim_1</span><span class="op">$</span><span class="va">N_map</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

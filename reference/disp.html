@@ -96,8 +96,8 @@ in current time points</p></dd>
 
 
 <dt>dens_dep</dt>
-<dd><p>a string specifying if the probability of settling in
-a target square is:</p><ul><li><p>"none" - fully random,</p></li>
+<dd><p>character vector of length 1 specifying if the probability
+of settling in a target square is (case-sensitive):</p><ul><li><p>"none" - fully random,</p></li>
 <li><p>"K" - proportional to the carrying capacity of a target square,</p></li>
 <li><p>"K2N" - density-dependent, i.e. proportional to the ratio of
 carrying capacity of a target square to the number of individuals
@@ -120,7 +120,7 @@ study area</p></dd>
 
 
 <dt>border</dt>
-<dd><p>a string defining how to deal with borders:</p><ul><li><p>"absorbing" - individuals that disperse outside the study area
+<dd><p>character vector of length 1 defining how to deal with borders (case-sensitive):</p><ul><li><p>"absorbing" - individuals that disperse outside the study area
 are removed from the population</p></li>
 <li><p>"reprising" - cells outside the study area are not allowed
 as targets for dispersal</p></li>
@@ -134,7 +134,7 @@ are determined in advance (see <code><a href="initialise.html">initialise</a></c
 
 
 <dt>resolution</dt>
-<dd><p>spatial resolution of <code>id</code> raster</p></dd>
+<dd><p>integer vector of length 1; spatial resolution of <code>id</code> raster</p></dd>
 
 
 <dt>ncells_in_circle</dt>
@@ -180,7 +180,7 @@ that the dispersal distance is greater than <code>resolution/2</code>.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># data preparation</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> terra 1.7.29</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> terra 1.7.37</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">n1_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input_maps/n1_small.tif"</span>, package <span class="op">=</span> <span class="st">"rangr"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">K_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input_maps/K_small.tif"</span>, package <span class="op">=</span> <span class="st">"rangr"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -191,6 +191,8 @@ that the dispersal distance is greater than <code>resolution/2</code>.</p>
 <span class="r-in"><span>  r <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">1e3</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> NaN values were found in input maps and replaced with NA (cells outside the study area)</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>sf required for evolution_status==2L</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># disp</span></span></span>
 <span class="r-in"><span><span class="va">disp_output</span> <span class="op">&lt;-</span> <span class="fu">disp</span><span class="op">(</span></span></span>
@@ -211,6 +213,7 @@ that the dispersal distance is greater than <code>resolution/2</code>.</p>
 <span class="r-in"><span><span class="co"># immigration and emigration matrices</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">disp_output</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "em" "im"</span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
