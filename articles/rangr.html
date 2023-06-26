@@ -644,7 +644,8 @@ be used when running simulations:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sim_result_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim.html">sim</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">sim_data_02</span>, time <span class="op">=</span> <span class="fl">200</span>, progress_bar <span class="op">=</span> <span class="cn">TRUE</span>, cl <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span>
+<span><span class="va">sim_result_02</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="../reference/sim.html">sim</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">sim_data_02</span>, time <span class="op">=</span> <span class="fl">200</span>, progress_bar <span class="op">=</span> <span class="cn">TRUE</span>, cl <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">

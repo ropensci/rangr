@@ -101,13 +101,14 @@ input maps (<code>n1_map</code> and <code>K_map</code>) must be in the Cartesian
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>n1_map</dt>
-<dd><p><code><a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">SpatRaster</a></code> object with one layer; population
-numbers in every square at the first time step</p></dd>
+<dd><p><code><a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">SpatRaster</a></code> object with one layer;
+population numbers in every square at the first time step</p></dd>
 
 
 <dt>K_map</dt>
-<dd><p><code><a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">SpatRaster</a></code> object with one layer; carrying
-capacity map (if K is constant across time) or maps (if K is time-varying)</p></dd>
+<dd><p><code><a href="https://rdrr.io/pkg/terra/man/SpatRaster-class.html" class="external-link">SpatRaster</a></code> object with one layer;
+carrying capacity map (if K is constant across time) or maps (if K is
+time-varying)</p></dd>
 
 
 <dt>K_sd</dt>
@@ -130,7 +131,8 @@ the standard deviation for a normal distribution around <code>r</code>
 
 <dt>growth</dt>
 <dd><p>character vector of length 1; the name of a population growth
-function, either defined in <code><a href="growth.html">growth</a></code> or provided by the user (case-sensitive)</p></dd>
+function, either defined in <code><a href="growth.html">growth</a></code> or provided by
+the user (case-sensitive)</p></dd>
 
 
 <dt>A</dt>
@@ -149,7 +151,8 @@ already present in a target square</p></li>
 
 
 <dt>border</dt>
-<dd><p>character vector of length 1 defining how to deal with borders (case-sensitive):</p><ul><li><p>"absorbing" - individuals that disperse outside the study area
+<dd><p>character vector of length 1 defining how to deal
+with borders (case-sensitive):</p><ul><li><p>"absorbing" - individuals that disperse outside the study area
 are removed from the population</p></li>
 <li><p>"reprising" - cells outside the study area are not allowed
 as targets for dispersal</p></li>
@@ -166,13 +169,13 @@ generation function defining a dispersal kernel (case-sensitive)</p></dd>
 
 
 <dt>max_dist</dt>
-<dd><p>numeric vector of length 1; maximum distance of dispersal to pre-calculate
-target cells</p></dd>
+<dd><p>numeric vector of length 1; maximum distance of dispersal
+to pre-calculate target cells</p></dd>
 
 
 <dt>calculate_dist</dt>
-<dd><p>logical vector of length 1; determines if target cells will
-be precalculated</p></dd>
+<dd><p>logical vector of length 1; determines if target cells
+will be precalculated</p></dd>
 
 
 <dt>dlist</dt>
@@ -181,13 +184,13 @@ for every cell within the study area</p></dd>
 
 
 <dt>progress_bar</dt>
-<dd><p>logical vector of length 1; determines if progress bar for calculating
-distances should be displayed (used only if dlist is <code>NULL</code>)</p></dd>
+<dd><p>logical vector of length 1; determines if progress bar
+for calculating distances should be displayed (used only if dlist is <code>NULL</code>)</p></dd>
 
 
 <dt>quiet</dt>
-<dd><p>logical vector of length 1; determines if messages for calculating distances
-should be displayed (used only if dlist is <code>NULL</code>)</p></dd>
+<dd><p>logical vector of length 1; determines if messages for
+calculating distances should be displayed (used only if dlist is <code>NULL</code>)</p></dd>
 
 
 <dt>cl</dt>

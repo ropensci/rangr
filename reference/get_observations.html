@@ -72,7 +72,8 @@ parameters</p></dd>
 
 
 <dt>type</dt>
-<dd><p>character vector of length 1; describes the sampling type (case-sensitive):</p><ul><li><p>"random_one_layer" - cells from which the population numbers
+<dd><p>character vector of length 1; describes the sampling type
+(case-sensitive):</p><ul><li><p>"random_one_layer" - cells from which the population numbers
 will be sampled are selected randomly; selected cells will be the same
 for all time steps</p></li>
 <li><p>"random_all_layers" - cells from which the abundance will be sampled
@@ -90,25 +91,27 @@ is defined using a geometric distribution (<code><a href="https://rdrr.io/r/stat
 
 
 <dt>sdlog</dt>
-<dd><p>numeric vector of length 1; standard deviation (on a log scale) of the random noise in
-observation process generated from the log-normal distribution
-(<code><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></code>)</p></dd>
+<dd><p>numeric vector of length 1; standard deviation (on a log scale)
+of the random noise in observation process generated from the log-normal
+distribution (<code><a href="https://rdrr.io/r/stats/Lognormal.html" class="external-link">rlnorm</a></code>)</p></dd>
 
 
 <dt>...</dt>
-<dd><p>other necessary internal parameters:</p><ul><li><p><code>prop</code>numeric vector of length 1; proportion of cells to be sampled (default <code>prop = 0.1</code>);
+<dd><p>other necessary internal parameters:</p><ul><li><p><code>prop</code>numeric vector of length 1; proportion of cells to be sampled
+(default <code>prop = 0.1</code>);
 used when <code>type = "random_one_layer" or "random_all_layers"</code>,</p></li>
-<li><p><code>points</code><code>data.frame</code> or <code>matrix</code> with 3 named numeric columns ("x", "y" and "time_step") containing
-coordinates and time steps from which observations should be obtained;
-used when <code>type = "from_data"</code>,</p></li>
-<li><p><code>cells_coords</code><code>data.frame</code> or <code>matrix</code> with 2 named columns: "x" and "y"; survey plots coordinates;
+<li><p><code>points</code><code>data.frame</code> or <code>matrix</code> with 3 named numeric columns ("x", "y"
+and "time_step") containing coordinates and time steps from which
+observations should be obtained; used when <code>type = "from_data"</code>,</p></li>
+<li><p><code>cells_coords</code><code>data.frame</code> or <code>matrix</code> with 2 named columns: "x" and "y"; survey plots
+coordinates; used when <code>type = "monitoring_based"</code></p></li>
+<li><p><code>prob</code>numeric vector of length 1; a parameter defining the shape of -
+<code><a href="https://rdrr.io/r/stats/Geometric.html" class="external-link">rgeom</a></code> distribution - it defines whether an observation
+will be made by the same observer for several years and whether it
+will not be made at all (default <code>prob = 0.3</code>);
 used when <code>type = "monitoring_based"</code></p></li>
-<li><p><code>prob</code>numeric vector of length 1; a parameter defining the shape of - <code><a href="https://rdrr.io/r/stats/Geometric.html" class="external-link">rgeom</a></code>
-distribution - it defines whether an observation will be made by the same
-observer for several years and whether it will not be made at all
-(default <code>prob = 0.3</code>); used when <code>type = "monitoring_based"</code></p></li>
-<li><p><code>progress_bar</code>logical vector of length 1; determines if progress bar for observational process should be
-displayed (default <code>progress_bar = FALSE</code>);
+<li><p><code>progress_bar</code>logical vector of length 1; determines if progress bar for observational
+process should be displayed (default <code>progress_bar = FALSE</code>);
 used when <code>type = "monitoring_based"</code></p></li>
 </ul></dd>
 
