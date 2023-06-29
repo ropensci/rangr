@@ -3,8 +3,6 @@
 
 ## usethis namespace: start
 #' @importFrom assertthat assert_that
-#' @importFrom data.table melt
-#' @importFrom data.table setDT
 #' @importFrom graphics abline
 #' @importFrom grDevices colorRampPalette
 #' @importFrom methods formalArgs
