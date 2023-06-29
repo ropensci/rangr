@@ -279,7 +279,7 @@ get_observations_from_data <- function(N_rast, points) {
     all(names(points) == c("x", "y", "time_step")),
     msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"") #nolint
   assert_that(
-    all(lapply(points, is.numeric)),
+    all(apply(points, 2, is.numeric)),
     msg = "some element of point are not numeric")
 
   value <- unlist(lapply(
@@ -331,7 +331,7 @@ get_observations_monitoring_based <- function(
     all(names(cells_coords) == c("x", "y")),
     msg = "columns in cells_coords parameter should have the following names: \"x\", \"y\"") #nolint
   assert_that(
-    all(lapply(cells_coords, is.numeric)),
+    all(apply(cells_coords, 2, is.numeric)),
     msg = "some element of cells_coords are not numeric")
 
 
