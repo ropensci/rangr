@@ -6,3 +6,7 @@
 ^\.github$
 ^doc$
 ^Meta$
+codemeta.json
+codecov.yml
+README.Rmd
+LICENSE.md
