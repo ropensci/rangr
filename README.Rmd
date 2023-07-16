@@ -2,8 +2,6 @@
 output: github_document
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -47,8 +45,8 @@ The study is supported by the National Science Centre, Poland, grant no.
 
 You can install the development version from GitHub with:
 
-```{r instalation_dev}
-# devtools::install_github("popecol/rangr")
+```{r instalation_dev, eval=FALSE}
+devtools::install_github("popecol/rangr")
 ```
 
 # Basic simulation
