@@ -1,6 +1,4 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
 # rangr
 
 <!-- badges: start -->
@@ -36,7 +34,7 @@ The study is supported by the National Science Centre, Poland, grant no.
 You can install the development version from GitHub with:
 
 ``` r
-# devtools::install_github("popecol/rangr")
+devtools::install_github("popecol/rangr")
 ```
 
 # Basic simulation
@@ -72,7 +70,8 @@ and their dimensions, you can use the following commands:
 
 ``` r
 library(terra)
-#> terra 1.7.29
+#> Warning: pakiet 'terra' został zbudowany w wersji R 4.3.1
+#> terra 1.7.39
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
 K_small <-  rast(system.file("input_maps/K_small.tif", package = "rangr"))

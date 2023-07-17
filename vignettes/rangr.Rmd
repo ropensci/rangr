@@ -47,14 +47,14 @@ In this chapter we will show you how to perform basic simulation using maps prov
 First we need to install and load the `rangr` package.
 
 ```{r load_rangr, eval = FALSE}
-# install.packages("rangr")
+devtools::install_github("popecol/rangr")
 library(rangr)
 ```
 
 Since the maps in which the simulation takes place have to be in the `SpatRaster` format, we will also install and load the `terra` package to facilitate their manipulation and visualisation.
 
 ```{r load_raster, eval = FALSE}
-# install.packages("terra")
+install.packages("terra")
 library(terra)
 ```
 
