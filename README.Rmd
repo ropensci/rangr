@@ -78,7 +78,7 @@ library(rangr)
 
 Two of the available datasets, `n1_small.tif` and `K_small.tif`, represent the abundance of a virtual species at the starting point of a simulation and the carrying capacity of the environment, respectively. Both of these objects refer to the same relatively small area, so they are ideal for demonstrating the usage of the package. To view these maps and their dimensions, you can use the following commands:
 
-```{r small_data}
+```{r small_data, warning=FALSE}
 library(terra)
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))

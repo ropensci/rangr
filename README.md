@@ -70,7 +70,6 @@ and their dimensions, you can use the following commands:
 
 ``` r
 library(terra)
-#> Warning: pakiet 'terra' został zbudowany w wersji R 4.3.1
 #> terra 1.7.39
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
