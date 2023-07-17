@@ -1,4 +1,33 @@
 url: https://popecol.github.io/rangr/
 template:
   bootstrap: 5
+reference:
+  - title: Simulation preparation
+  - contents:
+    - K_get_interpolation
+    - growth
+    - initialise
+    - update.sim_data
+    - summary.sim_data
 
+  - title: Simulation
+  - contents:
+    - disp
+    - sim
+
+  - title: Results
+  - contents:
+    - get_observations
+    - to_rast
+    - plot.sim_results
+    - summary.sim_results
+    - subset.sim_results
+
+  - title: Data
+  - contents:
+    - ends_with(".tif")
+    - observations_points
+
+  - title: internal
+    contents:
+    - matches("print")
