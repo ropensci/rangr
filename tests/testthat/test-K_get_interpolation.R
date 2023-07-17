@@ -12,6 +12,7 @@ test_that("K_check works", {
   K_small_changing <- rast(system.file("input_maps/K_small_changing.tif",
                                        package = "rangr"))
 
+  set.seed(123)
   test_K_checked_01 <- K_check(K_small_changing, c(1, 10, 15), 15)
   test_K_checked_02 <- K_check(subset(K_small_changing, 1:2), NULL, 15)
 
@@ -20,6 +21,7 @@ test_that("K_check works", {
   expect_length(K_check(K_small_changing, c(1, 10, 15), time = 15), 2)
 
   #' @srrstats {G5.2, G5.2a, G5.2b} tests of errors and warnings (with messages)
+  #' @srrstats {G5.5} correctness test with fixed random seed
   #' @srrstats {G5.8, G5.8a, G5.8b, G5.8c} edge condition tests:
   #' zero-length data, unsupported data types, NA fields
 
@@ -62,6 +64,7 @@ test_that("K_check works", {
     K_check(K_small_changing, c(1, 5, 15), NULL),
     "Argument \"time\" is no specified - last number from \"K_time_points\" is used as \"time\"" #nolint
   )
+
 
   expect_equal(test_K_checked_01$time, 15)
   expect_equal(test_K_checked_02$time, 15)

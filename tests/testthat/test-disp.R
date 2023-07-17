@@ -1,4 +1,8 @@
 test_that("one_dist_sq_disp works", {
+
+  #' @srrstats {G5.5} correctness test with fixed random seed
+  set.seed(123)
+
   test_j_01 <- 1 # distance
   test_j_02 <- 2 # distance
   test_j_03 <- 3 # distance
@@ -103,6 +107,10 @@ test_that("one_dist_sq_disp works", {
 
 
 test_that("target_ids_in_disp works", {
+
+  #' @srrstats {G5.5} correctness test with fixed random seed
+  set.seed(123)
+
   test_data_table_01 <-
     readRDS(test_path("fixtures", "test_data_table_mini.rds"))
   test_id <- 1 # cell number
@@ -245,7 +253,7 @@ test_that("disp works", {
   # reclassify to remove NaNs (that were NAs before saving)
   test_rast <- classify(test_rast, cbind(NaN, NA))
   test_id_rast <- rast(test_path("fixtures", "test_id_rast.tif"))
-  test_N_t <- as.matrix(test_rast, , wide = TRUE)
+  test_N_t <- as.matrix(test_rast, wide = TRUE)
   test_kernel_01 <- function(n) match.fun("rexp")(n, rate = 1 / 1e3)
 
   test_dens_dep_01 <- "K2N"

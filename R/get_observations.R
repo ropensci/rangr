@@ -271,10 +271,14 @@ get_observations_from_data <- function(N_rast, points) {
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
   #' @srrstats {G2.8} matrix to dataframe
+  #' @srrstats {G2.14a} error on missing data
   assert_that(is.data.frame(points) || is.matrix(points))
   points <- as.data.frame(points)
   assert_that(ncol(points) == 3)
   assert_that(nrow(points) > 0)
+  assert_that(
+    all(!is.na(points)),
+    msg = "missing data found in \"points\"")
   assert_that(
     all(names(points) == c("x", "y", "time_step")),
     msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"") #nolint
@@ -323,10 +327,15 @@ get_observations_monitoring_based <- function(
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
   #' @srrstats {G2.8} matrix to dataframe
+  #' @srrstats {G2.14a} error on missing data
   assert_that(is.data.frame(cells_coords) || is.matrix(cells_coords))
   cells_coords <- as.data.frame(cells_coords)
   assert_that(ncol(cells_coords) == 2)
   assert_that(nrow(cells_coords) > 0)
+  assert_that(
+    all(!is.na(cells_coords)),
+    msg = "missing data found in \"cells_coords\"")
+
   assert_that(
     all(names(cells_coords) == c("x", "y")),
     msg = "columns in cells_coords parameter should have the following names: \"x\", \"y\"") #nolint

@@ -28,13 +28,12 @@ NULL
 #' @srrstatsNA {G2.10} No single-columned tabular inputs are allowed
 #' @srrstatsNA {G2.11} Only data.frames and matrices are allowed so as far as I understand this shouldn't be an issue
 #' @srrstatsNA {G2.12} Only data.frames and matrices are allowed as far as I understand this shouldn't be an issue
-#' @srrstatsNA {G2.14, G2.14a, G2.14b, G2.14c, G2.15} Data structures that this package operates on are mostly of SpatRaster class, where `NA` stands for cells that are outside the study area. Other input data are mostly univariate
+#' @srrstatsNA {G2.14, G2.14b, G2.14c, G2.15} Data structures that this package operates on are mostly of SpatRaster class, where `NA` stands for cells that are outside the study area. Other input data are mostly univariate
 #' @srrstatsNA {G3.1, G3.1a}  No covariance calculations are made
 #' @srrstatsNA {G4.0} No outputs are written to local files
 #' @srrstatsNA {G5.0} It would not be practical for tests to use standard data sets, as it would unnecessarily complicate them
 #' @srrstatsNA {G5.4b} No existing methods
 #' @srrstatsNA {G5.4c} Not applicable
-#' @srrstatsNA {G5.5} In case of rangr the correctness tests doesn't check the exact values
 #' @srrstatsNA {G5.6, G5.6a, G5.6b} There aren't any parameter recoveries in rangr
 #' @srrstatsNA {G5.7} Not implemented yet
 #' @srrstatsNA {G5.9, G5.9a, G5.9b} In my opinion such test doesn't make much sense in case of rangr
