@@ -65,7 +65,7 @@
 </h1></div>
 <!-- badges: start -->
 
-<p>The <strong>rangr</strong> package is designed to simulate species range dynamics. This new tool mimics the essential processes that shape population size and spatial distributions: local dynamics, dispersal and habitat selection. Simulations may be conducted in a spatially-explicit and dynamic environment, which facilitates population projections as they respond to climate or land-use changes. By using different sampling schemes and observational error distributions, the structure of the original survey data can be reproduced or a purely random sampling can be mimicked.</p>
+<p>The <strong>rangr</strong> package is designed to simulate a species range dynamics. This new tool mimics the essential processes that shape population numbers and spatial distribution: local dynamics and dispersal. Simulations can be run in a spatially explicit and dynamic environment, facilitating population projections in response to climate or land-use changes. By using different sampling schemes and observational error distributions, the structure of the original survey data can be reproduced, or pure random sampling can be mimicked.</p>
 <p>The study is supported by the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066.</p>
 </div>
 <div class="section level1">
@@ -74,7 +74,7 @@
 <div class="section level2">
 <h2 id="released-version">Released version<a class="anchor" aria-label="anchor" href="#released-version"></a>
 </h2>
-<p><code>rangr</code> has not been released yet but we’re working on it.</p>
+<p>Not released yet, but we’re working on it.</p>
 </div>
 <div class="section level2">
 <h2 id="development-version">Development version<a class="anchor" aria-label="anchor" href="#development-version"></a>
@@ -99,7 +99,7 @@
 <li><code>K_small_changing.tif</code></li>
 <li><code>K_big.tif</code></li>
 </ul>
-<p>Note that the input maps must be in the Cartesian coordinate system. You can find additional information about these data sets in help files:</p>
+<p>Note that the input maps must be in the geodetic (i.e. Cartesian) coordinate system. You can find additional information about these data sets in help files:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/popecol/rangr" class="external-link">rangr</a></span><span class="op">)</span></span>
 <span></span>
@@ -120,7 +120,7 @@
 <div class="section level2">
 <h2 id="initialise">Initialise<a class="anchor" aria-label="anchor" href="#initialise"></a>
 </h2>
-<p>To create a <code>sim_data</code> object that contains the necessary information to perform a simulation, use the <code><a href="reference/initialise.html">initialise()</a></code> function. For example:</p>
+<p>To create a <code>sim_data</code> object containing the necessary information to run a simulation, use the <code><a href="reference/initialise.html">initialise()</a></code> function. For example:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_data_01</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/initialise.html">initialise</a></span><span class="op">(</span></span>
 <span>  n1_map <span class="op">=</span> <span class="va">n1_small</span>,</span>
@@ -156,7 +156,7 @@
 <div class="section level2">
 <h2 id="simulation">Simulation<a class="anchor" aria-label="anchor" href="#simulation"></a>
 </h2>
-<p>To perform a simulation, use the <code><a href="reference/sim.html">sim()</a></code> function, which takes a <code>sim_data</code> object and the specified number of time steps as input parameters. For example:</p>
+<p>To run a simulation, use the <code><a href="reference/sim.html">sim()</a></code> function, which takes a <code>sim_data</code> object and the specified number of time steps as input parameters. For example:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_result_01</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sim.html">sim</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">sim_data_01</span>, time <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <p>To see the summary of the <code>sim_result_01</code> object:</p>
@@ -178,7 +178,7 @@
 <div class="section level2">
 <h2 id="visualisation">Visualisation<a class="anchor" aria-label="anchor" href="#visualisation"></a>
 </h2>
-<p>You can use <code>rangr</code> to visualise chosen time steps from the simulation. The <code><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot()</a></code> function is used to generate the visualisation. Here’s an example:</p>
+<p>You can use <code>rangr</code> to visualise selected time steps from the simulation. The <code><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot()</a></code> method is used to generate the plot. Here’s an example:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate visualisation</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_result_01</span>,</span>
@@ -254,7 +254,6 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/popecol/rangr" class="external-link">rangr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"rangr"</span><span class="op">)</span></span></code></pre></div>
-<p>The study is supported by the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066.</p>
 </div>
 
   </main><aside class="col-md-3"><div class="links">
