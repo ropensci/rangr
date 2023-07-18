@@ -226,17 +226,17 @@ maps described earlier.</p></li>
 population growth rate. The default population growth function is the
 Gompetz function.</p></li>
 <li><p>The <code>rate</code> parameter is related to the
-<code>kernel_fun</code> parameter, which by default is set as an
+<code>kernel_fun</code> parameter, which by default is set to an
 exponential function (<code>rexp</code>). Therefore, <code>rate</code>
-determines the shape of the dispersal function.</p></li>
+determines the shape of the dispersal kernel (the mean dispersal
+distance is 1/rate).</p></li>
 </ul>
-<p>That way we have determined simulation environment along with
-demographic processes and dispersal. That’s the most basic set-up needed
-to perform your first simulation and we will do just that in the next
+<p>We have now set up the simulation environment along with the
+demographic and dispersal processes. This is the most basic setup needed
+to run your first simulation, and that’s what we’ll do in the next
 step.</p>
-<p>But before that, let’s see what other information
-<code>sim_data</code> contains and what happened behind the scene during
-initialisation.</p>
+<p>But first, let’s see what other information <code>sim_data</code>
+contains and what happened behind the scenes during initialisation.</p>
 <p>First, let’s check the class of <code>sim_data</code> object:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">sim_data_01</span><span class="op">)</span></span>
@@ -276,14 +276,14 @@ earlier.</p>
 <div class="section level3">
 <h3 id="simulation">Simulation<a class="anchor" aria-label="anchor" href="#simulation"></a>
 </h3>
-<p>All you need to perform a simulation is a <code>sim_data</code>
-object and a specified number of time steps that you want to simulate.
-Additionally, you can use the <code>burn</code> parameter to discard a
-selected number of initial time steps if it makes sense for your
-research or experiment.</p>
+<p>All you need to run a simulation is a <code>sim_data</code> object
+and a specified number of time steps to simulate. In addition, you can
+use the <code>burn</code> parameter to discard a selected number of
+initial time steps if this makes sense for your research or
+experiment.</p>
 <p>In this first example, we will only set the <code>time</code>
-parameter since we want to observe how our virtual species is dispersing
-and reproducing.</p>
+parameter as we want to observe how our virtual species disperses and
+reproduces.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_result_01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim.html">sim</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">sim_data_01</span>, time <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <p>Again we will check the class of returned object:</p>
@@ -294,12 +294,12 @@ and reproducing.</p>
 object that inherits from <code>list</code>, but in this case it is
 called <code>sim_results</code>. This list has 3 elements such as:</p>
 <ul>
-<li><p><code>extinction</code> - <code>TRUE</code> if population is
+<li><p><code>extinction</code> - <code>TRUE</code> if the population is
 extinct or <code>FALSE</code> otherwise</p></li>
 <li><p><code>simulated_time</code> - number of simulated time steps
-without the burn-in ones</p></li>
-<li><p><code>N_map</code> - 3-dimensional array representing
-spatiotemporal variability in population numbers. The first two
+without the burn-in</p></li>
+<li><p><code>N_map</code> - 3-dimensional array representing the
+spatiotemporal variability of population numbers. The first two
 dimensions correspond to the spatial aspect of the output and the third
 dimension represents time.</p></li>
 </ul>
@@ -319,16 +319,16 @@ summary function.</p>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's </span></span>
 <span><span class="co">#&gt;    0.00    0.00   12.00   10.45   19.00   54.00    1200</span></span></code></pre>
 <p>It gives you a quick and easy overview of the simulation results by
-providing simulation time, extinction status and summary of all maps
-with abundances. It also produces a plot that can be useful to determine
-the value for <code>burn</code> parameter.</p>
+providing simulation time, extinction status and a summary of all maps
+with abundances. It also produces a plot which can be useful for
+determining the value of the <code>burn</code> parameter.</p>
 </div>
 <div class="section level3">
 <h3 id="visualisation">Visualisation<a class="anchor" aria-label="anchor" href="#visualisation"></a>
 </h3>
-<p>With <code>rangr</code> we provided an easy way to visualise chosen
-time steps from the simulation. To do so you can use the generic plot
-function:</p>
+<p>With <code>rangr</code> we have provided an easy way to visualise
+selected time steps from the simulation. This can be done using the
+generic plot function:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_result_01</span>,</span>
 <span>  time_points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">50</span><span class="op">)</span>,</span>
@@ -348,8 +348,8 @@ Abundances
 <span><span class="co">#&gt; names       : t_1, t_10, t_25, t_50 </span></span>
 <span><span class="co">#&gt; min values  :   0,    0,    0,    0 </span></span>
 <span><span class="co">#&gt; max values  :  10,   19,   27,   36</span></span></code></pre>
-<p>You can also adjust its parameters to get more breaks on the
-colorscale:</p>
+<p>You can also adjust its parameters to get more breaks on the color
+scale:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_result_01</span>,</span>
 <span>  time_points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">50</span><span class="op">)</span>,</span>
@@ -370,8 +370,8 @@ Abundances
 <span><span class="co">#&gt; names       : t_1, t_10, t_25, t_50 </span></span>
 <span><span class="co">#&gt; min values  :   0,    0,    0,    0 </span></span>
 <span><span class="co">#&gt; max values  :  10,   19,   27,   36</span></span></code></pre>
-<p>If you prefer working on raster you can also transform any
-<code>sim_result</code> object into <code>SpatRaster</code> using
+<p>If you prefer to work with rasters, you can also convert any
+<code>sim_result</code> object into <code>SpatRaster</code> using the
 <code><a href="../reference/to_rast.html">to_rast()</a></code> function:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># raster construction</span></span>
@@ -392,7 +392,7 @@ Abundances
 <span><span class="co">#&gt; names       : t_1, t_2, t_3, t_4, t_5, t_6, ... </span></span>
 <span><span class="co">#&gt; min values  :   0,   0,   0,   0,   0,   0, ... </span></span>
 <span><span class="co">#&gt; max values  :  10,  11,  14,  16,  20,  13, ...</span></span></code></pre></div>
-<p>And then visualise it using <code><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot()</a></code> function:</p>
+<p>And then visualise it using the <code><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot()</a></code> function:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot selected time points</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_rast</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">25</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -406,22 +406,21 @@ Abundances
 <div class="section level2">
 <h2 id="more-advanced-workflow">More advanced workflow<a class="anchor" aria-label="anchor" href="#more-advanced-workflow"></a>
 </h2>
-<p>The previous workflow was pretty basic. Now we will present a more
-advanced one and use it to show some of the other parameters
-options.</p>
+<p>The previous workflow was quite basic. Now we will present a more
+advanced one and use it to show some of the other parameter options.</p>
 <div class="section level3">
 <h3 id="input-maps-1">Input maps<a class="anchor" aria-label="anchor" href="#input-maps-1"></a>
 </h3>
 <div class="section level4">
 <h4 id="abundances-at-the-first-time-step">Abundances at the first time step<a class="anchor" aria-label="anchor" href="#abundances-at-the-first-time-step"></a>
 </h4>
-<p>As we mentioned earlier, <code>rangr</code> has the ability to
-simulate virtual species in a changing environment and in this example
-we will show you how to do it. For a better illustration, we should
-start from a more populated map than the previously used
-<code>n1_small</code>. The easiest way to do this is to use abundances
-from the last time step of the previous simulation as an input for the
-current one. This can be done as follows:</p>
+<p>As mentioned earlier, <code>rangr</code> has the ability to simulate
+virtual species in a changing environment, and in this example we will
+show you how to do this. For a better illustration we should start with
+a more populated map than the <code>n1_small</code> used before. The
+easiest way to do this is to use the abundances from the last time step
+of the previous simulation as input for the current one. This can be
+done as follows:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n1_small_02</span> <span class="op">&lt;-</span> <span class="va">n1_small</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">n1_small_02</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">sim_result_01</span><span class="op">$</span><span class="va">N_map</span><span class="op">[</span>, , <span class="fl">100</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
@@ -429,14 +428,14 @@ current one. This can be done as follows:</p>
 <div class="section level4">
 <h4 id="carrying-capacity">Carrying capacity<a class="anchor" aria-label="anchor" href="#carrying-capacity"></a>
 </h4>
-<p>To simulate changing environment we need to specify the changes that
-we want. Essentially, you need to have a carrying capacity map for every
-time step of the simulation. You can generate those by yourself or you
-can generate maps only for a few key time steps (at least the first and
-the last one) and then use <code><a href="../reference/K_get_interpolation.html">K_get_interpolation()</a></code> to
-generate missing ones. Here we will choose the second option and use the
-<code>K_small_changing</code> object that comes with <code>rangr</code>
-for this purpose. Below you can see its summary:</p>
+<p>To simulate a changing environment, we need to specify the changes we
+want. Essentially you need a carrying capacity map for each time step of
+the simulation. You can generate these yourself, or you can generate
+maps only for a few key time steps (at least the first and last) and
+then use <code><a href="../reference/K_get_interpolation.html">K_get_interpolation()</a></code> to generate the missing
+ones. Here we will choose the second option and use the
+<code>K_small_changing</code> object that comes with <code>rangr</code>.
+Below you can see its summary:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">K_small_changing</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input_maps/K_small_changing.tif"</span>, </span>
 <span>                                     package <span class="op">=</span> <span class="st">"rangr"</span><span class="op">)</span><span class="op">)</span></span>
@@ -454,7 +453,7 @@ for this purpose. Below you can see its summary:</p>
 that our environment is becoming more and more suitable for virtual
 species. It is also worth noting that the first layer of
 <code>K_small_changing</code> is the same as <code>K_small</code>.
-Again, we can visualise all input maps using <code>plot</code>
+Again, we can visualise all input maps using the <code>plot</code>
 function:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">n1_small_02</span>, <span class="va">K_small_changing</span><span class="op">)</span>,</span>
@@ -465,16 +464,16 @@ function:</p>
 Input maps
 </p>
 </div>
-<p>This raster has 3 layers so we can either perform a simulation with
-only 3 time steps (which seems rather pointless) or, as mentioned, use
+<p>This raster has 3 layers so we can either run a simulation with only
+3 time steps (which seems rather pointless) or, as mentioned, use the
 <code><a href="../reference/K_get_interpolation.html">K_get_interpolation()</a></code> function to generate maps for each
-time step. In this example, we will perform 200 time steps so we will
-need 200 maps.</p>
-<p>The first and the last layers from <code>K_small_changing</code> are
-corresponding to the first and last time steps and the middle one can be
-assigned to any time step in between. Additionally, to give our virtual
-species some time to adjust to the new parameters, first few carrying
-capacity maps will be the same. To do so we will duplicate the first
+time step. In this example, we will do 200 time steps so we will need
+200 maps.</p>
+<p>The first and last layers from <code>K_small_changing</code>
+correspond to the first and last time steps and the middle layer can be
+assigned to any time step in between. In addition, to give our virtual
+species some time to adapt to the new parameters, the first few carrying
+capacity maps will be the same. This is done by duplicating the first
 layer of <code>K_small_changing</code>. Therefore, the layers and
 corresponding time points will be as follows:</p>
 <ul>
@@ -487,7 +486,7 @@ step,</p></li>
 <li><p>3rd layer of <code>K_small_changing</code> - 200th time
 step.</p></li>
 </ul>
-<p>This translates into a stable environment during 1-20 time steps,
+<p>This translates into a stable environment during 1-20 time steps, a
 rapidly increasing carrying capacity during 20-80 time steps and slowly
 rising carrying capacity during 80-200 time steps.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
@@ -522,14 +521,14 @@ rising carrying capacity during 80-200 time steps.</p>
 Interpolation results
 </p>
 </div>
-<p>This completes preparation of input maps needed for this example. Now
-we will select values of other parameters.</p>
+<p>This completes the preparation of the input maps required for this
+example. We will now select values for other parameters.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="initialise-using-update-function">Initialise (using update function)<a class="anchor" aria-label="anchor" href="#initialise-using-update-function"></a>
 </h3>
-<p>First let’s look again at the <code>sim_data</code> object from the
+<p>First, let’s take a look at the <code>sim_data</code> object from the
 previous chapter:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sim_data_01</span><span class="op">)</span></span>
@@ -561,24 +560,24 @@ previous chapter:</p>
 <span><span class="co">#&gt; max_dist                2000</span></span>
 <span><span class="co">#&gt; kernel_fun              rexp</span></span>
 <span><span class="co">#&gt; dlist                   TRUE</span></span></code></pre></div>
-<p>After information about input maps we can see a list of parameters
-available to change. We will alter the following ones:</p>
+<p>After the information about the input maps, we can see a list of
+parameters that can be modified. We will change the following:</p>
 <ul>
 <li><p><code>r</code> - intrinsic growth rate,</p></li>
 <li><p><code>r_sd</code> - intrinsic growth rate stochasticity,</p></li>
 <li><p><code>K_sd</code> - environmental stochasticity,</p></li>
 <li><p><code>growth</code> - growth function of virtual
 species,</p></li>
-<li><p><code>A</code> - strength of Allee effect,</p></li>
+<li><p><code>A</code> - strength of the Allee effect,</p></li>
 <li><p><code>dens_dep</code> - what determines the possibility of
 settling in particular cell,</p></li>
 <li><p><code>border</code> - how borders are treated.</p></li>
 </ul>
-<p>To change these parameters (along with carrying capacity map prepared
-in the previous section) we could simply initialise new
+<p>To change these parameters (along with the carrying capacity map
+prepared in the previous section), we could simply initialise a new
 <code>sim_data</code> object from scratch. Here we will use
 <code><a href="https://rdrr.io/pkg/terra/man/update.html" class="external-link">update()</a></code> on <code>sim_data</code> from the previous example
-to showcase its use.</p>
+to demonstrate its use.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_data_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">sim_data_01</span>,</span>
 <span>  n1_map <span class="op">=</span> <span class="va">K_small</span>,</span>
@@ -592,16 +591,16 @@ to showcase its use.</p>
 <span>  border <span class="op">=</span> <span class="st">"reprising"</span>,</span>
 <span>  rate <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="fl">500</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>The growth of virtual species is now defined using the ricker
-(<code>growth = "ricker"</code>) function with increased intrinsic
+<p>The growth of virtual species is now defined using the Ricker
+function (<code>growth = "ricker"</code>) with increased intrinsic
 growth rate (<code>r</code> <code>=</code> <code>log(5)</code>) combined
 with weak Allee effect (<code>A = 0.2</code>) and added demographic
 stochasticity (<code>r_sd = 0.05</code>). The probability of settlement
 in a target cell is determined solely by its carrying capacity value
-(<code>dens_dep = "K"</code>). We also changed the dispersal kernel’s
-parameter (<code>rate = 1/500</code>) and the behaviour of the species
-near the borders - now specimens cannot leave the specified study area
-(<code>border = "reprising"</code>).</p>
+(<code>dens_dep = "K"</code>). We also changed the parameter of a
+dispersal kernel (<code>rate = 1/500</code>) and the behaviour of the
+species near the borders - now specimens cannot leave the specified
+study area (<code>border = "reprising"</code>).</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sim_data_02</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Class: sim_data</span></span>
@@ -636,10 +635,10 @@ near the borders - now specimens cannot leave the specified study area
 <div class="section level3">
 <h3 id="simulation-1">Simulation<a class="anchor" aria-label="anchor" href="#simulation-1"></a>
 </h3>
-<p>Simulation set-up will be very similar to the previous one. We
-designed it that way in order to simplify the process of simulation
-replication. We will also now demonstrate how parallel calculations can
-be used when running simulations:</p>
+<p>The simulation setup will be very similar to the previous one. We
+have designed it this way to simplify the process of simulation
+replication. We will also now demonstrate how parallel computing can be
+used when running simulations:</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -661,13 +660,14 @@ be used when running simulations:</p>
 <span><span class="co">#&gt; Abundances summary: </span></span>
 <span><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's </span></span>
 <span><span class="co">#&gt;    0.00    0.00   47.00   40.71   72.00  148.00    2400</span></span></code></pre>
-<p>Now the behaviour of created virtual species and the world in which
-it lives is much more complex than before. As a result, it can better
-mimic real ecological scenarios that users might want to explore. In
-this case, we observe a decline in the mean abundance in the first few
+<p>The behaviour of the virtual species created and the world in which
+it lives is now much more complex than before. As a result, it can
+better mimic real ecological scenarios that users may want to explore.
+In this case, we observe a decrease in mean abundance in the first few
 time steps of the simulation due to a change in parameters from the
-previous simulation. Then, we see a rapidly increasing trend to catch up
-to increasing carrying capacity, which slightly slows down later.</p>
+previous simulation. Then we see a rapidly increasing trend to catch up
+with the increasing carrying capacity, which slows down slightly
+later.</p>
 </div>
 <div class="section level3">
 <h3 id="visualisation-1">Visualisation<a class="anchor" aria-label="anchor" href="#visualisation-1"></a>
