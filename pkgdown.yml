@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   rangr: rangr.html
-last_built: 2023-07-17T16:29Z
+last_built: 2023-07-18T09:39Z
 urls:
   reference: https://popecol.github.io/rangr/reference
   article: https://popecol.github.io/rangr/articles
