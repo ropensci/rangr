@@ -10,15 +10,14 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![codecov](https://codecov.io/gh/popecol/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/popecol/rangr)
 <!-- badges: end -->
 
-The **rangr** package is designed to simulate species range dynamics.
-This new tool mimics the essential processes that shape population size
-and spatial distributions: local dynamics, dispersal and habitat
-selection. Simulations may be conducted in a spatially-explicit and
-dynamic environment, which facilitates population projections as they
-respond to climate or land-use changes. By using different sampling
-schemes and observational error distributions, the structure of the
-original survey data can be reproduced or a purely random sampling can
-be mimicked.
+The **rangr** package is designed to simulate a species range dynamics.
+This new tool mimics the essential processes that shape population
+numbers and spatial distribution: local dynamics and dispersal.
+Simulations can be run in a spatially explicit and dynamic environment,
+facilitating population projections in response to climate or land-use
+changes. By using different sampling schemes and observational error
+distributions, the structure of the original survey data can be
+reproduced, or pure random sampling can be mimicked.
 
 The study is supported by the National Science Centre, Poland, grant no.
 2018/29/B/NZ8/00066.
@@ -27,7 +26,7 @@ The study is supported by the National Science Centre, Poland, grant no.
 
 ## Released version
 
-`rangr` has not been released yet but we’re working on it.
+Not released yet, but we’re working on it.
 
 ## Development version
 
@@ -51,8 +50,9 @@ Example maps available in rangr:
 - `K_small_changing.tif`
 - `K_big.tif`
 
-Note that the input maps must be in the Cartesian coordinate system. You
-can find additional information about these data sets in help files:
+Note that the input maps must be in the geodetic (i.e. Cartesian)
+coordinate system. You can find additional information about these data
+sets in help files:
 
 ``` r
 library(rangr)
@@ -87,8 +87,8 @@ plot(c(n1_small, K_small))
 
 ## Initialise
 
-To create a `sim_data` object that contains the necessary information to
-perform a simulation, use the `initialise()` function. For example:
+To create a `sim_data` object containing the necessary information to
+run a simulation, use the `initialise()` function. For example:
 
 ``` r
 sim_data_01 <- initialise(
@@ -131,9 +131,9 @@ summary(sim_data_01)
 
 ## Simulation
 
-To perform a simulation, use the `sim()` function, which takes a
-`sim_data` object and the specified number of time steps as input
-parameters. For example:
+To run a simulation, use the `sim()` function, which takes a `sim_data`
+object and the specified number of time steps as input parameters. For
+example:
 
 ``` r
 sim_result_01 <- sim(obj = sim_data_01, time = 100)
@@ -164,8 +164,8 @@ for the `rangr` package for more information.
 
 ## Visualisation
 
-You can use `rangr` to visualise chosen time steps from the simulation.
-The `plot()` function is used to generate the visualisation. Here’s an
+You can use `rangr` to visualise selected time steps from the
+simulation. The `plot()` method is used to generate the plot. Here’s an
 example:
 
 ``` r
@@ -258,6 +258,3 @@ To cite `rangr` use `citation()` function:
 library(rangr)
 citation("rangr")
 ```
-
-The study is supported by the National Science Centre, Poland, grant no.
-2018/29/B/NZ8/00066.
