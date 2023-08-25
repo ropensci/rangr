@@ -237,6 +237,61 @@ And then visualise it using the `plot()` function:
 plot(my_rast, c(1, 10, 25, 50))
 ```
 
+## Virtual Ecologist
+If you want to sample your simulation results and mimic the real observation process you can use `get_observations()` function. Depending on type of observation that you choose (`type` argument), observation sites can be chosen randomly or be provided as a `data.frame`. Getting observation from simulated abundances may be done in order to test different methods of modelling species distribution and their ability to regenerate the original (in this case simulated) data. Other use case would be to determine the threshold number of study sites to reliably find out the species conservation status.
+
+Here we will demonstrate the most basic variant of `get_observations()` function. To to so we will need both the `sim_results` object and `sim_data` object used to generate the simulated data. We will randomly choose observation sites and with this variant we have to specify what proportion of all sites we want to conduct the observations on. Here we will choose 10% of sites so the `prop` argument is set to 0.1. There are two random observation processes available: one where observation sites stay the same throughout all time steps, and the other where at every time step observation sites are different. To see how the first version works, we set the `type` argument to `"random_one_layer"`.
+
+```{r ve_01}
+set.seed(123)
+sample_01 <- get_observations(
+   sim_data_01,
+   sim_result_01,
+   type = "random_one_layer",
+   prop = 0.1
+)
+str(sample_01)
+```
+
+The returned `data.frame` has geographic coordinates of sampled observation sites, abundances and time steps from which the abundances are observed. To confirm that in each time steps the study sites stay the same and to get the coordinates of those sites we can use the following code:
+
+```{r ve_coords_01}
+unique(sample_01[c("x", "y")])
+```
+
+Here we got 15 sites sampled.
+
+Observation process is not a perfect one due to, among other things, species detectability or observer abilities. To mimic that we have to set the `sdlog` argument which sets the level of the random noise in observation process generated from the log-normal distribution.
+
+```{r ve_01_2}
+sample_01 <- get_observations(
+   sim_data_01,
+   sim_result_01,
+   type = "random_one_layer",
+   prop = 0.1,
+   sdlog = log(1.2)
+)
+```
+
+Now let's demonstrate the second random observation process. To do so we will set the `type` argument to `"random_all_layers"`. This version ensures that in each time step the study sites are sampled once again.
+```{r ve_02}
+set.seed(123)
+sample_02 <- get_observations(
+   sim_data_01,
+   sim_result_01,
+   type = "random_all_layer",
+   prop = 0.1,
+   sdlog = log(1.2)
+)
+```
+
+Let's look which observation sites were samples this time.
+```{r ve_coords_02}
+coords_02 <- unique(sample_02[c("x", "y")])
+nrow(coords_02)
+```
+Here we got 138 sites (all available ones) observed and each one of them got "visited" at least once during the observation process.
+
 # More advanced workflow
 
 The previous workflow was quite basic. Now we will present a more advanced one and use it to show some of the other parameter options.
@@ -384,3 +439,76 @@ plot(sim_result_02,
 )
 ```
 
+## Virtual Ecologist
+Here we will present you with two other ways to simulate the observation process using the simulated abundances and `get_observations()` function.
+
+First way is to provide the sample site's coordinates and time steps in which the observation is supposed to take place. This should be provided in a form a `data.frame` with three column: "x", "y" and "time_step". We provided an example of such `data.frame` with rangr - it is used in code examples through the package, but here we will make one from scratch, since the provided one takes into consideration only 100 time steps (not 200 that we need now). We will use the same observation sites for each time steps.
+
+```{r ve_obs_points}
+set.seed(123)
+str(observations_points) # required structure
+
+all_coords <- crds(sim_data_02$K_map)
+observations_coords <- all_coords[sample(1:nrow(all_coords), 0.1 * nrow(all_coords)),]
+time_steps <- sim_result_02$simulated_time
+ncells <- nrow(observations_coords)
+
+points <- data.frame(
+    x = rep(observations_coords[, "x"], times = time_steps),
+    y = rep(observations_coords[, "y"], times = time_steps),
+    time_step = rep(1:time_steps, each = ncells)
+  )
+str(points)
+```
+We can see that for each data (study site and time step) the observation has been made and is now stored in the "value" column.
+
+
+Now that we have selected study sites along with time steps, we can pass this data to the `get_observations()` function.
+
+```{r ve_03}
+set.seed(123)
+
+sample_03 <- get_observations(
+  sim_data_02,
+  sim_result_02,
+  type = "from_data",
+  points = points,
+  sdlog = log(1.2)
+)
+str(sample_03)
+```
+
+Now we will demonstrate the last (for now) version of the `get_observations()` function. It is developed to simulate real monitoring surveys, by assigning observers to each observation. Whether a survey will be made by the same observer for several years and whether it will not be made at all is defined using a geometric distribution (`rgeom`). The study sites available to virtual observers are passed using the `cells_coords` argument. We will used sites sampled in the previous example stored in `observations_coords` variable, since they are already in the required format (`data.frame` with "x" and "y" columns).
+
+```{r ve_04}
+set.seed(123)
+
+sample_04 <- get_observations(
+  sim_data_02,
+  sim_result_02,
+  type = "monitoring_based",
+  cells_coords = observations_coords,
+  sdlog = log(1.2)
+)
+str(sample_04)
+length(unique(sample_04$obs_id))
+```
+
+Here we can see that 62 unique observers made "observations". For each study sites the first observer id is set to "obs1", second to "obs2" and so on. As mentioned above the time that one observer would stay on one site as well as the probability of any observations being made at all is defined using a geometric distribution. We can change the shape of that distribution using the `prob` argument. It is by default set to 0.3 and now we will set it to 0.2 to see how it will impact the number of unique observers.
+
+```{r ve_04_2}
+set.seed(123)
+
+sample_04 <- get_observations(
+  sim_data_02,
+  sim_result_02,
+  type = "monitoring_based",
+  cells_coords = observations_coords,
+  sdlog = log(1.2),
+  prob = 0.2
+)
+str(sample_04)
+length(unique(sample_04$obs_id))
+```
+
+Now we have 47 unique observers and the number of consecutive years that each observes stays at one study site has increased.
