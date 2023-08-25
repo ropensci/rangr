@@ -25,5 +25,10 @@ Authors:
   \item Lechosław Kuczyński \email{lechu@amu.edu.pl}
 }
 
+Other contributors:
+\itemize{
+  \item Tad Dallas (@taddallas) [reviewer]
+}
+
 }
 \keyword{internal}

@@ -38,11 +38,11 @@
 #' (defined for each time step)
 #' @param growth character vector of length 1; the name of a population growth
 #' function, either defined in [`growth`] or provided by
-#' the user (case-sensitive)
+#' the user (case-sensitive, default [`"gompertz"`][growth])
 #' @param A numeric vector of length 1; strength of the Allee effect
 #' (see the [`growth`] function)
 #' @param dens_dep character vector of length 1 specifying if the probability
-#' of settling in a target square is (case-sensitive):
+#' of settling in a target square is (case-sensitive, default `"K2N"`):
 #' \itemize{
 #'   \item{"none" - fully random,}
 #'   \item{"K" - proportional to the carrying capacity of a target square,}
@@ -51,7 +51,7 @@
 #'   already present in a target square}
 #' }
 #' @param border character vector of length 1 defining how to deal
-#' with borders (case-sensitive):
+#' with borders (case-sensitive, default `"absorbing"`):
 #' \itemize{
 #'   \item "absorbing" - individuals that disperse outside the study area
 #'   are removed from the population
@@ -59,7 +59,7 @@
 #'   as targets for dispersal
 #' }
 #' @param kernel_fun character vector of length 1; name of a random number
-#' generation function defining a dispersal kernel (case-sensitive)
+#' generation function defining a dispersal kernel (case-sensitive, default `"rexp"`)
 #' @param ... any parameters required by `kernel_fun`
 #' @param max_dist numeric vector of length 1; maximum distance of dispersal
 #' to pre-calculate target cells

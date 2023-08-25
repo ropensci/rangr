@@ -33,7 +33,7 @@ in current time points}
 \item{kernel}{a function defining dispersal kernel}
 
 \item{dens_dep}{character vector of length 1 specifying if the probability
-of settling in a target square is (case-sensitive):
+of settling in a target square is (case-sensitive, default \code{"K2N"}):
 \itemize{
 \item{"none" - fully random,}
 \item{"K" - proportional to the carrying capacity of a target square,}
@@ -51,7 +51,7 @@ study area}
 \item{within_mask}{logical matrix that specifies boundaries of the study area}
 
 \item{border}{character vector of length 1 defining how to deal
-with borders (case-sensitive):
+with borders (case-sensitive, default \code{"absorbing"}):
 \itemize{
 \item "absorbing" - individuals that disperse outside the study area
 are removed from the population
