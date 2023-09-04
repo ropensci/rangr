@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">rangr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,6 +40,9 @@
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
@@ -69,7 +72,7 @@
                         <h4 data-toc-skip class="author">Katarzyna
 Markowska</h4>
             
-            <h4 data-toc-skip class="date">01-08-2023</h4>
+            <h4 data-toc-skip class="date">04-09-2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/popecol/rangr/blob/HEAD/vignettes/rangr.Rmd" class="external-link"><code>vignettes/rangr.Rmd</code></a></small>
       <div class="d-none name"><code>rangr.Rmd</code></div>
@@ -402,6 +405,98 @@ Abundances
 </p>
 </div>
 </div>
+<div class="section level3">
+<h3 id="virtual-ecologist">Virtual Ecologist<a class="anchor" aria-label="anchor" href="#virtual-ecologist"></a>
+</h3>
+<p>If you want to sample the abundance of your virtual species
+population and mimic the observation process, you can use the
+<code><a href="../reference/get_observations.html">get_observations()</a></code> function. Depending on the
+<code>type</code> argument, observation sites can be selected randomly
+or their coordinates can be provided as a <code>data.frame</code>.</p>
+<p>Here we will demonstrate the most basic variant of the
+<code><a href="../reference/get_observations.html">get_observations()</a></code> function. To do this we will need both
+the <code>sim_results</code> object and the <code>sim_data</code> object
+used to generate the simulated data. We will randomly select observation
+sites, and in this variant we need to specify what proportion of all
+sites we want to make observations on. Here we will select 10% of the
+sites, so the <code>prop</code> argument is set to 0.1. There are two
+random observation processes available: one where the observation sites
+are the same at all time steps, and the other where the observation
+sites are different at each time step. To see how the first version
+works, we set the <code>type</code> argument to
+<code>"random_one_layer"</code>.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">sample_01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_observations.html">get_observations</a></span><span class="op">(</span></span>
+<span>   <span class="va">sim_data_01</span>,</span>
+<span>   <span class="va">sim_result_01</span>,</span>
+<span>   type <span class="op">=</span> <span class="st">"random_one_layer"</span>,</span>
+<span>   prop <span class="op">=</span> <span class="fl">0.1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sample_01</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    1500 obs. of  4 variables:</span></span>
+<span><span class="co">#&gt;  $ x        : num  279500 271500 279500 274500 279500 ...</span></span>
+<span><span class="co">#&gt;  $ y        : num  623500 618500 612500 619500 610500 ...</span></span>
+<span><span class="co">#&gt;  $ time_step: int  1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ value    : num  0 0 0 0 10 0 0 0 0 0 ...</span></span></code></pre></div>
+<p>The returned <code>data.frame</code> contains the geodetic
+coordinates of the survey sites, the population abundances, and the time
+steps from which the abundances were observed. To confirm that the
+survey sites remain the same in each time step, and to obtain the
+coordinates of these sites, we can use the following code:</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sample_01</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt;         x      y</span></span>
+<span><span class="co">#&gt; 1  279500 623500</span></span>
+<span><span class="co">#&gt; 2  271500 618500</span></span>
+<span><span class="co">#&gt; 3  279500 612500</span></span>
+<span><span class="co">#&gt; 4  274500 619500</span></span>
+<span><span class="co">#&gt; 5  279500 610500</span></span>
+<span><span class="co">#&gt; 6  277500 610500</span></span>
+<span><span class="co">#&gt; 7  271500 614500</span></span>
+<span><span class="co">#&gt; 8  272500 614500</span></span>
+<span><span class="co">#&gt; 9  272500 610500</span></span>
+<span><span class="co">#&gt; 10 273500 614500</span></span>
+<span><span class="co">#&gt; 11 272500 611500</span></span>
+<span><span class="co">#&gt; 12 274500 623500</span></span>
+<span><span class="co">#&gt; 13 274500 614500</span></span>
+<span><span class="co">#&gt; 14 270500 613500</span></span>
+<span><span class="co">#&gt; 15 273500 616500</span></span></code></pre></div>
+<p>Here we sampled 15 sites.</p>
+<p>The observation process is not perfect due to, among other things,
+the detectability of the species or the skill of the observer. To mimic
+this, we need to set the <code>sdlog</code> argument, which sets the
+level of random noise in the observation process generated from the
+log-normal distribution.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample_01</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_observations.html">get_observations</a></span><span class="op">(</span></span>
+<span>   <span class="va">sim_data_01</span>,</span>
+<span>   <span class="va">sim_result_01</span>,</span>
+<span>   type <span class="op">=</span> <span class="st">"random_one_layer"</span>,</span>
+<span>   prop <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>   sdlog <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Now let’s demonstrate the second random observation process. We will
+set the <code>type</code> argument to <code>"random_all_layers"</code>.
+This version ensures that the study sites are re-sampled at each time
+step.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="va">sample_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_observations.html">get_observations</a></span><span class="op">(</span></span>
+<span>   <span class="va">sim_data_01</span>,</span>
+<span>   <span class="va">sim_result_01</span>,</span>
+<span>   type <span class="op">=</span> <span class="st">"random_all_layer"</span>,</span>
+<span>   prop <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>   sdlog <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Let’s have a look which observation sites were sampled this time.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">coords_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sample_02</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">coords_02</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 138</span></span></code></pre></div>
+<p>Here we looked at 138 observed sites (all available), each of which
+was “visited” at least once.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="more-advanced-workflow">More advanced workflow<a class="anchor" aria-label="anchor" href="#more-advanced-workflow"></a>
@@ -421,7 +516,7 @@ a more populated map than the <code>n1_small</code> used before. The
 easiest way to do this is to use the abundances from the last time step
 of the previous simulation as input for the current one. This can be
 done as follows:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n1_small_02</span> <span class="op">&lt;-</span> <span class="va">n1_small</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="va">n1_small_02</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="va">sim_result_01</span><span class="op">$</span><span class="va">N_map</span><span class="op">[</span>, , <span class="fl">100</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -436,7 +531,7 @@ then use <code><a href="../reference/K_get_interpolation.html">K_get_interpolati
 ones. Here we will choose the second option and use the
 <code>K_small_changing</code> object that comes with <code>rangr</code>.
 Below you can see its summary:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">K_small_changing</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input_maps/K_small_changing.tif"</span>, </span>
 <span>                                     package <span class="op">=</span> <span class="st">"rangr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">K_small_changing</span></span>
@@ -449,13 +544,12 @@ Below you can see its summary:</p>
 <span><span class="co">#&gt; names       : layer.1, layer.2, layer.3 </span></span>
 <span><span class="co">#&gt; min values  :       0,       0,       0 </span></span>
 <span><span class="co">#&gt; max values  :     100,     130,     170</span></span></code></pre></div>
-<p>As you can see the carrying capacity increases in each map, meaning
+<p>As you can see, the carrying capacity increases in each map, meaning
 that our environment is becoming more and more suitable for virtual
 species. It is also worth noting that the first layer of
 <code>K_small_changing</code> is the same as <code>K_small</code>.
-Again, we can visualise all input maps using the <code>plot</code>
-function:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+Again, we can visualise all the input maps using the plot function:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">n1_small_02</span>, <span class="va">K_small_changing</span><span class="op">)</span>,</span>
 <span>     range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/values.html" class="external-link">values</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">n1_small_02</span>, <span class="va">K_small_changing</span><span class="op">)</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
 <span>     main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"n1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"K"</span>, <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nlyr</a></span><span class="op">(</span><span class="va">K_small_changing</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -489,7 +583,7 @@ step.</p></li>
 <p>This translates into a stable environment during 1-20 time steps, a
 rapidly increasing carrying capacity during 20-80 time steps and slowly
 rising carrying capacity during 80-200 time steps.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># duplicate 1st layer of K_small_changing</span></span>
 <span><span class="va">K_small_changing_altered</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">K_small</span>, <span class="va">K_small_changing</span><span class="op">)</span></span>
 <span></span>
@@ -509,7 +603,7 @@ rising carrying capacity during 80-200 time steps.</p>
 <span><span class="co">#&gt; names       : lyr.1, lyr.2, lyr.3, lyr.4, lyr.5, lyr.6, ... </span></span>
 <span><span class="co">#&gt; min values  :     0,     0,     0,     0,     0,     0, ... </span></span>
 <span><span class="co">#&gt; max values  :   100,   100,   100,   100,   100,   100, ...</span></span></code></pre></div>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># visualise results</span></span>
 <span><span class="va">vis_layers</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">200</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>, <span class="fl">200</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">K_small_changing_interpolated</span>, subset <span class="op">=</span> <span class="va">vis_layers</span><span class="op">)</span>,</span>
@@ -530,7 +624,7 @@ example. We will now select values for other parameters.</p>
 </h3>
 <p>First, let’s take a look at the <code>sim_data</code> object from the
 previous chapter:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sim_data_01</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Class: sim_data</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -578,7 +672,7 @@ prepared in the previous section), we could simply initialise a new
 <code>sim_data</code> object from scratch. Here we will use
 <code><a href="https://rdrr.io/pkg/terra/man/update.html" class="external-link">update()</a></code> on <code>sim_data</code> from the previous example
 to demonstrate its use.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sim_data_02</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/update.html" class="external-link">update</a></span><span class="op">(</span><span class="va">sim_data_01</span>,</span>
 <span>  n1_map <span class="op">=</span> <span class="va">K_small</span>,</span>
 <span>  K_map <span class="op">=</span> <span class="va">K_small_changing_interpolated</span>,</span>
@@ -601,7 +695,7 @@ in a target cell is determined solely by its carrying capacity value
 dispersal kernel (<code>rate = 1/500</code>) and the behaviour of the
 species near the borders - now specimens cannot leave the specified
 study area (<code>border = "reprising"</code>).</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sim_data_02</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Class: sim_data</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -639,7 +733,7 @@ study area (<code>border = "reprising"</code>).</p>
 have designed it this way to simplify the process of simulation
 replication. We will also now demonstrate how parallel computing can be
 used when running simulations:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">parallel</span><span class="op">)</span></span>
 <span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">makeCluster</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/parallel/detectCores.html" class="external-link">detectCores</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -647,7 +741,7 @@ used when running simulations:</p>
 <span>  <span class="fu"><a href="../reference/sim.html">sim</a></span><span class="op">(</span>obj <span class="op">=</span> <span class="va">sim_data_02</span>, time <span class="op">=</span> <span class="fl">200</span>, progress_bar <span class="op">=</span> <span class="cn">TRUE</span>, cl <span class="op">=</span> <span class="va">cl</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/parallel/makeCluster.html" class="external-link">stopCluster</a></span><span class="op">(</span><span class="va">cl</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">sim_result_02</span><span class="op">)</span></span></code></pre></div>
 <p><img src="rangr_files/figure-html/summary_sim_result_02-1.png" width="70%" style="display: block; margin: auto;"></p>
 <pre><code><span><span class="co">#&gt; Summary of sim_results object</span></span>
@@ -662,7 +756,7 @@ used when running simulations:</p>
 <span><span class="co">#&gt;    0.00    0.00   47.00   40.71   72.00  148.00    2400</span></span></code></pre>
 <p>The behaviour of the virtual species created and the world in which
 it lives is now much more complex than before. As a result, it can
-better mimic real ecological scenarios that users may want to explore.
+better mimic real ecological scenarios that users may wish to explore.
 In this case, we observe a decrease in mean abundance in the first few
 time steps of the simulation due to a change in parameters from the
 previous simulation. Then we see a rapidly increasing trend to catch up
@@ -673,7 +767,7 @@ later.</p>
 <h3 id="visualisation-1">Visualisation<a class="anchor" aria-label="anchor" href="#visualisation-1"></a>
 </h3>
 <p>Let’s visualise the result of this simulation.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sim_result_02</span>,</span>
 <span>  time_points <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">200</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">sim_result_02</span><span class="op">$</span><span class="va">N_map</span> <span class="op">+</span> <span class="fl">5</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span>
@@ -693,6 +787,123 @@ Abundances
 <span><span class="co">#&gt; names       : t_1, t_10, t_20, t_40, t_60, t_80, ... </span></span>
 <span><span class="co">#&gt; min values  :   0,    0,    0,    0,    0,    0, ... </span></span>
 <span><span class="co">#&gt; max values  : 100,   72,   75,   78,  107,  114, ...</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="virtual-ecologist-1">Virtual Ecologist<a class="anchor" aria-label="anchor" href="#virtual-ecologist-1"></a>
+</h3>
+<p>Here we present two other ways to simulate the observation process
+using simulated abundances and the <code><a href="../reference/get_observations.html">get_observations()</a></code>
+function.</p>
+<p>The first way is to provide the coordinates of the sample sites and
+the time steps in which the observation is to take place. This should be
+provided in the form of a <code>data.frame</code> with three columns:
+“x”, “y” and “time_step”. We have provided an example of such a data
+frame with rangr - it is used in code examples by the package, but here
+we will create one from scratch, as the one provided only considers 100
+time steps (not 200, which we need now). We will use the same
+observation sites for each time step.</p>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">observations_points</span><span class="op">)</span> <span class="co"># required structure</span></span>
+<span><span class="co">#&gt; 'data.frame':    1500 obs. of  3 variables:</span></span>
+<span><span class="co">#&gt;  $ x        : int  277500 276500 274500 274500 279500 278500 272500 273500 272500 278500 ...</span></span>
+<span><span class="co">#&gt;  $ y        : int  622500 614500 610500 614500 613500 619500 618500 613500 616500 623500 ...</span></span>
+<span><span class="co">#&gt;  $ time_step: int  1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span></span>
+<span><span class="va">all_coords</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/crds.html" class="external-link">crds</a></span><span class="op">(</span><span class="va">sim_data_02</span><span class="op">$</span><span class="va">K_map</span><span class="op">)</span></span>
+<span><span class="va">observations_coords</span> <span class="op">&lt;-</span> <span class="va">all_coords</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">all_coords</span><span class="op">)</span>, <span class="fl">0.1</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">all_coords</span><span class="op">)</span><span class="op">)</span>,<span class="op">]</span></span>
+<span><span class="va">time_steps</span> <span class="op">&lt;-</span> <span class="va">sim_result_02</span><span class="op">$</span><span class="va">simulated_time</span></span>
+<span><span class="va">ncells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/dimensions.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">observations_coords</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">points</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">observations_coords</span><span class="op">[</span>, <span class="st">"x"</span><span class="op">]</span>, times <span class="op">=</span> <span class="va">time_steps</span><span class="op">)</span>,</span>
+<span>    y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">observations_coords</span><span class="op">[</span>, <span class="st">"y"</span><span class="op">]</span>, times <span class="op">=</span> <span class="va">time_steps</span><span class="op">)</span>,</span>
+<span>    time_step <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">time_steps</span>, each <span class="op">=</span> <span class="va">ncells</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">points</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    2600 obs. of  3 variables:</span></span>
+<span><span class="co">#&gt;  $ x        : num  279500 271500 279500 274500 279500 ...</span></span>
+<span><span class="co">#&gt;  $ y        : num  623500 618500 612500 619500 610500 ...</span></span>
+<span><span class="co">#&gt;  $ time_step: int  1 1 1 1 1 1 1 1 1 1 ...</span></span></code></pre></div>
+<p>We can see that for each data (study site and time step) an
+observation has been made and is now stored in the “value” column.</p>
+<p>Now that we have selected study sites along with time steps, we can
+pass this data to the <code><a href="../reference/get_observations.html">get_observations()</a></code> function.</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sample_03</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_observations.html">get_observations</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim_data_02</span>,</span>
+<span>  <span class="va">sim_result_02</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"from_data"</span>,</span>
+<span>  points <span class="op">=</span> <span class="va">points</span>,</span>
+<span>  sdlog <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sample_03</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    2600 obs. of  4 variables:</span></span>
+<span><span class="co">#&gt;  $ x        : num  279500 271500 279500 274500 279500 ...</span></span>
+<span><span class="co">#&gt;  $ y        : num  623500 618500 612500 619500 610500 ...</span></span>
+<span><span class="co">#&gt;  $ time_step: int  1 1 1 1 1 1 1 1 1 1 ...</span></span>
+<span><span class="co">#&gt;  $ value    : num  86.7 53.7 116.9 0 77 ...</span></span></code></pre></div>
+<p>We will now demonstrate the latest (for now) version of the
+<code><a href="../reference/get_observations.html">get_observations()</a></code> function. It is designed to simulate
+real monitoring surveys by mimicking the observation process based on
+its statistical properties. Whether a survey is made by the same
+observer for several years or not is defined by a geometric distribution
+(<code>rgeom</code>). The study sites available to virtual observers are
+passed using the <code>cells_coords</code> argument. We will use the
+sites sampled in the previous example, stored in the
+<code>observations_coords</code> variable, as they are already in the
+required format (<code>data.frame</code> with ‘x’ and ‘y’ columns).</p>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sample_04</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_observations.html">get_observations</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim_data_02</span>,</span>
+<span>  <span class="va">sim_result_02</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"monitoring_based"</span>,</span>
+<span>  cells_coords <span class="op">=</span> <span class="va">observations_coords</span>,</span>
+<span>  sdlog <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sample_04</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    2251 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;  $ x        : num  279500 279500 279500 279500 279500 ...</span></span>
+<span><span class="co">#&gt;  $ y        : num  623500 623500 623500 623500 623500 ...</span></span>
+<span><span class="co">#&gt;  $ time_step: int  1 2 3 4 5 6 7 8 11 12 ...</span></span>
+<span><span class="co">#&gt;  $ obs_id   : chr  "obs1" "obs1" "obs1" "obs2" ...</span></span>
+<span><span class="co">#&gt;  $ value    : num  109.1 79.6 58.5 34.3 48.8 ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sample_04</span><span class="op">$</span><span class="va">obs_id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 62</span></span></code></pre></div>
+<p>Here we can see that 62 unique observers made ‘observations’. For
+each study site, the first observer identifier is set to “obs1”, the
+second to “obs2” and so on. The time that an observer would survey the
+same site, as well as the probability of making any observations at all,
+is defined by a geometric distribution. We can change the shape of this
+distribution using the <code>prob</code> argument. It is set to 0.3 by
+default, and we will now set it to 0.2 to see how this affects the
+number of unique observers.</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">sample_04</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_observations.html">get_observations</a></span><span class="op">(</span></span>
+<span>  <span class="va">sim_data_02</span>,</span>
+<span>  <span class="va">sim_result_02</span>,</span>
+<span>  type <span class="op">=</span> <span class="st">"monitoring_based"</span>,</span>
+<span>  cells_coords <span class="op">=</span> <span class="va">observations_coords</span>,</span>
+<span>  sdlog <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.2</span><span class="op">)</span>,</span>
+<span>  prob <span class="op">=</span> <span class="fl">0.2</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sample_04</span><span class="op">)</span></span>
+<span><span class="co">#&gt; 'data.frame':    2454 obs. of  5 variables:</span></span>
+<span><span class="co">#&gt;  $ x        : num  279500 279500 279500 279500 279500 ...</span></span>
+<span><span class="co">#&gt;  $ y        : num  623500 623500 623500 623500 623500 ...</span></span>
+<span><span class="co">#&gt;  $ time_step: int  1 2 3 4 5 6 7 8 9 10 ...</span></span>
+<span><span class="co">#&gt;  $ obs_id   : chr  "obs1" "obs1" "obs1" "obs1" ...</span></span>
+<span><span class="co">#&gt;  $ value    : num  116.2 92.7 43.3 32.2 48.4 ...</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/terra/man/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sample_04</span><span class="op">$</span><span class="va">obs_id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 45</span></span></code></pre></div>
+<p>We now have 45 unique observers, and the number of consecutive years
+that each observer stays at a study site has increased.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

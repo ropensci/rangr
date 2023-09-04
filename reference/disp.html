@@ -14,7 +14,7 @@ disperse into this square."><!-- mathjax --><script src="https://cdnjs.cloudflar
     
     <a class="navbar-brand me-2" href="../index.html">rangr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +27,9 @@ disperse into this square."><!-- mathjax --><script src="https://cdnjs.cloudflar
 </li>
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -97,7 +100,7 @@ in current time points</p></dd>
 
 <dt>dens_dep</dt>
 <dd><p>character vector of length 1 specifying if the probability
-of settling in a target square is (case-sensitive):</p><ul><li><p>"none" - fully random,</p></li>
+of settling in a target square is (case-sensitive, default <code>"K2N"</code>):</p><ul><li><p>"none" - fully random,</p></li>
 <li><p>"K" - proportional to the carrying capacity of a target square,</p></li>
 <li><p>"K2N" - density-dependent, i.e. proportional to the ratio of
 carrying capacity of a target square to the number of individuals
@@ -121,7 +124,7 @@ study area</p></dd>
 
 <dt>border</dt>
 <dd><p>character vector of length 1 defining how to deal
-with borders (case-sensitive):</p><ul><li><p>"absorbing" - individuals that disperse outside the study area
+with borders (case-sensitive, default <code>"absorbing"</code>):</p><ul><li><p>"absorbing" - individuals that disperse outside the study area
 are removed from the population</p></li>
 <li><p>"reprising" - cells outside the study area are not allowed
 as targets for dispersal</p></li>
