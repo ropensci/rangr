@@ -516,4 +516,4 @@ str(sample_04)
 length(unique(sample_04$obs_id))
 ```
 
-We now have 47 unique observers, and the number of consecutive years that each observer stays at a study site has increased.
+We now have 45 unique observers, and the number of consecutive years that each observer stays at a study site has increased.
