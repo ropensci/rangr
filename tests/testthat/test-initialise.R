@@ -468,7 +468,7 @@ test_that("target ids precalculation works", {
     dist_list(test_rast, test_data_table, test_resolution, test_id_within,
               test_max_dist, FALSE, NULL), dist_list_res)
   expect_equal(
-    target_ids(1, raster::raster(test_rast), test_data, test_resolution,
+    target_ids(1, test_rast, test_data, test_resolution,
                test_max_dist, test_id_within), dist_list_res[[1]])
 })
 

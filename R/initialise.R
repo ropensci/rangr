@@ -464,12 +464,10 @@ dist_list <- function(
 
 
   # specify function and arguments (for clarity)
-
-  id <- raster(id)
+  if(!is.null(cl)) id <- wrap(id)
   tfun <- function(x) target_ids(x, id, data, resolution, max_dist, id_within)
 
   # calculate targets id with or without parallelization
-
   if (is.null(cl)) {
     if (progress_bar) {
       out <- pblapply(id_within, tfun)
@@ -489,8 +487,8 @@ dist_list <- function(
     } else {
       out <- parLapplyLB(cl = cl, id_within, tfun)
     }
-
-    id <- unwrap(id)
+#
+#     id <- unwrap(id)
   }
 
 
@@ -522,10 +520,12 @@ target_ids <- function(idx, id, data, resolution, max_dist, id_within) {
 
   # get coordinates of current cell
   id_i <- data[data[, "id"] == idx, ]
-  xy_i <- cbind(id_i["x"], id_i["y"])
+  xy_i <- vect(cbind(id_i["x"], id_i["y"]))
+  id <- unwrap(id)
+  crs(xy_i) <- crs(id)
 
   # calculate distances
-  d <- distanceFromPoints(id, xy_i, progress = 0)
+  d <- distance(id, xy_i, progress = 0)
   d <- round(c(as.matrix(d, wide = TRUE)) / resolution)
   # data[, "dist"] <- d
 

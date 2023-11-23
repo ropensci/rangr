@@ -128,7 +128,7 @@ test_that("target_ids_in_disp works", {
   # no target cells
   expect_null(target_ids_in_disp(
     id_x_y = test_id_x_y,
-    id = raster::raster(test_rast),
+    id = test_rast,
     id_within = test_id_within,
     resolution = test_resolution,
     min = 10,
@@ -138,7 +138,7 @@ test_that("target_ids_in_disp works", {
   # targets for one distance
   expect_equal(target_ids_in_disp(
     id_x_y = test_id_x_y,
-    id = raster::raster(test_rast),
+    id = test_rast,
     id_within = test_id_within,
     resolution = test_resolution,
     min = 1,
@@ -148,7 +148,7 @@ test_that("target_ids_in_disp works", {
   # targets for more distances
   expect_equal(target_ids_in_disp(
     id_x_y = test_id_x_y,
-    id = raster::raster(test_rast),
+    id = test_rast,
     id_within = test_id_within,
     resolution = test_resolution,
     min = 1,
@@ -193,7 +193,7 @@ test_that("sq_disp works", {
       id_ok = test_id_ok_01,
       dlist = test_dlist_01,
       data_table = test_data_table_01,
-      id = raster::raster(test_rast),
+      id = test_rast,
       resolution = test_resolution,
       dens_dep = test_dens_dep_01,
       ncells_in_circle = test_ncells_in_circle,
@@ -210,7 +210,7 @@ test_that("sq_disp works", {
       id_ok = test_id_ok_01,
       dlist = test_dlist_01,
       data_table = test_data_table_01,
-      id = raster::raster(test_rast),
+      id = test_rast,
       resolution = test_resolution,
       dens_dep = test_dens_dep_01,
       ncells_in_circle = test_ncells_in_circle,
@@ -277,7 +277,7 @@ test_that("disp works", {
 
   disp_res_01 <- disp(
     N_t = test_N_t,
-    id = raster::raster(test_id_rast),
+    id = test_id_rast,
     data_table = test_data_table_01,
     kernel = test_kernel_01,
     dens_dep = test_dens_dep_01,
@@ -292,7 +292,7 @@ test_that("disp works", {
 
   disp_res_02 <- disp(
     N_t = test_N_t,
-    id = raster::raster(test_id_rast),
+    id = test_id_rast,
     data_table = test_data_table_01,
     kernel = test_kernel_01,
     dens_dep = test_dens_dep_02,
@@ -311,3 +311,4 @@ test_that("disp works", {
   expect_true(all((test_N_t - disp_res_02$em + disp_res_02$im) >= 0,
                   na.rm = TRUE))
 })
+

@@ -21,7 +21,7 @@
 #'
 #' @param N_t integer matrix of population numbers at a single time step;
 #' NA stands for cells that are outside the study area
-#' @param id [`RasterLayer `][raster::RasterLayer-class] object
+#' @param id [`SpatRaster`][terra::SpatRaster-class] object
 #' (of the same size as `N_t`) with cell identifiers
 #' @param data_table matrix that contains information about all cells
 #' in current time points
@@ -69,7 +69,7 @@
 #' # disp
 #' disp_output <- disp(
 #'   N_t = sim_data$n1_map,
-#'   id = raster::raster(sim_data$id),
+#'   id = sim_data$id,
 #'   data_table = sim_data$data_table,
 #'   kernel = sim_data$kernel,
 #'   dens_dep = sim_data$dens_dep,
@@ -134,7 +134,7 @@ disp <- function(
       id_ok = id_ok,
       dlist = dlist,
       data_table = data_table,
-      id = id,
+      id = wrap(id),
       resolution = resolution,
       dens_dep = dens_dep,
       ncells_in_circle = ncells_in_circle,
@@ -286,10 +286,12 @@ sq_disp <- function(
 target_ids_in_disp <- function(id_x_y, id, id_within, resolution, min, max) {
 
   # get coordinates of given cell
-  xy_i <- cbind(id_x_y["x"], id_x_y["y"])
+  xy_i <- vect(cbind(id_x_y["x"], id_x_y["y"]))
+  id <- unwrap(id)
+  crs(xy_i) <- crs(id)
 
   # calculate distances
-  d <- distanceFromPoints(id, xy_i, progress = 0)
+  d <- distance(id, xy_i, progress = 0)
   d <- round(c(as.matrix(d, wide = TRUE)) / resolution)
 
   # check if cells are within study area and specified range

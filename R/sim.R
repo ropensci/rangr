@@ -173,8 +173,6 @@ sim <- function(
   changing_env <- obj$changing_env
   resolution <- obj$resolution
 
-  # transform id to RasterLayer because it's way faster this way
-  id <- raster::raster(id)
 
   # Specify other necessary data
   ## additional demographic stochasticity (time specific)

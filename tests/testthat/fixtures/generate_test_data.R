@@ -4,7 +4,6 @@
 # Warning: Use this file only with a stable package version! Make sure
 # Ensure that the generated data is correct before you save it.
 
-library(raster)
 library(rangr)
 library(terra)
 

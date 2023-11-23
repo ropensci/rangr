@@ -24,7 +24,7 @@ disp(
 \item{N_t}{integer matrix of population numbers at a single time step;
 NA stands for cells that are outside the study area}
 
-\item{id}{\code{\link[raster:Raster-classes]{RasterLayer }} object
+\item{id}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object
 (of the same size as \code{N_t}) with cell identifiers}
 
 \item{data_table}{matrix that contains information about all cells
@@ -118,7 +118,7 @@ sim_data <- initialise(
 # disp
 disp_output <- disp(
   N_t = sim_data$n1_map,
-  id = raster::raster(sim_data$id),
+  id = sim_data$id,
   data_table = sim_data$data_table,
   kernel = sim_data$kernel,
   dens_dep = sim_data$dens_dep,
