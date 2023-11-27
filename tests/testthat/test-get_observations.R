@@ -30,7 +30,8 @@ test_that("get_observations works", {
   sample_type_5 <- get_observations(test_sim_data, test_sim_res,
     type = "from_data",
     points = test_points,
-    sdlog = log(1.2)
+    obs_error = "rlnorm",
+    obs_error_param = log(1.2)
   )
 
   # process results
@@ -62,14 +63,14 @@ test_that("get_observations works", {
 
   expect_error(
     get_observations(test_sim_data, test_sim_res,
-                     type = "random_one_layer", sdlog = c(2, 4)),
-    "length(sdlog) not equal to 1",
+                     type = "random_one_layer", obs_error_param = c(2, 4)),
+    "parameter obs_error_param can be set either as NULL or as a single number",
     fixed = TRUE)
 
   expect_error(
     get_observations(test_sim_data, test_sim_res,
-                     type = "random_one_layer", sdlog = "1"),
-    "sdlog is not a numeric or integer vector",
+                     type = "random_one_layer", obs_error_param = "1"),
+    "parameter obs_error_param can be set either as NULL or as a single number",
     fixed = TRUE)
 
   expect_error(

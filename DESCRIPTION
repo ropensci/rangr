@@ -5,7 +5,8 @@ Version: 1.0.1
 Authors@R: c(
     person("Katarzyna", "Markowska", email = "katarzyna.markowska@amu.edu.pl", role = c("aut", "cre")),
     person("Lechosław", "Kuczyński", email = "lechu@amu.edu.pl", role = "aut"),
-    person("Tad", "Dallas", comment = c(github = "@taddallas"), role = "rev"))
+    person("Tad", "Dallas", comment = c(github = "@taddallas"), role = "rev"),
+    person("Joanne", "Potts", comment = c(github = "@TheAnalyticalEdge"), role = "rev"))
 Description: Species range dynamics simulation toolset.
 License: MIT + file LICENSE
 Imports:
@@ -18,7 +19,6 @@ Imports:
     utils,
     zoo,
     terra,
-    raster,
     assertthat
 Suggests: 
     knitr,

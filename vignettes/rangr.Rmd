@@ -261,7 +261,7 @@ unique(sample_01[c("x", "y")])
 
 Here we sampled 15 sites.
 
-The observation process is not perfect due to, among other things, the detectability of the species or the skill of the observer. To mimic this, we need to set the `sdlog` argument, which sets the level of random noise in the observation process generated from the log-normal distribution.
+The observation process is not perfect due to, among other things, the detectability of the species or the skill of the observer. To mimic this, we need to set `obs_error` and `obs_error_param` arguments, which set the level of random noise in the observation process generated from the log-normal distribution or the binomial distribution. Here we will use the first one.
 
 ```{r ve_01_2}
 sample_01 <- get_observations(
@@ -269,7 +269,8 @@ sample_01 <- get_observations(
    sim_result_01,
    type = "random_one_layer",
    prop = 0.1,
-   sdlog = log(1.2)
+   obs_error = "rlnorm",
+   obs_error_param = log(1.2)
 )
 ```
 
@@ -282,7 +283,8 @@ sample_02 <- get_observations(
    sim_result_01,
    type = "random_all_layer",
    prop = 0.1,
-   sdlog = log(1.2)
+   obs_error = "rlnorm",
+   obs_error_param = log(1.2)
 )
 ```
 
@@ -320,7 +322,7 @@ K_small_changing <- rast(system.file("input_maps/K_small_changing.tif",
 K_small_changing
 ```
 
-As you can see, the carrying capacity increases in each map, meaning that our environment is becoming more and more suitable for virtual species. It is also worth noting that the first layer of `K_small_changing` is the same as `K_small`. Again, we can visualise all the input maps using the plot function:
+As you can see, the carrying capacity increases in each map, meaning that our environment is becoming more and more suitable for the virtual species. It is also worth noting that the first layer of `K_small_changing` is the same as `K_small`. Again, we can visualise all the input maps using the plot function:
 
 ```{r fig.align='center', fig.cap="Input maps", message=FALSE, out.width='70%'}
 plot(c(n1_small_02, K_small_changing),
@@ -478,7 +480,8 @@ sample_03 <- get_observations(
   sim_result_02,
   type = "from_data",
   points = points,
-  sdlog = log(1.2)
+  obs_error = "rlnorm",
+  obs_error_param = log(1.2)
 )
 str(sample_03)
 ```
@@ -493,7 +496,8 @@ sample_04 <- get_observations(
   sim_result_02,
   type = "monitoring_based",
   cells_coords = observations_coords,
-  sdlog = log(1.2)
+  obs_error = "rlnorm",
+  obs_error_param = log(1.2)
 )
 str(sample_04)
 length(unique(sample_04$obs_id))
@@ -509,7 +513,8 @@ sample_04 <- get_observations(
   sim_result_02,
   type = "monitoring_based",
   cells_coords = observations_coords,
-  sdlog = log(1.2),
+  obs_error = "rlnorm",
+  obs_error_param = log(1.2),
   prob = 0.2
 )
 str(sample_04)

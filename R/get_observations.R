@@ -26,9 +26,15 @@
 #'   the same observer for several years and whether it will not be made at all
 #'   is defined using a geometric distribution ([`rgeom`][stats::rgeom()])
 #' }
-#' @param sdlog numeric vector of length 1; standard deviation (on a log scale)
-#' of the random noise in observation process generated from the log-normal
-#' distribution ([`rlnorm`][stats::rlnorm()])
+#' @param obs_error character vector of length 1; name of the distribution
+#' defining the observation process: "[`rlnorm`][stats::rlnorm()]" (the log
+#' normal distribution) or "[`rbinom`][stats::rbinom()]" (the binomial
+#' distribution)
+#' @param obs_error_param numeric vector of length 1; standard deviation
+#' (on a log scale) of the random noise in observation process generated from
+#' the log-normal distribution ([`rlnorm`][stats::rlnorm()]) or probability of
+#' detection (success) when the binomial distribution
+#' ("[`rbinom`][stats::rbinom()]") is used
 #' @param ... other necessary internal parameters:
 #' \itemize{
 #'   \item{`prop`
@@ -64,7 +70,7 @@
 #' }
 #'
 #' @return `data.frame` object with geographic coordinates, time steps,
-#' estimated abundances, including observation error (if `sdlog > 0`)
+#' estimated abundances, including observation error (if `obs_error_param` is provided)
 #' and observer identifiers (if `type = "monitoring_based"`)
 #'
 #' @export
@@ -125,12 +131,22 @@
 #'   progress_bar = TRUE
 #' )
 #'
-#' # 5. noise
+#' # 5. noise "rlnorm"
 #' sample5 <- get_observations(sim_data,
 #'   sim_1,
 #'   type = "random_one_layer",
-#'   sdlog = log(1.2)
+#'   obs_error = "rlnorm",
+#'   obs_error_param = log(1.2)
 #' )
+#'
+#' # 6. noise "rbinom"
+#' sample6 <- get_observations(sim_data,
+#'   sim_1,
+#'   type = "random_one_layer",
+#'   obs_error = "rbinom",
+#'   obs_error_param = 0.8
+#' )
+#'
 #' }
 #'
 #' @srrstats {G1.4} uses roxygen documentation
@@ -144,16 +160,18 @@
 #'
 get_observations <- function(
     sim_data, sim_results, type = c("random_one_layer", "random_all_layers",
-    "from_data", "monitoring_based"), sdlog = log(1), ...) {
+    "from_data", "monitoring_based"), obs_error = c("rlnorm", "rbinom"), obs_error_param = NULL, ...) {
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6, SP2.7} assert input type
   # arguments validation
   type <- match.arg(type)
+  obs_error <- match.arg(obs_error)
   assert_that(inherits(sim_data, "sim_data"))
   assert_that(inherits(sim_results, "sim_results"))
-  assert_that(length(sdlog) == 1)
-  assert_that(is.numeric(sdlog))
+  assert_that((is.numeric(obs_error_param) && length(obs_error_param) == 1) ||
+                is.null(obs_error_param),
+              msg = "parameter obs_error_param can be set either as NULL or as a single number") #nolint
 
   # transform N_map to raster based on id
   N_rast <- rast(
@@ -170,8 +188,11 @@ get_observations <- function(
   }
 
   # add noise
-  if (sdlog > 0) {
-    out$value <- rlnorm(nrow(out), log(out$value), sdlog)
+  if (!is.null(obs_error_param)) {
+    if (obs_error == "rlnorm")
+      out$value <- rlnorm(nrow(out), log(out$value), obs_error_param)
+    else if(obs_error == "rbinom")
+      out$value <- rbinom(nrow(out), out$value, obs_error_param)
   }
 
   return(out)

@@ -4,7 +4,14 @@
 \alias{sim}
 \title{Mechanistic metapopulation simulator}
 \usage{
-sim(obj, time, burn = 0, cl = NULL, progress_bar = FALSE, quiet = TRUE)
+sim(
+  obj,
+  time,
+  burn = 0,
+  cl = NULL,
+  progress_bar = FALSE,
+  quiet = TRUE
+)
 }
 \arguments{
 \item{obj}{\code{sim_data} object created by \code{\link{initialise}} containing all
@@ -128,6 +135,5 @@ plot(to_rast(
 ), range = range(sim_1$N_map, na.rm = TRUE))
 
 }
-
 
 }

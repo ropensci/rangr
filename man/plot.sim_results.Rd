@@ -47,4 +47,10 @@ sim_data <- initialise(
 sim_res <- sim(sim_data, time = 10)
 plot(sim_res)
 
+# plot specific area
+plot(sim_res, xlim = c(4, 10), ylim = c(0, 10))
+plot(sim_res, ext = c(4, 10, 0, 10))
+plot(sim_res, template = n1_small, ext = c(274000, 280000, 610000, 620000))
+
+
 }

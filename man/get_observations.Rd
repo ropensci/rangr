@@ -8,7 +8,8 @@ get_observations(
   sim_data,
   sim_results,
   type = c("random_one_layer", "random_all_layers", "from_data", "monitoring_based"),
-  sdlog = log(1),
+  obs_error = c("rlnorm", "rbinom"),
+  obs_error_param = NULL,
   ...
 )
 }
@@ -37,9 +38,16 @@ the same observer for several years and whether it will not be made at all
 is defined using a geometric distribution (\code{\link[stats:Geometric]{rgeom}})
 }}
 
-\item{sdlog}{numeric vector of length 1; standard deviation (on a log scale)
-of the random noise in observation process generated from the log-normal
-distribution (\code{\link[stats:Lognormal]{rlnorm}})}
+\item{obs_error}{character vector of length 1; name of the distribution
+defining the observation process: "\code{\link[stats:Lognormal]{rlnorm}}" (the log
+normal distribution) or "\code{\link[stats:Binomial]{rbinom}}" (the binomial
+distribution)}
+
+\item{obs_error_param}{numeric vector of length 1; standard deviation
+(on a log scale) of the random noise in observation process generated from
+the log-normal distribution (\code{\link[stats:Lognormal]{rlnorm}}) or probability of
+detection (success) when the binomial distribution
+("\code{\link[stats:Binomial]{rbinom}}") is used}
 
 \item{...}{other necessary internal parameters:
 \itemize{
@@ -77,7 +85,7 @@ used when \code{type = "monitoring_based"}}
 }
 \value{
 \code{data.frame} object with geographic coordinates, time steps,
-estimated abundances, including observation error (if \code{sdlog > 0})
+estimated abundances, including observation error (if \code{obs_error_param} is provided)
 and observer identifiers (if \code{type = "monitoring_based"})
 }
 \description{
@@ -142,12 +150,22 @@ sample4 <- get_observations(
   progress_bar = TRUE
 )
 
-# 5. noise
+# 5. noise "rlnorm"
 sample5 <- get_observations(sim_data,
   sim_1,
   type = "random_one_layer",
-  sdlog = log(1.2)
+  obs_error = "rlnorm",
+  obs_error_param = log(1.2)
 )
+
+# 6. noise "rbinom"
+sample6 <- get_observations(sim_data,
+  sim_1,
+  type = "random_one_layer",
+  obs_error = "rbinom",
+  obs_error_param = 0.8
+)
+
 }
 
 }

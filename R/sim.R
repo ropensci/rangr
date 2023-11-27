@@ -119,6 +119,15 @@
 #'
 #' }
 #'
+#' @usage
+#' sim(
+#'   obj,
+#'   time,
+#'   burn = 0,
+#'   cl = NULL,
+#'   progress_bar = FALSE,
+#'   quiet = TRUE
+#' )
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation

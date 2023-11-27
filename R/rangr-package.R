@@ -13,6 +13,7 @@
 #' @importFrom stats approx
 #' @importFrom stats getCall
 #' @importFrom stats quantile
+#' @importFrom stats rbinom
 #' @importFrom stats reshape
 #' @importFrom stats rgeom
 #' @importFrom stats rlnorm
