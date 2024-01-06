@@ -22,7 +22,8 @@ distributions, the structure of the original survey data can be
 reproduced, or pure random sampling can be mimicked.
 
 The study is supported by the National Science Centre, Poland, grant no.
-2018/29/B/NZ8/00066.
+2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking Centre
+(grant no. 403).
 
 # Installation
 
@@ -72,7 +73,7 @@ and their dimensions, you can use the following commands:
 
 ``` r
 library(terra)
-#> terra 1.7.39
+#> terra 1.7.55
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
 K_small <-  rast(system.file("input_maps/K_small.tif", package = "rangr"))
