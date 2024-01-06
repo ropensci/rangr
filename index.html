@@ -69,7 +69,7 @@
 <!-- badges: start -->
 
 <p>The <strong>rangr</strong> package is designed to simulate a species range dynamics. This new tool mimics the essential processes that shape population numbers and spatial distribution: local dynamics and dispersal. Simulations can be run in a spatially explicit and dynamic environment, facilitating population projections in response to climate or land-use changes. By using different sampling schemes and observational error distributions, the structure of the original survey data can be reproduced, or pure random sampling can be mimicked.</p>
-<p>The study is supported by the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066.</p>
+<p>The study is supported by the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking Centre (grant no. 403).</p>
 </div>
 <div class="section level1">
 <h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -111,7 +111,7 @@
 <p>Two of the available datasets, <code>n1_small.tif</code> and <code>K_small.tif</code>, represent the abundance of a virtual species at the starting point of a simulation and the carrying capacity of the environment, respectively. Both of these objects refer to the same relatively small area, so they are ideal for demonstrating the usage of the package. To view these maps and their dimensions, you can use the following commands:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/" class="external-link">terra</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; terra 1.7.39</span></span>
+<span><span class="co">#&gt; terra 1.7.55</span></span>
 <span></span>
 <span><span class="va">n1_small</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input_maps/n1_small.tif"</span>, package <span class="op">=</span> <span class="st">"rangr"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">K_small</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/terra/man/rast.html" class="external-link">rast</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input_maps/K_small.tif"</span>, package <span class="op">=</span> <span class="st">"rangr"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
