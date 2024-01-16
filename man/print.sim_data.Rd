@@ -2,7 +2,7 @@
 % Please edit documentation in R/print.sim_data.R
 \name{print.sim_data}
 \alias{print.sim_data}
-\title{Print \code{sim_data} object}
+\title{Print \code{sim_data} Object}
 \usage{
 \method{print}{sim_data}(x, ...)
 }
@@ -16,7 +16,7 @@ currently none specified}
 \code{sim_data} object is invisibly returned (the \code{x} param)
 }
 \description{
-Print \code{sim_data} object
+Print \code{sim_data} Object
 }
 \examples{
 

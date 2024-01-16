@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.sim_results.R
 \name{plot.sim_results}
 \alias{plot.sim_results}
-\title{Plot \code{sim_results} object}
+\title{Plot \code{sim_results} Object}
 \usage{
 \method{plot}{sim_results}(x, template = NULL, time_points = NULL, range, type, ...)
 }

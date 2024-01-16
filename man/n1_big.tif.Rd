@@ -3,7 +3,7 @@
 \docType{data}
 \name{n1_big.tif}
 \alias{n1_big.tif}
-\title{Example of abundance map at first time step of the simulation (big)}
+\title{Example Of Abundance Map At First Time Step Of The Simulation (Big)}
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 100 rows
 and 100 columns containing integer values 0-50 and NA's

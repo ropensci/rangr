@@ -2,7 +2,7 @@
 % Please edit documentation in R/update.sim_data.R
 \name{update.sim_data}
 \alias{update.sim_data}
-\title{Update \code{sim_data} object}
+\title{Update \code{sim_data} Object}
 \usage{
 \method{update}{sim_data}(object, ..., evaluate = TRUE)
 }
@@ -20,7 +20,7 @@ If \code{evaluate = TRUE} the updated \code{sim_data} object,
 otherwise the updated call.
 }
 \description{
-Update \code{sim_data} object
+Update \code{sim_data} Object
 }
 \examples{
 \dontrun{

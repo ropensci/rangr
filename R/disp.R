@@ -1,4 +1,4 @@
-#' Simulating dispersal
+#' Simulating Dispersal
 #'
 #' The function simulates dispersal, for every square calculating the no. of
 #' individuals that disperse out of this square and the no. of individuals that
@@ -160,7 +160,7 @@ disp <- function(
 # Internal functions for disp function -----------------------------------------
 
 
-#' Distance for every individual
+#' Distance For Every Individual
 #'
 #' This function computes dispersal distance for every individual available
 #' in the simulation. It uses `kernel` to do so. `dists_tab` returns a list
@@ -195,7 +195,7 @@ dists_tab <- function(N_pos, kernel, resolution) {
 
 
 
-#' Dispersal from non-empty square
+#' Dispersal From Non-Empty Square
 #'
 #' This function calculates more possible target squares available
 #' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
@@ -252,7 +252,7 @@ sq_disp <- function(
   return(to)
 }
 
-#' Calculate missing indexes of target cells
+#' Calculate Missing Indexes Of Target Cells
 #'
 #' This internal function is used during dispersal process
 #' in [sq_disp] function. It returns indexes of target cells that were not
@@ -324,7 +324,7 @@ target_ids_in_disp <- function(id_x_y, id, id_within, resolution, min, max) {
 
 
 
-#' Dispersal simulation in one square
+#' Dispersal Simulation In One Square
 #'
 #' `one_dist_sq_disp` simulates dispersal in one cell to given distance
 #'

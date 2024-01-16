@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.sim_results.R
 \name{summary.sim_results}
 \alias{summary.sim_results}
-\title{Summary of \code{sim_results} object}
+\title{Summary Of \code{sim_results} Object}
 \usage{
 \method{summary}{sim_results}(object, ...)
 }
@@ -15,7 +15,7 @@
 \code{summary.sim_results} object
 }
 \description{
-Summary of \code{sim_results} object
+Summary Of \code{sim_results} Object
 }
 \examples{
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/subset.sim_results.R
 \name{subset.sim_results}
 \alias{subset.sim_results}
-\title{Subset of the given time points from \code{sim_results} object}
+\title{Subset Of The Given Time Points From \code{sim_results} Object}
 \usage{
 \method{subset}{sim_results}(x, from = NULL, time_points = NULL, ...)
 }
@@ -21,7 +21,7 @@ from which all time point should be kept}
 in the \code{N_map} slot
 }
 \description{
-Subset of the given time points from \code{sim_results} object
+Subset Of The Given Time Points From \code{sim_results} Object
 }
 \details{
 Either \code{from} or \code{time_points} argument has to be specified.

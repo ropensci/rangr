@@ -1,5 +1,5 @@
 #' @name K_small.tif
-#' @title Example of carrying capacity map (small)
+#' @title Example Of Carrying Capacity Map (Small)
 #' @docType data
 #'
 #' @description
@@ -25,7 +25,7 @@ NULL
 
 
 #' @name K_small_changing.tif
-#' @title Example of changing carrying capacity maps (small)
+#' @title Example Of Changing Carrying Capacity Maps (Small)
 #' @docType data
 #'
 #' @description
@@ -57,7 +57,7 @@ NULL
 
 
 #' @name K_big.tif
-#' @title Example of carrying capacity map (big)
+#' @title Example Of Carrying Capacity Map (Big)
 #' @docType data
 #'
 #' @description
@@ -83,7 +83,7 @@ NULL
 
 
 #' @name n1_small.tif
-#' @title Example of abundance map at first time step of the simulation (small)
+#' @title Example Of Abundance Map At First Time Step Of The Simulation (Small)
 #' @docType data
 #'
 #' @description
@@ -106,7 +106,7 @@ NULL
 
 
 #' @name n1_big.tif
-#' @title Example of abundance map at first time step of the simulation (big)
+#' @title Example Of Abundance Map At First Time Step Of The Simulation (Big)
 #' @docType data
 #'
 #' @description
@@ -129,7 +129,7 @@ NULL
 
 
 
-#' @title Example of observation points list
+#' @title Example Of Observation Points List
 #'
 #' @description
 #' A `data.frame` containing a sample input data to the function

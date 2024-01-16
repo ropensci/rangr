@@ -2,7 +2,7 @@
 % Please edit documentation in R/disp.R
 \name{disp}
 \alias{disp}
-\title{Simulating dispersal}
+\title{Simulating Dispersal}
 \usage{
 disp(
   N_t,

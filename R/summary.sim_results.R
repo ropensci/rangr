@@ -1,4 +1,4 @@
-#' Summary of `sim_results` object
+#' Summary Of `sim_results` Object
 #'
 #' @param object `sim_results` object; returned by [`sim`] function
 #' @param ... further arguments passed to or from other methods; none specified
@@ -67,7 +67,7 @@ summary.sim_results <- function(object, ...) {
 
 
 
-#' Print `summary.sim_results` object
+#' Print `summary.sim_results` Object
 #'
 #' @param x `summary.sim_results` object; returned by
 #' [`summary.sim_results`] function

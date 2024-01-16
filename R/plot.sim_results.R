@@ -1,4 +1,4 @@
-#' Plot `sim_results` object
+#' Plot `sim_results` Object
 #'
 #' @description Plots abundances obtained during simulation.
 #'

@@ -1,4 +1,4 @@
-#' Print `sim_data` object
+#' Print `sim_data` Object
 #'
 #' @param x `sim_data` object; returned by the [`initialise`] function
 #' @param ... further arguments passed to or from other methods;

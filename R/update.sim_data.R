@@ -1,4 +1,4 @@
-#' Update `sim_data` object
+#' Update `sim_data` Object
 #'
 #' @param object `sim_data` object; returned by [`initialise`] function
 #' @param ... further arguments passed to or from other methods;

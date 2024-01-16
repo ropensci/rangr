@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary.sim_data.R
 \name{print.summary.sim_data}
 \alias{print.summary.sim_data}
-\title{Print \code{summary.sim_data} object}
+\title{Print \code{summary.sim_data} Object}
 \usage{
 \method{print}{summary.sim_data}(x, ...)
 }
@@ -16,7 +16,7 @@ currently none specified}
 None
 }
 \description{
-Print \code{summary.sim_data} object
+Print \code{summary.sim_data} Object
 }
 \examples{
 

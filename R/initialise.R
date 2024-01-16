@@ -1,4 +1,4 @@
-#' Prepare data required to perform a simulation
+#' Prepare Data Required To Perform A Simulation
 #'
 #' This function generates a `sim_data` object which contains all the necessary
 #' information needed to run a simulation by the [`sim`] function. Note that the
@@ -336,7 +336,7 @@ initialize <- initialise
 # internal functions -----------------------------------------------------------
 
 
-#' Validating K_map and n1_map
+#' Validating K_map And n1_map
 #'
 #' This internal function checks if `K_map` and `n1_map` are correct (contain
 #' only non-negative values or NAs) and corresponds to each other. If `K_map`
@@ -372,7 +372,7 @@ K_n1_map_check <- function(K_map, n1_map, changing_env) {
 }
 
 
-#' Get carrying capacity for the first time step
+#' Get Carrying Capacity For The First Time Step
 #'
 #' [K_get_init_values] returns all values from map of carrying capacity
 #' in the first time step.
@@ -399,7 +399,7 @@ K_get_init_values <- function(K_map, changing_env) {
 }
 
 
-#' Check for precalculating target cells
+#' Check For Precalculating Target Cells
 #'
 #' [calc_dist] checks if target cells should be precalculated
 #' and if so calls [dist_list].
@@ -441,7 +441,7 @@ calc_dist <- function(
 }
 
 
-#' Precalculating target cells for dispersal
+#' Precalculating Target Cells For Dispersal
 #'
 #' `dist_list` checks if precalculation of target cells ids should be done
 #' in a linear or parallel way and then uses [target_ids] for calculation
@@ -497,7 +497,7 @@ dist_list <- function(
 
 
 
-#' Get indexes of target cells
+#' Get Indexes Of Target Cells
 #'
 #' [target_ids] finds all target cells available from given focal cell,
 #' that lie within the maximum distance threshold (`max_dist`).
@@ -560,7 +560,7 @@ target_ids <- function(idx, id, data, resolution, max_dist, id_within) {
 
 
 
-#' Count cells on every distance
+#' Count Cells On Every Distance
 #'
 #' This internal function counts how many cells are reachable on each distance
 #' from any cells of template `r`. It takes raster's resolution into account.

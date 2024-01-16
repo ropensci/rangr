@@ -1,4 +1,4 @@
-#' Summary of `sim_data` object
+#' Summary Of `sim_data` Object
 #'
 #' @param object `sim_data` object; returned by [`initialise`] function
 #' @param ... further arguments passed to or from other methods;
@@ -65,7 +65,7 @@ summary.sim_data <- function(object, ...) {
 }
 
 
-#' Print `summary.sim_data` object
+#' Print `summary.sim_data` Object
 #'
 #' @param x `summary.sim_data` object; returned by [`summary.sim_data`] function
 #' @param ... further arguments passed to or from other methods;

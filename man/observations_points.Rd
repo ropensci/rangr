@@ -3,7 +3,7 @@
 \docType{data}
 \name{observations_points}
 \alias{observations_points}
-\title{Example of observation points list}
+\title{Example Of Observation Points List}
 \format{
 A data frame with 1500 rows and 3 variables:
 \describe{

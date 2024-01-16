@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_observations.R
 \name{get_observations}
 \alias{get_observations}
-\title{Observation process}
+\title{Observation Process}
 \usage{
 get_observations(
   sim_data,

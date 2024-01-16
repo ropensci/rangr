@@ -3,7 +3,7 @@
 \name{initialise}
 \alias{initialise}
 \alias{initialize}
-\title{Prepare data required to perform a simulation}
+\title{Prepare Data Required To Perform A Simulation}
 \usage{
 initialise(
   n1_map,

@@ -1,4 +1,4 @@
-#' Subset of the given time points from `sim_results` object
+#' Subset Of The Given Time Points From `sim_results` Object
 #'
 #' @param x `sim_results` object; returned by [`sim`] function
 #' @param from numeric vector of length 1; indicates the starting time point

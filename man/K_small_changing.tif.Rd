@@ -3,7 +3,7 @@
 \docType{data}
 \name{K_small_changing.tif}
 \alias{K_small_changing.tif}
-\title{Example of changing carrying capacity maps (small)}
+\title{Example Of Changing Carrying Capacity Maps (Small)}
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 3 layers,
 each has 15 rows and 10 columns containing integer values 0-170 and

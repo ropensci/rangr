@@ -1,4 +1,4 @@
-#' Population growth functions
+#' Population Growth Functions
 #'
 #' Population growth functions that can be used during simulation
 #' conducted by [`sim`].

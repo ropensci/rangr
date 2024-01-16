@@ -5,7 +5,7 @@
 \alias{exponential}
 \alias{ricker}
 \alias{gompertz}
-\title{Population growth functions}
+\title{Population Growth Functions}
 \usage{
 exponential(x, r, ...)
 

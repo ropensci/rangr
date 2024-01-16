@@ -1,4 +1,4 @@
-#' Prepare time-varying carrying capacity maps
+#' Prepare Time-Varying Carrying Capacity Maps
 #'
 #' This function linearly interpolates values in a series of carrying
 #' capacity maps.
@@ -86,7 +86,7 @@ K_get_interpolation <- function(K_map, K_time_points = NULL, time = NULL) {
 
 # Internal functions for K_get_interpolation function --------------------------
 
-#' Validates K_map and time points
+#' Validates K_map And K_time_points
 #'
 #' This internal function validates the arguments passed to
 #' the `K_get_interpolation` function and assigns default values if needed.
@@ -180,7 +180,7 @@ K_check <- function(K_map, K_time_points, time) {
 
 
 
-#' Create interpolated carrying capacity maps
+#' Create Interpolated Carrying Capacity Maps
 #'
 #' This internal function transforms carrying capacity maps from
 #' [`SpatRaster`][terra::SpatRaster-class] with number of layers equal

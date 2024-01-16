@@ -1,4 +1,4 @@
-#' Mechanistic metapopulation simulator
+#' Mechanistic Metapopulation Simulator
 #'
 #' This function simulates population growth and dispersal providing a given
 #' environmental scenario. All parameters for the simulation must be set
@@ -340,7 +340,7 @@ get_K <- function(K_map, t, changing_env) {
 
 
 
-#' Check if population is extinct
+#' Check If Population Is Extinct
 #'
 #' This internal function checks if any individuals are present in the
 #' simulation. The `t` parameter is the current time step in which extinction

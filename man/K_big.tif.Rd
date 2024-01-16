@@ -3,7 +3,7 @@
 \docType{data}
 \name{K_big.tif}
 \alias{K_big.tif}
-\title{Example of carrying capacity map (big)}
+\title{Example Of Carrying Capacity Map (Big)}
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 100 rows
 and 100 columns containing integer values 0-25 and NA's

@@ -2,7 +2,7 @@
 % Please edit documentation in R/to_rast.R
 \name{to_rast}
 \alias{to_rast}
-\title{Transformation sim_results to raster}
+\title{Transformation \code{sim_results} To Raster}
 \usage{
 to_rast(sim_results, time_points = sim_results$simulated_time, template = NULL)
 }

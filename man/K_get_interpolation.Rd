@@ -2,7 +2,7 @@
 % Please edit documentation in R/K_get_interpolation.R
 \name{K_get_interpolation}
 \alias{K_get_interpolation}
-\title{Prepare time-varying carrying capacity maps}
+\title{Prepare Time-Varying Carrying Capacity Maps}
 \usage{
 K_get_interpolation(K_map, K_time_points = NULL, time = NULL)
 }

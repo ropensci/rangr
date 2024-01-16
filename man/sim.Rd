@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim.R
 \name{sim}
 \alias{sim}
-\title{Mechanistic metapopulation simulator}
+\title{Mechanistic Metapopulation Simulator}
 \usage{
 sim(
   obj,

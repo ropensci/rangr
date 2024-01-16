@@ -1,4 +1,4 @@
-#' Print `sim_results` object
+#' Print `sim_results` Object
 #'
 #' @param x `sim_results` object; returned by the [`sim`] function
 #' @param ... further arguments passed to or from other methods; none specified

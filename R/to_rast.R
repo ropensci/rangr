@@ -1,4 +1,4 @@
-#' Transformation sim_results to raster
+#' Transformation `sim_results` To Raster
 #'
 #' This function transforms selected subset of abundance matrices from
 #' `sim_results` into [`SpatRaster`][terra::SpatRaster-class] object. Layers are
