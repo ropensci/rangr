@@ -85,8 +85,8 @@ used when \code{type = "monitoring_based"}}
 }
 \value{
 \code{data.frame} object with geographic coordinates, time steps,
-estimated abundances, including observation error (if \code{obs_error_param} is provided)
-and observer identifiers (if \code{type = "monitoring_based"})
+estimated abundances, including observation error (if \code{obs_error_param} is
+provided) and observer identifiers (if \code{type = "monitoring_based"})
 }
 \description{
 This function simulates an observation process. It takes \code{sim_results} object

@@ -18,7 +18,7 @@
 Print \code{sim_results} Object
 }
 \examples{
-
+\dontrun{
 library(terra)
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
@@ -32,5 +32,6 @@ sim_data <- initialise(
 )
 sim_res <- sim(obj = sim_data, time = 20, burn = 5)
 print(sim_res)
+}
 
 }

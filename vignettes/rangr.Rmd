@@ -456,7 +456,8 @@ set.seed(123)
 str(observations_points) # required structure
 
 all_coords <- crds(sim_data_02$K_map)
-observations_coords <- all_coords[sample(1:nrow(all_coords), 0.1 * nrow(all_coords)),]
+observations_coords <- 
+  all_coords[sample(1:nrow(all_coords), 0.1 * nrow(all_coords)),]
 time_steps <- sim_result_02$simulated_time
 ncells <- nrow(observations_coords)
 

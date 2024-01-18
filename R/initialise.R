@@ -59,7 +59,8 @@
 #'   as targets for dispersal
 #' }
 #' @param kernel_fun character vector of length 1; name of a random number
-#' generation function defining a dispersal kernel (case-sensitive, default `"rexp"`)
+#' generation function defining a dispersal kernel (case-sensitive,
+#' default `"rexp"`)
 #' @param ... any parameters required by `kernel_fun`
 #' @param max_dist numeric vector of length 1; maximum distance of dispersal
 #' to pre-calculate target cells

@@ -1,11 +1,12 @@
+# nolint start
 #' srr_stats
 #'
-#' @srrstatsVerbose TRUE
+#' @srrstatsVerbose FALSE
 #'
 #' @srrstats {G1.1} Novel algorithm - mentioned in README
 #' @srrstats {G1.2} Life Cycle Statement included in CONTRIBUTING.md
 #' @srrstats {G1.3} Any statistical terminology is clarified in the documentation
-#' @srrstats {G3.0} All numeric equality comparisons are made between integersmethods should be documented (typically in examples or vignettes).
+#' @srrstats {G3.0} All numeric equality comparisons are made between methods should be documented (typically in examples or vignettes).
 #' @srrstats {SP2.1} This package uses the terra package
 #' @srrstats {SP2.2, SP2.2a, SP2.2b} Since this package is based on the terra package, it is compatible with it and other packages with which terra is compatible
 #' @srrstats {SP2.4, SP2.4a} The terra package takes care of that
@@ -54,3 +55,4 @@ NULL
 #'
 #' @noRd
 NULL
+# nolint end

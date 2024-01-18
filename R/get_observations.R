@@ -70,8 +70,8 @@
 #' }
 #'
 #' @return `data.frame` object with geographic coordinates, time steps,
-#' estimated abundances, including observation error (if `obs_error_param` is provided)
-#' and observer identifiers (if `type = "monitoring_based"`)
+#' estimated abundances, including observation error (if `obs_error_param` is
+#' provided) and observer identifiers (if `type = "monitoring_based"`)
 #'
 #' @export
 #'
@@ -160,7 +160,8 @@
 #'
 get_observations <- function(
     sim_data, sim_results, type = c("random_one_layer", "random_all_layers",
-    "from_data", "monitoring_based"), obs_error = c("rlnorm", "rbinom"), obs_error_param = NULL, ...) {
+    "from_data", "monitoring_based"), obs_error = c("rlnorm", "rbinom"),
+    obs_error_param = NULL, ...) {
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6, SP2.7} assert input type

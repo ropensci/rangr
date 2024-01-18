@@ -92,7 +92,8 @@ as targets for dispersal
 }}
 
 \item{kernel_fun}{character vector of length 1; name of a random number
-generation function defining a dispersal kernel (case-sensitive, default \code{"rexp"})}
+generation function defining a dispersal kernel (case-sensitive,
+default \code{"rexp"})}
 
 \item{...}{any parameters required by \code{kernel_fun}}
 
