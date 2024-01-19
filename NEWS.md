@@ -21,4 +21,5 @@
 ### Minor improvements
 
 -   Improved documentation for `get_observations()`.
+
 -   Added functionality description for `get_observations()` to the vignettes
