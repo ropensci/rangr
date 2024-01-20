@@ -38,12 +38,12 @@ be displayed}
 This function returns an object of class \code{sim_results} which is
 a list containing the following components:
 \itemize{
-\item{\code{extinction} - \code{TRUE} if population is extinct or \code{FALSE} otherwise}
-\item{\code{simulated_time} - number of simulated time steps without
-the burn-in ones}
-\item{\code{N_map} - 3-dimensional array representing spatio-temporal
+\item \code{extinction} - \code{TRUE} if population is extinct or \code{FALSE} otherwise
+\item \code{simulated_time} - number of simulated time steps without
+the burn-in ones
+\item \code{N_map} - 3-dimensional array representing spatio-temporal
 variability in population numbers. The first two dimensions correspond to
-the spatial aspect of the output and the third dimension represents time.}
+the spatial aspect of the output and the third dimension represents time.
 }
 
 In case of a total extinction, a simulation is stopped before reaching

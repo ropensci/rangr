@@ -20,7 +20,7 @@
 #'   \item "from_data" - cells for which abundance will be sampled are provided
 #'   by the user in a `data.frame` with three columns: "x", "y" and "time_step"
 #'   \item "monitoring_based" - cells from which abundance will be sampled
-#'   are provided by the user in a matrix object with two columns: “x” and “y”;
+#'   are provided by the user in a matrix object with two columns: "x" and "y";
 #'   abundance from given cell is then sampled by different virtual observers
 #'   in different time steps; whether a survey will be made by
 #'   the same observer for several years and whether it will not be made at all
@@ -37,36 +37,36 @@
 #' ("[`rbinom`][stats::rbinom()]") is used
 #' @param ... other necessary internal parameters:
 #' \itemize{
-#'   \item{`prop`
+#'   \item `prop`
 #'
 #'   numeric vector of length 1; proportion of cells to be sampled
 #'   (default `prop = 0.1`);
-#'   used when `type = "random_one_layer" or "random_all_layers"`,}
+#'   used when `type = "random_one_layer" or "random_all_layers"`,
 #'
-#'   \item{`points`
+#'   \item `points`
 #'
 #'   `data.frame` or `matrix` with 3 named numeric columns ("x", "y"
 #'   and "time_step") containing coordinates and time steps from which
-#'   observations should be obtained; used when `type = "from_data"`,}
+#'   observations should be obtained; used when `type = "from_data"`,
 #'
-#'   \item{`cells_coords`
+#'   \item `cells_coords`
 #'
 #'   `data.frame` or `matrix` with 2 named columns: "x" and "y"; survey plots
-#'   coordinates; used when `type = "monitoring_based"`}
+#'   coordinates; used when `type = "monitoring_based"`
 #'
-#'   \item{`prob`
+#'   \item `prob`
 #'
 #'    numeric vector of length 1; a parameter defining the shape of -
 #'    [`rgeom`][stats::rgeom()] distribution - it defines whether an observation
 #'    will be made by the same observer for several years and whether it
 #'    will not be made at all (default `prob = 0.3`);
-#'    used when `type = "monitoring_based"`}
+#'    used when `type = "monitoring_based"`
 #'
-#'   \item{`progress_bar`
+#'   \item `progress_bar`
 #'
 #'    logical vector of length 1; determines if progress bar for observational
 #'    process should be displayed (default `progress_bar = FALSE`);
-#'    used when `type = "monitoring_based"`}
+#'    used when `type = "monitoring_based"`
 #' }
 #'
 #' @return `data.frame` object with geographic coordinates, time steps,

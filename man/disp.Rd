@@ -35,11 +35,11 @@ in current time points}
 \item{dens_dep}{character vector of length 1 specifying if the probability
 of settling in a target square is (case-sensitive, default \code{"K2N"}):
 \itemize{
-\item{"none" - fully random,}
-\item{"K" - proportional to the carrying capacity of a target square,}
-\item{"K2N" - density-dependent, i.e. proportional to the ratio of
+\item "none" - fully random,
+\item "K" - proportional to the carrying capacity of a target square,
+\item "K2N" - density-dependent, i.e. proportional to the ratio of
 carrying capacity of a target square to the number of individuals
-already present in a target square}
+already present in a target square
 }}
 
 \item{dlist}{a list with identifiers of target cells at a specified

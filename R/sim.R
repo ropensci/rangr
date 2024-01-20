@@ -56,12 +56,12 @@
 #' @return This function returns an object of class `sim_results` which is
 #' a list containing the following components:
 #' \itemize{
-#'   \item{`extinction` - `TRUE` if population is extinct or `FALSE` otherwise}
-#'   \item{`simulated_time` - number of simulated time steps without
-#'   the burn-in ones}
-#'   \item{`N_map` - 3-dimensional array representing spatio-temporal
+#'   \item `extinction` - `TRUE` if population is extinct or `FALSE` otherwise
+#'   \item `simulated_time` - number of simulated time steps without
+#'   the burn-in ones
+#'   \item `N_map` - 3-dimensional array representing spatio-temporal
 #'   variability in population numbers. The first two dimensions correspond to
-#'   the spatial aspect of the output and the third dimension represents time.}
+#'   the spatial aspect of the output and the third dimension represents time.
 #' }
 #'
 #' In case of a total extinction, a simulation is stopped before reaching

@@ -31,7 +31,7 @@ for each time step
 \item "from_data" - cells for which abundance will be sampled are provided
 by the user in a \code{data.frame} with three columns: "x", "y" and "time_step"
 \item "monitoring_based" - cells from which abundance will be sampled
-are provided by the user in a matrix object with two columns: “x” and “y”;
+are provided by the user in a matrix object with two columns: "x" and "y";
 abundance from given cell is then sampled by different virtual observers
 in different time steps; whether a survey will be made by
 the same observer for several years and whether it will not be made at all
@@ -51,36 +51,36 @@ detection (success) when the binomial distribution
 
 \item{...}{other necessary internal parameters:
 \itemize{
-\item{\code{prop}
+\item \code{prop}
 
 numeric vector of length 1; proportion of cells to be sampled
 (default \code{prop = 0.1});
-used when \verb{type = "random_one_layer" or "random_all_layers"},}
+used when \verb{type = "random_one_layer" or "random_all_layers"},
 
-\item{\code{points}
+\item \code{points}
 
 \code{data.frame} or \code{matrix} with 3 named numeric columns ("x", "y"
 and "time_step") containing coordinates and time steps from which
-observations should be obtained; used when \code{type = "from_data"},}
+observations should be obtained; used when \code{type = "from_data"},
 
-\item{\code{cells_coords}
+\item \code{cells_coords}
 
 \code{data.frame} or \code{matrix} with 2 named columns: "x" and "y"; survey plots
-coordinates; used when \code{type = "monitoring_based"}}
+coordinates; used when \code{type = "monitoring_based"}
 
-\item{\code{prob}
+\item \code{prob}
 
 numeric vector of length 1; a parameter defining the shape of -
 \code{\link[stats:Geometric]{rgeom}} distribution - it defines whether an observation
 will be made by the same observer for several years and whether it
 will not be made at all (default \code{prob = 0.3});
-used when \code{type = "monitoring_based"}}
+used when \code{type = "monitoring_based"}
 
-\item{\code{progress_bar}
+\item \code{progress_bar}
 
 logical vector of length 1; determines if progress bar for observational
 process should be displayed (default \code{progress_bar = FALSE});
-used when \code{type = "monitoring_based"}}
+used when \code{type = "monitoring_based"}
 }}
 }
 \value{
