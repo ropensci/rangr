@@ -95,7 +95,7 @@ for each time step</p></li>
 <li><p>"from_data" - cells for which abundance will be sampled are provided
 by the user in a <code>data.frame</code> with three columns: "x", "y" and "time_step"</p></li>
 <li><p>"monitoring_based" - cells from which abundance will be sampled
-are provided by the user in a matrix object with two columns: “x” and “y”;
+are provided by the user in a matrix object with two columns: "x" and "y";
 abundance from given cell is then sampled by different virtual observers
 in different time steps; whether a survey will be made by
 the same observer for several years and whether it will not be made at all
@@ -119,20 +119,25 @@ detection (success) when the binomial distribution
 
 
 <dt>...</dt>
-<dd><p>other necessary internal parameters:</p><ul><li><p><code>prop</code>numeric vector of length 1; proportion of cells to be sampled
+<dd><p>other necessary internal parameters:</p><ul><li><p><code>prop</code></p>
+<p>numeric vector of length 1; proportion of cells to be sampled
 (default <code>prop = 0.1</code>);
 used when <code>type = "random_one_layer" or "random_all_layers"</code>,</p></li>
-<li><p><code>points</code><code>data.frame</code> or <code>matrix</code> with 3 named numeric columns ("x", "y"
+<li><p><code>points</code></p>
+<p><code>data.frame</code> or <code>matrix</code> with 3 named numeric columns ("x", "y"
 and "time_step") containing coordinates and time steps from which
 observations should be obtained; used when <code>type = "from_data"</code>,</p></li>
-<li><p><code>cells_coords</code><code>data.frame</code> or <code>matrix</code> with 2 named columns: "x" and "y"; survey plots
+<li><p><code>cells_coords</code></p>
+<p><code>data.frame</code> or <code>matrix</code> with 2 named columns: "x" and "y"; survey plots
 coordinates; used when <code>type = "monitoring_based"</code></p></li>
-<li><p><code>prob</code>numeric vector of length 1; a parameter defining the shape of -
+<li><p><code>prob</code></p>
+<p>numeric vector of length 1; a parameter defining the shape of -
 <code><a href="https://rdrr.io/r/stats/Geometric.html" class="external-link">rgeom</a></code> distribution - it defines whether an observation
 will be made by the same observer for several years and whether it
 will not be made at all (default <code>prob = 0.3</code>);
 used when <code>type = "monitoring_based"</code></p></li>
-<li><p><code>progress_bar</code>logical vector of length 1; determines if progress bar for observational
+<li><p><code>progress_bar</code></p>
+<p>logical vector of length 1; determines if progress bar for observational
 process should be displayed (default <code>progress_bar = FALSE</code>);
 used when <code>type = "monitoring_based"</code></p></li>
 </ul></dd>
