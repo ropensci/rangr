@@ -1,6 +1,5 @@
 url: https://popecol.github.io/rangr/
-template:
-  bootstrap: 5
+
 reference:
   - title: Simulation preparation
   - contents:
