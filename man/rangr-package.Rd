@@ -11,9 +11,9 @@ Species range dynamics simulation toolset.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/popecol/rangr}
+  \item \url{https://github.com/ropensci/rangr}
   \item \url{https://popecol.github.io/rangr/}
-  \item Report bugs at \url{https://github.com/popecol/rangr/issues}
+  \item Report bugs at \url{https://github.com/ropensci/rangr/issues}
 }
 
 }

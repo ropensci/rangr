@@ -24,7 +24,7 @@ If you've found a bug, please file an issue that illustrates the bug with a mini
 ### Pull request process
 
 -   Fork the package and clone it onto your computer.
-    If you haven't done this before, we recommend using `usethis::create_from_github("popecol/rangr", fork = TRUE)`.
+    If you haven't done this before, we recommend using `usethis::create_from_github("ropensci/rangr", fork = TRUE)`.
 
 -   Install all development dependencies with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`.
     If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing.

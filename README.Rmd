@@ -23,18 +23,16 @@ library(rangr)
 ```
 
 # rangr
-<!-- badges: start -->
-[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595)
-[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/popecol/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/popecol/rangr)
-<!-- badges: end -->
 
+<!-- badges: start -->
+
+[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595) [![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/ropensci/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/ropensci/rangr)
+
+<!-- badges: end -->
 
 The **rangr** package is designed to simulate a species range dynamics. This new tool mimics the essential processes that shape population numbers and spatial distribution: local dynamics and dispersal. Simulations can be run in a spatially explicit and dynamic environment, facilitating population projections in response to climate or land-use changes. By using different sampling schemes and observational error distributions, the structure of the original survey data can be reproduced, or pure random sampling can be mimicked.
 
-The study is supported by the National Science Centre, Poland, grant no.
-2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking Centre (grant no. 403).
+The study is supported by the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking Centre (grant no. 403).
 
 # Installation
 
@@ -47,7 +45,7 @@ Not released yet, but we're working on it.
 You can install the development version from GitHub with:
 
 ```{r instalation_dev, eval=FALSE}
-devtools::install_github("popecol/rangr")
+devtools::install_github("ropensci/rangr")
 ```
 
 # Basic simulation
@@ -186,3 +184,6 @@ library(rangr)
 citation("rangr")
 ```
 
+# Code of Conduct
+
+Please note that this package is released with a [Contributor Code of Conduct](https://ropensci.org/code-of-conduct/). By contributing to this project, you agree to abide by its terms.

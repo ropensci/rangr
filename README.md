@@ -8,8 +8,9 @@ Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/popecol/rangr/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/popecol/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/popecol/rangr)
+[![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/ropensci/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/ropensci/rangr)
+
 <!-- badges: end -->
 
 The **rangr** package is designed to simulate a species range dynamics.
@@ -36,7 +37,7 @@ Not released yet, but we’re working on it.
 You can install the development version from GitHub with:
 
 ``` r
-devtools::install_github("popecol/rangr")
+devtools::install_github("ropensci/rangr")
 ```
 
 # Basic simulation
@@ -261,3 +262,9 @@ To cite `rangr` use `citation()` function:
 library(rangr)
 citation("rangr")
 ```
+
+# Code of Conduct
+
+Please note that this package is released with a [Contributor Code of
+Conduct](https://ropensci.org/code-of-conduct/). By contributing to this
+project, you agree to abide by its terms.

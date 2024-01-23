@@ -8,7 +8,7 @@ citEntry(
     person("Lechosław", "Kuczyński")),
   year = "2023",
   note = "R package version 0.1.0",
-  url = "https://github.com/popecol/rangr",
+  url = "https://github.com/ropensci/rangr",
   textVersion = paste(
     "Markowska K. and Kuczyński L. (2023). rangr: simulating range dynamics of virtual species. R package version 0.1.0. https://popecol.github.io/rangr/"
   )
