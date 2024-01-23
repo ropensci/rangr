@@ -26,7 +26,7 @@ library(rangr)
 
 <!-- badges: start -->
 
-[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595) [![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/ropensci/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/ropensci/rangr)
+[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595) [![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr)
 
 <!-- badges: end -->
 
@@ -173,7 +173,7 @@ plot(my_rast, c(1, 10, 25, 50))
 
 # Vignettes
 
--   [Workflow examples](https://popecol.github.io/rangr/articles/rangr.html)
+-   [Workflow examples](https://ropensci.github.io/rangr/articles/rangr.html)
 
 # Citation
 

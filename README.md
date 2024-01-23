@@ -9,7 +9,7 @@ Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/ropensci/rangr/branch/main/graph/badge.svg?token=ZDNBMHBYXW)](https://codecov.io/gh/ropensci/rangr)
+[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr)
 
 <!-- badges: end -->
 
@@ -252,7 +252,7 @@ plot(my_rast, c(1, 10, 25, 50))
 # Vignettes
 
 - [Workflow
-  examples](https://popecol.github.io/rangr/articles/rangr.html)
+  examples](https://ropensci.github.io/rangr/articles/rangr.html)
 
 # Citation
 
