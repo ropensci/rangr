@@ -252,7 +252,7 @@ plot(my_rast, c(1, 10, 25, 50))
 # Vignettes
 
 - [Workflow
-  examples](https://ropensci.github.io/rangr/articles/rangr.html)
+  examples](https://docs.ropensci.org/rangr/articles/rangr.html)
 
 # Citation
 

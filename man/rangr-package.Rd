@@ -12,7 +12,7 @@ Species range dynamics simulation toolset.
 Useful links:
 \itemize{
   \item \url{https://github.com/ropensci/rangr}
-  \item \url{https://ropensci.github.io/rangr/}
+  \item \url{https://docs.ropensci.org/rangr/}
   \item Report bugs at \url{https://github.com/ropensci/rangr/issues}
 }
 

@@ -4,7 +4,7 @@
   "identifier": "rangr",
   "description": "Species range dynamics simulation toolset.",
   "name": "rangr: Mechanistic Simulation of Species Range Dynamics",
-  "relatedLink": "https://ropensci.github.io/rangr/",
+  "relatedLink": "https://docs.ropensci.org/rangr/",
   "codeRepository": "https://github.com/ropensci/rangr",
   "issueTracker": "https://github.com/ropensci/rangr/issues",
   "license": "https://spdx.org/licenses/MIT",
