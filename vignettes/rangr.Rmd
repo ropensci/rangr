@@ -226,7 +226,7 @@ my_rast <- to_rast(
 )
 
 # print raster
-print(my_rast)
+my_rast
 ```
 
 And then visualise it using the `plot()` function:
@@ -371,7 +371,7 @@ This completes the preparation of the input maps required for this example. We w
 First, let's take a look at the `sim_data` object from the previous chapter:
 
 ```{r print_sim_data_01}
-print(sim_data_01)
+sim_data_01
 ```
 
 After the information about the input maps, we can see a list of parameters that can be modified. We will change the following:
@@ -410,7 +410,7 @@ sim_data_02 <- update(sim_data_01,
 The growth of virtual species is now defined using the Ricker function (`growth = "ricker"`) with increased intrinsic growth rate (`r` `=` `log(5)`) combined with weak Allee effect (`A = 0.2`) and added demographic stochasticity (`r_sd = 0.05`). The probability of settlement in a target cell is determined solely by its carrying capacity value (`dens_dep = "K"`). We also changed the parameter of a dispersal kernel (`rate = 1/500`) and the behaviour of the species near the borders - now specimens cannot leave the specified study area (`border = "reprising"`).
 
 ```{r print_sim_data_02}
-print(sim_data_02)
+sim_data_02
 ```
 
 ## Simulation
