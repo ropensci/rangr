@@ -208,7 +208,7 @@ sim <- function(
   # Loop through time
 
   if (progress_bar) {
-    pb <- txtProgressBar(min = 1, max = time, style = 3)
+    pb <- txtProgressBar(min = 1, max = time, style = 3, char = "+")
     setTxtProgressBar(pb, 1)
   }
 
