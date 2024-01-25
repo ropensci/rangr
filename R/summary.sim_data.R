@@ -42,6 +42,7 @@ summary.sim_data <- function(object, ...) {
   values <- object[names]
   values$dlist <- ifelse(is.null(object$dlist), FALSE, TRUE)
   values$A <- ifelse(is.na(values$A), "-", values$A)
+  values$r <- round(object$r, digits = 4)
   params_sm <- data.frame(unlist(values))
   colnames(params_sm) <- NULL
 
