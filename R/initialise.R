@@ -238,7 +238,7 @@ initialise <- function(
 
   #' @srrstats {G2.16} Check for NaNs and convert them to Nas
   # classify NaN to NA for input maps
-  if (any(is.nan(values(n1_map))) || any(is.nan(values(K_map)))) {
+  if ((any(is.nan(values(n1_map))) || any(is.nan(values(K_map)))) && !quiet) {
 
     message("NaN values were found in input maps and replaced with NA (cells outside the study area)") #nolint
     n1_map <- classify(n1_map, cbind(NaN, NA))
