@@ -47,7 +47,7 @@ test_that("initialise works", {
       n1_map = test_rast,
       K_map = test_rast_with_nan,
       r = log(1.2),
-      quiet = TRUE
+      quiet = FALSE
     ),
     "NaN values were found in input maps and replaced with NA")
 
@@ -56,7 +56,7 @@ test_that("initialise works", {
       n1_map = test_rast_with_nan,
       K_map = test_rast,
       r = log(1.2),
-      quiet = TRUE
+      quiet = FALSE
     ),
     "NaN values were found in input maps and replaced with NA")
 
