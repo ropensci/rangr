@@ -4,6 +4,12 @@
 
 -   Remove `print()` from the vignette
 
+-   All messages produced during `initialise()` are now turned off by default (by `quiet` parameter)
+
+-   Changed the appearance of the progress bar in the `sim()` function to match that in `initialise()`
+
+-   In `summary.sim_data()` the `r` parameter is now rounded to the 4th decimal place
+
 # rangr 1.0.2 (2024-01-16)
 
 ### Major improvements
