@@ -8,8 +8,7 @@ Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr)
+[![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr)[![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367)
 
 <!-- badges: end -->
 
@@ -101,7 +100,6 @@ sim_data_01 <- initialise(
   r = log(2),
   rate = 1 / 1e3
 )
-#> NaN values were found in input maps and replaced with NA (cells outside the study area)
 ```
 
 Here, we set the intrinsic population growth rate to `log(2)` and the
@@ -121,16 +119,16 @@ summary(sim_data_01)
 #> Carrying capacity map summary: 
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
 #>    0.00    0.00   56.00   44.84   72.00  100.00      12 
-#>                               
-#> growth                gompertz
-#> r            0.693147180559945
-#> A                            -
-#> kernel_fun                rexp
-#> dens_dep                   K2N
-#> border               absorbing
-#> max_dist                  2000
-#> changing_env             FALSE
-#> dlist                     TRUE
+#>                       
+#> growth        gompertz
+#> r               0.6931
+#> A                    -
+#> kernel_fun        rexp
+#> dens_dep           K2N
+#> border       absorbing
+#> max_dist          2000
+#> changing_env     FALSE
+#> dlist             TRUE
 ```
 
 ## Simulation
