@@ -33,9 +33,11 @@ Not released yet, but we’re working on it.
 
 ## Development version
 
-You can install the development version from GitHub with:
+You can install the development version from R-universe or GitHub with:
 
 ``` r
+install.packages("rangr", repos = "https://ropensci.r-universe.dev")
+# or
 devtools::install_github("ropensci/rangr")
 ```
 
