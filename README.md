@@ -8,7 +8,8 @@ Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr)[![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367)
+[![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr)
+[![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367)
 
 <!-- badges: end -->
 
