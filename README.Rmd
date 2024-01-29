@@ -26,7 +26,7 @@ library(rangr)
 
 <!-- badges: start -->
 
-[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595) [![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr) [![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367)
+[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595) [![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr) [![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367)
 
 
 <!-- badges: end -->
@@ -36,10 +36,6 @@ The **rangr** package is designed to simulate a species range dynamics. This new
 The study is supported by the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking Centre (grant no. 403).
 
 # Installation
-
-## Released version
-
-Not released yet, but we're working on it.
 
 ## Development version
 
