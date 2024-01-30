@@ -8,6 +8,7 @@ sim(
   obj,
   time,
   burn = 0,
+  return_mu = FALSE,
   cl = NULL,
   progress_bar = FALSE,
   quiet = TRUE
@@ -21,8 +22,11 @@ simulation parameters and necessary data}
 simulated}
 
 \item{burn}{positive integer vector of length 1; the number of burn-in time
-steps that are
-discarded from the output}
+steps that are discarded from the output}
+
+\item{return_mu}{logical vector of length 1; if \code{TRUE} demographic
+process return expected values; if \code{FALSE} the \code{\link[stats:Poisson]{rpois}} function
+should be used}
 
 \item{cl}{an optional cluster object created by
 \code{\link[parallel:makeCluster]{makeCluster}} needed for parallel calculations}

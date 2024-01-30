@@ -43,8 +43,10 @@
 #' @param time positive integer vector of length 1; number of time steps
 #' simulated
 #' @param burn positive integer vector of length 1; the number of burn-in time
-#' steps that are
-#' discarded from the output
+#' steps that are discarded from the output
+#' @param return_mu logical vector of length 1; if `TRUE` demographic
+#' process return expected values; if `FALSE` the [`rpois`][stats::rpois] function
+#' should be used
 #' @param cl an optional cluster object created by
 #' [`makeCluster`][parallel::makeCluster()] needed for parallel calculations
 #' @param progress_bar logical vector of length 1 determines if progress bar
@@ -124,6 +126,7 @@
 #'   obj,
 #'   time,
 #'   burn = 0,
+#'   return_mu = FALSE,
 #'   cl = NULL,
 #'   progress_bar = FALSE,
 #'   quiet = TRUE
@@ -138,7 +141,7 @@
 #' @srrstats {SP4.2} returned values are documented
 #'
 sim <- function(
-    obj, time, burn = 0, cl = NULL, progress_bar = FALSE, quiet = TRUE) {
+    obj, time, burn = 0, return_mu = FALSE, cl = NULL, progress_bar = FALSE, quiet = TRUE) {
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.6, SP2.7} assert input type
@@ -155,6 +158,10 @@ sim <- function(
   assert_that(length(burn) == 1)
   assert_that(is.numeric(burn))
   assert_that(burn >= 0)
+
+  ## return_mu
+  assert_that(length(return_mu) == 1)
+  assert_that(is.logical(return_mu))
 
   ## progress_bar
   assert_that(length(progress_bar) == 1)
@@ -222,9 +229,13 @@ sim <- function(
     # Demographic processes
     mu[, , t - 1] <- dynamics(N[, , t - 1], r[t - 1], K, A)
 
-    # demographic stochasticity (random numbers drown from a Poisson distribution) #nolint
-    # of no. of individuals in each square predicted by the deterministic model)
-    N[, , t] <- rpois(ncells, mu[, , t - 1])
+    if(return_mu) {
+      N[, , t] <- round(mu[, , t - 1])
+    } else{
+      # demographic stochasticity (random numbers drown from a Poisson distribution) #nolint
+      # of no. of individuals in each square predicted by the deterministic model)
+      N[, , t] <- rpois(ncells, mu[, , t - 1])
+    }
 
 
     # check for extinction
