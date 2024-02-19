@@ -8,12 +8,12 @@
 #' change, ecological disturbance, etc.) one needs to provide time-varying
 #' carrying capacity maps.
 #'
-#' Either `K_time_points` or `time` parameter are needed to calculate
-#' interpolation. If interpolation should  be calculated between two carrying
+#' Either `K_time_points` or the `time` parameter is needed to calculate
+#' interpolation. If interpolation should be calculated between two carrying
 #' capacity maps, there is no need to pass the time points, because 1 will
-#' be set as a starting time point and `time` will be used as the ending point.
-#' On the other hand, in the absence of the `time` argument, the last element of
-#' `K_time_points` is considered to be the ending point for the interpolation.
+#' be set as the starting time point and `time` will be used as the ending point.
+#' On the other hand, in the absence of the `time` argument, the maximum element
+#' of `K_time_points` is considered to be the ending point for the interpolation.
 #'
 #'
 #'
@@ -157,7 +157,7 @@ K_check <- function(K_map, K_time_points, time) {
       "Argument \"time\" is no specified - ",
       "last number from \"K_time_points\" is used as \"time\""
     )
-    time <- K_time_points[ntp]
+    time <- max(K_time_points)
 
   } else {
 
@@ -170,7 +170,7 @@ K_check <- function(K_map, K_time_points, time) {
       K_time_points <- c(1, time) # default time points for 2-layered K_map
     } else {
       assert_that(
-        K_time_points[ntp] == time,
+        max(K_time_points) == time,
         msg = "Last element of \"K_time_points\" should be equal to \"time\"")
     }
   }
