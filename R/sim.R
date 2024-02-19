@@ -158,6 +158,7 @@ sim <- function(
   assert_that(length(burn) == 1)
   assert_that(is.numeric(burn))
   assert_that(burn >= 0)
+  assert_that(burn < time)
 
   ## return_mu
   assert_that(length(return_mu) == 1)
