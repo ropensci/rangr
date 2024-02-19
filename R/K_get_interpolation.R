@@ -111,6 +111,10 @@ K_check <- function(K_map, K_time_points, time) {
     !is.null(time) || (!is.null(K_time_points)),
     msg = "Either \"K_time_points\" or \"time\" must be specified")
 
+  assert_that(
+    !any(duplicated(K_time_points)),
+    msg = "\"K_time_points\" should contain only unique values")
+
   # number of layers
   nls <- nlyr(K_map)
 
