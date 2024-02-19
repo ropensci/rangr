@@ -152,11 +152,17 @@ sim <- function(
   ## time
   assert_that(length(time) == 1)
   assert_that(is.numeric(time))
+  assert_that(
+    time %% 1 == 0,
+    msg = "the time parameter must be an integer")
   assert_that(time > 1)
 
   ## burn
   assert_that(length(burn) == 1)
   assert_that(is.numeric(burn))
+  assert_that(
+    burn %% 1 == 0,
+    msg = "the burn parameter must be an integer")
   assert_that(burn >= 0)
   assert_that(burn < time)
 
