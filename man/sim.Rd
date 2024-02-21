@@ -51,7 +51,7 @@ the spatial aspect of the output and the third dimension represents time.
 }
 
 In case of a total extinction, a simulation is stopped before reaching
-the specified no. of time steps. If the population died out before reaching
+the specified number of time steps. If the population died out before reaching
 the \code{burn} threshold, then nothing can be returned and an error occurs.
 }
 \description{

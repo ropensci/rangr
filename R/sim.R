@@ -67,7 +67,7 @@
 #' }
 #'
 #' In case of a total extinction, a simulation is stopped before reaching
-#' the specified no. of time steps. If the population died out before reaching
+#' the specified number of time steps. If the population died out before reaching
 #' the `burn` threshold, then nothing can be returned and an error occurs.
 #'
 #' @export
@@ -190,7 +190,7 @@ sim <- function(
   r <- obj$r # intrinsic population growth rate
   r_sd <- obj$r_sd # sd of intrinsic growth rate (time specific variation)
   A <- obj$A # Allee effect coefficient
-  id <- obj$id # square identifiers
+  id <- obj$id # grid cells identifiers
   ncells <- obj$ncells # number of cells in the study area
   data_table <- obj$data_table
   changing_env <- obj$changing_env
@@ -240,7 +240,7 @@ sim <- function(
       N[, , t] <- round(mu[, , t - 1])
     } else{
       # demographic stochasticity (random numbers drown from a Poisson distribution) #nolint
-      # of no. of individuals in each square predicted by the deterministic model)
+      # of number of individuals in each cell predicted by the deterministic model)
       N[, , t] <- rpois(ncells, mu[, , t - 1])
     }
 

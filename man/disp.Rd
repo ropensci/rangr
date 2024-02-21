@@ -33,13 +33,13 @@ in current time points}
 \item{kernel}{a function defining dispersal kernel}
 
 \item{dens_dep}{character vector of length 1 specifying if the probability
-of settling in a target square is (case-sensitive, default \code{"K2N"}):
+of settling in a target grid cell is (case-sensitive, default \code{"K2N"}):
 \itemize{
 \item "none" - fully random,
-\item "K" - proportional to the carrying capacity of a target square,
+\item "K" - proportional to the carrying capacity of a target cell,
 \item "K2N" - density-dependent, i.e. proportional to the ratio of
-carrying capacity of a target square to the number of individuals
-already present in a target square
+carrying capacity of a target cell to the number of individuals
+already present in a target cell
 }}
 
 \item{dlist}{a list with identifiers of target cells at a specified
@@ -80,9 +80,9 @@ from each cell
 to each cell
 }
 \description{
-The function simulates dispersal, for every square calculating the no. of
-individuals that disperse out of this square and the no. of individuals that
-disperse into this square.
+The function simulates dispersal, for every grid cell calculating the number
+of individuals that disperse out of this cell and the number of individuals
+that disperse into this cell.
 }
 \details{
 This is the function used by \code{\link{sim}} internally and is not intended to be

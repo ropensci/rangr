@@ -47,7 +47,7 @@ initialize(
 }
 \arguments{
 \item{n1_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer;
-population numbers in every square at the first time step}
+population numbers in every grid cell at the first time step}
 
 \item{K_map}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object with one layer;
 carrying capacity map (if K is constant across time) or maps (if K is
@@ -73,13 +73,13 @@ the user (case-sensitive, default \code{\link[=growth]{"gompertz"}})}
 (see the \code{\link{growth}} function)}
 
 \item{dens_dep}{character vector of length 1 specifying if the probability
-of settling in a target square is (case-sensitive, default \code{"K2N"}):
+of settling in a target grid cell is (case-sensitive, default \code{"K2N"}):
 \itemize{
 \item "none" - fully random,
-\item "K" - proportional to the carrying capacity of a target square,
+\item "K" - proportional to the carrying capacity of a target cell,
 \item "K2N" - density-dependent, i.e. proportional to the ratio of
-carrying capacity of a target square to the number of individuals
-already present in a target square
+carrying capacity of a target cell to the number of individuals
+already present in a target cell
 }}
 
 \item{border}{character vector of length 1 defining how to deal

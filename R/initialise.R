@@ -23,7 +23,7 @@
 #'
 #'
 #' @param n1_map [`SpatRaster`][terra::SpatRaster-class] object with one layer;
-#' population numbers in every square at the first time step
+#' population numbers in every grid cell at the first time step
 #' @param K_map [`SpatRaster`][terra::SpatRaster-class] object with one layer;
 #' carrying capacity map (if K is constant across time) or maps (if K is
 #' time-varying)
@@ -42,13 +42,13 @@
 #' @param A numeric vector of length 1; strength of the Allee effect
 #' (see the [`growth`] function)
 #' @param dens_dep character vector of length 1 specifying if the probability
-#' of settling in a target square is (case-sensitive, default `"K2N"`):
+#' of settling in a target grid cell is (case-sensitive, default `"K2N"`):
 #' \itemize{
 #'   \item "none" - fully random,
-#'   \item "K" - proportional to the carrying capacity of a target square,
+#'   \item "K" - proportional to the carrying capacity of a target cell,
 #'   \item "K2N" - density-dependent, i.e. proportional to the ratio of
-#'   carrying capacity of a target square to the number of individuals
-#'   already present in a target square
+#'   carrying capacity of a target cell to the number of individuals
+#'   already present in a target cell
 #' }
 #' @param border character vector of length 1 defining how to deal
 #' with borders (case-sensitive, default `"absorbing"`):
@@ -291,7 +291,7 @@ initialise <- function(
     )
   }
 
-  ncells_in_circle <- switch(border, # no. of cells at each distance
+  ncells_in_circle <- switch(border, # number of cells at each distance
                              absorbing = ncell_in_circle(n1_map),
                              reprising = NULL
   )

@@ -1,8 +1,8 @@
 #' Simulating Dispersal
 #'
-#' The function simulates dispersal, for every square calculating the no. of
-#' individuals that disperse out of this square and the no. of individuals that
-#'  disperse into this square.
+#' The function simulates dispersal, for every grid cell calculating the number
+#' of individuals that disperse out of this cell and the number of individuals
+#' that disperse into this cell.
 #'
 #' This is the function used by [`sim`] internally and is not intended to be
 #' called by the user. The parameters for this function are passed from
@@ -100,7 +100,7 @@ disp <- function(
   im <- em <- matrix(0L, nrow = nrow(N_t), ncol = ncol(N_t))
 
   # necessary variables
-  id_ok_mask <- N_t > 0 & within_mask # square ids where the species is present
+  id_ok_mask <- N_t > 0 & within_mask # cell ids where the species is present
   id_ok <- as.matrix(id, wide = TRUE)[id_ok_mask]
   N_pos <- N_t[id_ok_mask]
   disp_dist <- dists_tab(N_pos, kernel, resolution)
@@ -109,7 +109,7 @@ disp <- function(
   # version of dispersal (linear vs. parallel calculations)
   if (is.null(cl)) {
 
-    # cycle over non-empty squares
+    # cycle over non-empty grid cells
     disp_res <- lapply(
       seq_len(length(N_pos)), sq_disp,
       disp_dist = disp_dist,
@@ -126,7 +126,7 @@ disp <- function(
 
   } else {
 
-    # cycle over non-empty squares
+    # cycle over non-empty grid cells
     disp_res <- parLapply(
       cl, seq_len(length(N_pos)), sq_disp,
       disp_dist = disp_dist,
@@ -195,9 +195,9 @@ dists_tab <- function(N_pos, kernel, resolution) {
 
 
 
-#' Dispersal From Non-Empty Square
+#' Dispersal From Non-Empty Grid Cells
 #'
-#' This function calculates more possible target squares available
+#' This function calculates more possible target cells available
 #' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
 #' to find cells that individuals will emigrate to.
 #'
@@ -218,14 +218,14 @@ sq_disp <- function(
     i, disp_dist, id_within, id_ok, dlist, data_table, id, resolution, dens_dep,
     ncells_in_circle, border) {
 
-  # max dispersal distance out from the square id_ok[i] (in raster units):
+  # max dispersal distance out from the cell id_ok[i] (in raster units):
   nd <- length(disp_dist[[i]])
 
   # position of a target id-s stored in a list "dlist"
-  # for the focal square id_ok[i]
+  # for the focal cell id_ok[i]
   pos <- which(id_within == id_ok[i])
 
-  # no info in dlist about that particular square OR beyond max_dist
+  # no info in dlist about that particular cell OR beyond max_dist
   if ((no_info <- (pos > length(dlist))) || nd > length(dlist[[pos]])) {
 
     # calculate missing targets
@@ -241,7 +241,7 @@ sq_disp <- function(
     dlist[[pos]][(length(dlist[[pos]]) + 1):nd] <- more_targets
   }
 
-  # cycle over j distances within the square id_ok[i]
+  # cycle over j distances within the cell id_ok[i]
   to <- lapply(
     seq_len(nd), one_dist_sq_disp, id_ok[i], dlist[[pos]], disp_dist[[i]],
     data_table, dens_dep, ncells_in_circle, border
@@ -324,7 +324,7 @@ target_ids_in_disp <- function(id_x_y, id, id_within, resolution, min, max) {
 
 
 
-#' Dispersal Simulation In One Square
+#' Dispersal Simulation In One Grid Cell
 #'
 #' `one_dist_sq_disp` simulates dispersal in one cell to given distance
 #'
@@ -358,20 +358,20 @@ one_dist_sq_disp <- function(j, id_int, dlist_pos, disp_dist_i, data_table,
       out <- rep(id_int, times = disp_dist_i[j])
     }
   } else {
-    # tij target squares at the distance j from the focal square id_ok[i]
+    # tij target cells at the distance j from the focal cell id_ok[i]
     tij <- dlist_pos[[j]]
 
     Ks <- data_table[tij, "K"]
     Ns <- data_table[tij, "N"]
 
-    # dij - no. of individuals dispersing out from the square id_ok[i]
+    # dij - number of individuals dispersing out from the cell id_ok[i]
     # at the distance j:
     if ((dij <- disp_dist_i[j]) == 0) {
       # if no individuals
 
       out <- NULL
     } else if (sum(Ks) == 0 && dens_dep != "none") {
-      # if K in all target squares is 0 and dispersal is ~ to K -
+      # if K in all target cells is 0 and dispersal is ~ to K -
       # all individuals stay in current sq
 
       out <- rep(id_int, disp_dist_i[j])
