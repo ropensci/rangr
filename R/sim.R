@@ -90,34 +90,37 @@
 #' )
 #'
 #' # simulation
-#' sim_1 <- sim(obj = sim_data, time = 100)
+#' sim_1 <- sim(obj = sim_data, time = 20)
 #'
 #' # simulation with burned time steps and progress bar
-#' sim_2 <- sim(obj = sim_data, time = 100, burn = 20, progress_bar = TRUE)
+#' sim_2 <- sim(obj = sim_data, time = 20, burn = 10, progress_bar = TRUE)
 #'
 #' # example with parallelization
 #' library(parallel)
 #' cl <- makeCluster(detectCores())
 #'
 #' # parallelized simulation
-#' sim_3 <- sim(obj = sim_data, time = 100, cl = cl, progress_bar = TRUE)
+#' sim_3 <- sim(obj = sim_data, time = 20, cl = cl, progress_bar = TRUE)
 #' stopCluster(cl)
 #'
 #'
 #' # visualisation
-#' plot(n1_small)
-#'
-#' plot(to_rast(
+#' plot(
 #'   sim_1,
-#'   time_points = 100,
+#'   time_points = 20,
 #'   template = sim_data$K_map
-#' ))
+#' )
 #'
-#' plot(to_rast(
+#' plot(
 #'   sim_1,
-#'   time_points = c(1, 10, 50, 100),
+#'   time_points = c(1, 5, 10, 20),
 #'   template = sim_data$K_map
-#' ), range = range(sim_1$N_map, na.rm = TRUE))
+#' )
+#'
+#' plot(
+#'   sim_1,
+#'   template = sim_data$K_map
+#' )
 #'
 #' }
 #'
@@ -194,7 +197,6 @@ sim <- function(
   ncells <- obj$ncells # number of cells in the study area
   data_table <- obj$data_table
   changing_env <- obj$changing_env
-  resolution <- obj$resolution
 
 
   # Specify other necessary data
@@ -270,8 +272,8 @@ sim <- function(
       N_t = N[, , t], id = id,
       data_table = data_table, kernel = obj$kernel,
       dens_dep = obj$dens_dep, dlist = obj$dlist, id_within = obj$id_within,
-      within_mask = obj$within_mask, border = obj$border,
-      max_dist = obj$max_dist, resolution = resolution,
+      within_mask = obj$within_mask, border = obj$border, planar = obj$planar,
+      obj$dist_resolution, max_dist = obj$max_dist, dist_bin = obj$dist_bin,
       ncells_in_circle = obj$ncells_in_circle, cl = cl
     )
 

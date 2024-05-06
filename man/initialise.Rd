@@ -14,7 +14,7 @@ initialise(
   growth = "gompertz",
   A = NA,
   dens_dep = c("K2N", "K", "none"),
-  border = c("absorbing", "reprising"),
+  border = c("reprising", "absorbing"),
   kernel_fun = "rexp",
   ...,
   max_dist = NA,
@@ -34,7 +34,7 @@ initialize(
   growth = "gompertz",
   A = NA,
   dens_dep = c("K2N", "K", "none"),
-  border = c("absorbing", "reprising"),
+  border = c("reprising", "absorbing"),
   kernel_fun = "rexp",
   ...,
   max_dist = NA,
@@ -85,10 +85,10 @@ already present in a target cell
 \item{border}{character vector of length 1 defining how to deal
 with borders (case-sensitive, default \code{"absorbing"}):
 \itemize{
-\item "absorbing" - individuals that disperse outside the study area
-are removed from the population
 \item "reprising" - cells outside the study area are not allowed
 as targets for dispersal
+\item "absorbing" - individuals that disperse outside the study area
+are removed from the population
 }}
 
 \item{kernel_fun}{character vector of length 1; name of a random number
@@ -109,8 +109,7 @@ for every cell within the study area}
 \item{progress_bar}{logical vector of length 1; determines if progress bar
 for calculating distances should be displayed (used only if dlist is \code{NULL})}
 
-\item{quiet}{logical vector of length 1; determines if messages for
-calculating distances should be displayed (used only if dlist is \code{NULL})}
+\item{quiet}{logical vector of length 1; determines if messages should be displayed}
 
 \item{cl}{cluster object created by \code{\link[parallel:makeCluster]{makeCluster}}}
 }
@@ -173,11 +172,11 @@ sim_data_2 <- initialise(
   rate = 1 / 1e3
 )
 
-# example with progress bar
+# example with progress bar and messages
 sim_data_3 <- initialise(
   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
   r_sd = 4, growth = "ricker", rate = 1 / 200,
-  max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE
+  max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
 )
 
 # example with parallelization
@@ -190,7 +189,7 @@ sim_data_4 <- initialise(
   r = log(2),
   rate = 1 / 1e3,
   cl = cl,
-  progress_bar = TRUE
+  progress_bar = TRUE,
 )
 stopCluster(cl)
 }

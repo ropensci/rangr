@@ -53,10 +53,10 @@
 #' @param border character vector of length 1 defining how to deal
 #' with borders (case-sensitive, default `"absorbing"`):
 #' \itemize{
-#'   \item "absorbing" - individuals that disperse outside the study area
-#'   are removed from the population
 #'   \item "reprising" - cells outside the study area are not allowed
 #'   as targets for dispersal
+#'   \item "absorbing" - individuals that disperse outside the study area
+#'   are removed from the population
 #' }
 #' @param kernel_fun character vector of length 1; name of a random number
 #' generation function defining a dispersal kernel (case-sensitive,
@@ -70,8 +70,7 @@
 #' for every cell within the study area
 #' @param progress_bar logical vector of length 1; determines if progress bar
 #' for calculating distances should be displayed (used only if dlist is `NULL`)
-#' @param quiet logical vector of length 1; determines if messages for
-#' calculating distances should be displayed (used only if dlist is `NULL`)
+#' @param quiet logical vector of length 1; determines if messages should be displayed
 #' @param cl cluster object created by [`makeCluster`][parallel::makeCluster()]
 #'
 #' @return Object of class `sim_data` which inherits from `list`. This object
@@ -113,11 +112,11 @@
 #'   rate = 1 / 1e3
 #' )
 #'
-#' # example with progress bar
+#' # example with progress bar and messages
 #' sim_data_3 <- initialise(
 #'   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
 #'   r_sd = 4, growth = "ricker", rate = 1 / 200,
-#'   max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE
+#'   max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
 #' )
 #'
 #' # example with parallelization
@@ -130,7 +129,8 @@
 #'   r = log(2),
 #'   rate = 1 / 1e3,
 #'   cl = cl,
-#'   progress_bar = TRUE
+#'   progress_bar = TRUE,
+#    quiet = FALSE
 #' )
 #' stopCluster(cl)
 #' }
@@ -153,7 +153,7 @@
 
 initialise <- function(
     n1_map, K_map, K_sd = 0, r, r_sd = 0, growth = "gompertz", A = NA,
-    dens_dep = c("K2N", "K", "none"), border = c("absorbing", "reprising"),
+    dens_dep = c("K2N", "K", "none"), border = c("reprising", "absorbing"),
     kernel_fun = "rexp", ..., max_dist = NA, calculate_dist = TRUE,
     dlist = NULL, progress_bar = FALSE, quiet = TRUE, cl = NULL) {
 
@@ -164,14 +164,8 @@ initialise <- function(
   assert_that(inherits(K_map, "SpatRaster"))
   assert_that(inherits(n1_map, "SpatRaster"))
 
-  resolution <- res(n1_map)
-  if(resolution[1] != resolution[2]) {
-    stop("Currently, rangr only supports rasters with square cells.\n",
-         "You may want to change the resolution of your input maps ",
-         "before proceeding")
-  } else {
-    resolution <- resolution[1]
-  }
+
+
 
   changing_env <- nlyr(K_map) != 1
   K_n1_map_check(K_map, n1_map, changing_env)
@@ -234,8 +228,6 @@ initialise <- function(
   assert_that(length(quiet) == 1)
   assert_that(is.logical(quiet))
 
-
-
   #' @srrstats {G2.16} Check for NaNs and convert them to Nas
   # classify NaN to NA for input maps
   if ((any(is.nan(values(n1_map))) || any(is.nan(values(K_map)))) && !quiet) {
@@ -246,21 +238,16 @@ initialise <- function(
 
   }
 
-  # define other data
+  # define ncells and id raster
   ncells <- ncell(n1_map)
   id <- n1_map
   values(id) <- matrix(1:ncells, nrow(n1_map), ncol(n1_map))
 
 
-
+  # define population dynamic function and dispersal kernel
   dynamics <- function(x, r, K, A) match.fun(growth)(x, r, K, A)
   kernel <- function(n) match.fun(kernel_fun)(n, ...)
 
-  max_dist <- ifelse(
-    is.na(max_dist),
-    round(quantile(kernel(1e4), 0.9, names = FALSE) / resolution) * resolution,
-    max_dist
-  )
 
   # apply environmental stochasticity if specified (space specific)
   if (K_sd > 0) {
@@ -269,8 +256,7 @@ initialise <- function(
     })
   }
 
-
-
+  # define matrix witch data about each cell grid
   data_table <- as.matrix(data.frame(
     values(id),
     xyFromCell(id, 1:ncells),
@@ -281,25 +267,73 @@ initialise <- function(
   data_table <- data_table[order(data_table[, "id"]), ]
 
 
-  id_within <- data_table[!is.na(data_table[, "K"]), "id"]
+  id_within <- data_table[!is.na(data_table[, "K"]), "id"] # ids of cells within the study are #nolint
   within_mask <- as.matrix(!is.na(n1_map), wide = TRUE) # bool matrix -  the study area #nolint
 
+  # check if raster is planar
+  planar <- !is.lonlat(id)
+
+  # define dist_params
+  if(!planar) { # lon/lat
+    dist_params <- calculate_dist_params(id, id_within, data_table,  progress_bar, quiet, cl)
+    dist_bin <- dist_params["dist_bin"]
+    dist_resolution <- dist_params["dist_resolution"]
+  } else { # planar
+
+    dist_resolution <- res(n1_map)
+    if(dist_resolution[1] != dist_resolution[2]) { # if not square grid cells
+
+      dist_params <- calculate_dist_params(id, ncells, data_table, progress_bar, quiet, cl)
+      dist_bin <- dist_params["dist_bin"]
+      dist_resolution <- dist_params["dist_resolution"]
+
+    } else {
+
+      dist_resolution <- dist_resolution[1]
+      dist_bin <- 0
+    }
+
+
+  }
+
+  # define max_dist
+  max_dist <- ifelse(
+    is.na(max_dist),
+    round(quantile(kernel(1e4), 0.9, names = FALSE) /
+            dist_resolution) * dist_resolution,
+    max_dist
+  )
+
+
+  # define dlist
   if (is.null(dlist)) {
     dlist <- calc_dist(
-      calculate_dist, id, data_table, resolution, id_within,
-      max_dist, progress_bar, quiet, cl
+      calculate_dist, id, data_table, id_within, max_dist, dist_resolution,
+      dist_bin, progress_bar, quiet, cl
     )
   }
 
-  ncells_in_circle <- switch(border, # number of cells at each distance
-                             absorbing = ncell_in_circle(n1_map),
-                             reprising = NULL
-  )
-  # output list
+  # number of cells at each distance for "absorbing" border
+  if(border == "reprising") {
+    ncells_in_circle <- NULL
+
+  } else if (border == "absorbing") {
+    if(planar) {
+      ncells_in_circle <- ncell_in_circle_planar(id, dist_resolution)
+    }
+    else {
+      ncells_in_circle <- ncell_in_circle_lonlat(id, dist_resolution, dist_bin, id_within, dist_params["max_avl_dist"], progress_bar, quiet, cl)
+      ncells_in_circle <- ncells_in_circle
+    }
+  }
+
+
+  # output list ---------------------------------------------
   out <- list(
     n1_map = as.matrix(n1_map, wide = TRUE),
     id = id,
-    resolution = resolution,
+    dist_bin = dist_bin,
+    dist_resolution = dist_resolution,
     r = r,
     r_sd = r_sd,
     K_map = K_map,
@@ -309,6 +343,7 @@ initialise <- function(
     dynamics = dynamics,
     dens_dep = dens_dep,
     border = border,
+    planar = planar,
     max_dist = max_dist,
     kernel_fun = kernel_fun,
     kernel = kernel,
@@ -336,7 +371,6 @@ initialize <- initialise
 
 # internal functions -----------------------------------------------------------
 
-
 #' Validating K_map And n1_map
 #'
 #' This internal function checks if `K_map` and `n1_map` are correct (contain
@@ -358,9 +392,15 @@ initialize <- initialise
 K_n1_map_check <- function(K_map, n1_map, changing_env) {
 
   # compare n1_map and K_map
-  ifelse(!changing_env,
-         compareGeom(n1_map, K_map),
-         compareGeom(n1_map, subset(K_map, 1)))
+  compareGeom(n1_map, K_map)
+
+  # check NAs placement
+  assert_that(
+    ifelse(!changing_env,
+           all(is.na(values(n1_map)) == is.na(values(K_map))),
+           all(is.na(values(n1_map)) == is.na(values(subset(K_map, 1))))),
+    msg = "n1_map and K_map have NA values in different grid cells")
+
 
   # check if values are non-negative
   if (!all(values(n1_map) >= 0, na.rm = TRUE)) {
@@ -408,8 +448,9 @@ K_get_init_values <- function(K_map, changing_env) {
 #' @param id [`SpatRaster`][terra::SpatRaster-class]; contains all cells ids
 #' @param data_table matrix; contains information about all cells in current
 #' time points
-#' @param resolution integer vector of length 1; dimension of one cell of `id`
+#' @param dist_resolution integer vector of length 1; dimension of one side of one cell of `id`; in case of an irregular grid or lon/lat raster it is calculated by [`calculate_dist_params`]
 #' @param id_within numeric vector; ids of cells inside the study area
+#' @param dist_bin
 #' @inheritParams initialise
 #'
 #' @return List of target cells ids for each target cells in any distance
@@ -419,19 +460,20 @@ K_get_init_values <- function(K_map, changing_env) {
 #' @srrstats {G1.4a} uses roxygen documentation (internal function)
 #' @srrstats {G2.0a} documented lengths expectation
 #'
+#' @name calc_dist
+#'
 #' @noRd
 #'
 calc_dist <- function(
-    calculate_dist, id, data_table, resolution, id_within, max_dist,
-    progress_bar, quiet, cl) {
+    calculate_dist, id, data_table, id_within, max_dist, dist_resolution,
+    dist_bin, progress_bar, quiet, cl) {
 
   if (calculate_dist) {
-    if (!quiet) {
-      cat("Calculating distances...", "\n")
-    }
+    if (!quiet) cat("Calculating distances...", "\n")
+
     dlist <- dist_list(
-      id, data_table, resolution, id_within, max_dist,
-      progress_bar, cl
+      id, data_table, id_within, max_dist, dist_resolution,
+      dist_bin, progress_bar, cl
     )
   } else {
     dlist <- NULL
@@ -458,7 +500,8 @@ calc_dist <- function(
 #' @noRd
 #'
 dist_list <- function(
-    id, data_table, resolution, id_within, max_dist, progress_bar, cl) {
+    id, data_table, id_within, max_dist, dist_resolution,
+    dist_bin, progress_bar, cl) {
 
   # within_list <- !is.na(data_table[, "K"])
   data <- cbind(data_table[, c("id", "x", "y")], dist = NA)
@@ -466,31 +509,25 @@ dist_list <- function(
 
   # specify function and arguments (for clarity)
   if(!is.null(cl)) id <- wrap(id)
-  tfun <- function(x) target_ids(x, id, data, resolution, max_dist, id_within)
+  tfun <- function(x)
+    target_ids(x, id, data, min_dist_scaled = 1,
+               max_dist_scaled = max_dist / dist_resolution,
+               dist_resolution, dist_bin, id_within)
 
-  # calculate targets id with or without parallelization
-  if (is.null(cl)) {
-    if (progress_bar) {
-      out <- pblapply(id_within, tfun)
-    } else {
+  # calculate targets id with or without parallelization / progress bar
+  if (progress_bar) { # with progress bar
+
+    out <- pblapply(id_within, tfun, cl = cl)
+
+  } else { # without progress bar
+
+    if (is.null(cl))
       out <- lapply(id_within, tfun)
-    }
-  } else {
-
-    # clusterExport(cl, c(
-    #   "target_ids", "id", "data", "resolution",
-    #   "max_dist", "id_within"
-    # ),
-    # envir = environment())
-
-    if (progress_bar) {
-      out <- pblapply(id_within, tfun, cl = cl)
-    } else {
+    else
       out <- parLapplyLB(cl = cl, id_within, tfun)
-    }
-#
-#     id <- unwrap(id)
+
   }
+
 
 
   return(out)
@@ -498,75 +535,78 @@ dist_list <- function(
 
 
 
-#' Get Indexes Of Target Cells
+#' Calculate distance parameters
 #'
-#' [target_ids] finds all target cells available from given focal cell,
-#' that lie within the maximum distance threshold (`max_dist`).
+#' @inheritParams calc_dist
 #'
-#' @param idx integer vector of length 1; id of cell
-#' @param data integer matrix; necessary data (defined in [dist_list])
-#' @param id_within integer vector; indexes of cells inside study area
-#' (defined in [dist_list])
-#' @inheritParams dist_list
-#'
-#' @return List of target cells for each distance or `NULL` if there isn't any
-#'
-#'
-#' @srrstats {G1.4a} uses roxygen documentation (internal function)
-#' @srrstats {G2.0a} documented lengths expectation
+#' @return
+#' @export
 #'
 #' @noRd
 #'
-target_ids <- function(idx, id, data, resolution, max_dist, id_within) {
+calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet, cl) {
 
-  # get coordinates of current cell
-  id_i <- data[data[, "id"] == idx, ]
-  xy_i <- vect(cbind(id_i["x"], id_i["y"]))
-  id <- unwrap(id)
-  crs(xy_i) <- crs(id)
+  # wrap id for parallel computing if necessary
+  if(!is.null(cl)) id <- wrap(id)
 
-  # calculate distances
-  d <- distance(id, xy_i, progress = 0)
-  d <- round(c(as.matrix(d, wide = TRUE)) / resolution)
-  # data[, "dist"] <- d
+  # calculate distance to the closest neighbour from each grid cell
+  params_fun <- function(x) {
 
-  # check if cells are within study area and specified range
-  d_within <- d[id_within]
-  in_range <- d_within >= 1 & d_within <= (max_dist / resolution)
+    id <- rast(id)
+    neighbours <- adjacent(id, cells = x, directions = "queen")
+    neighbours <- neighbours[!is.na(neighbours)]
 
-  # check if such a cell exists
-  if (!any(in_range)) {
-    return(NULL)
+
+    xy <- vect(xyFromCell(id, x))
+    crs(xy) <- crs(id)
+    d <- values(distance(id, xy, progress = 0))
+
+    neibours_d <-  round(d[neighbours])
+
+    return(c(min_neighbour = min(neibours_d), max_neighbour = max(neibours_d), max_avl_dist = max(d)))
   }
 
+  # calculate dist params with or without parallelization / progress bar
+  if (!quiet) cat("Calculating distance parameters...", "\n")
+  if (progress_bar) { # with progress bar
 
-  # extract cells ids and distance at which they are
-  ids <- id_within[in_range]
-  ds <- d_within[in_range]
+    dist_params <- pbvapply(id_within, params_fun, numeric(3), cl = cl)
 
-  # all needed distances
-  dists <- seq_len(max_dist / resolution)
+  } else { # without progress bar
 
-  # make list of target cells for each distance
-  lapply(dists, function(x) {
-    out <- ids[ds == x]
+    if (is.null(cl))
+      dist_params <- vapply(id_within, params_fun, numeric(3))
+    else
+      dist_params <- parSapplyLB(cl = cl, id_within, params_fun)
 
-    if (length(out) == 0) { # if there isn't any target cell return null
-      out <- NULL
-    }
+  }
 
-    return(out)
-  })
+  # calculate dist_resolution - min distance between each neighbours
+  dist_resolution <- round(min(dist_params["min_neighbour",]))
+
+  # calculate dist_bin - half of the maximum distance between each neighbours
+  dist_bin <- round(max(dist_params["max_neighbour",] / dist_resolution / 2))
+
+  # check if dist_bin isn't too small
+  if (dist_bin < 1) {
+    stop("Your input maps have too high resolution. Consider using terra::aggregate() to change it.")
+
+  }
+
+  # calculate max_avl_dist - max distance between any grid cells divided by dist_resolution and then
+  max_avl_dist <- round(max(dist_params["max_avl_dist",]) / dist_resolution) + dist_bin
+
+  return(c(dist_bin = dist_bin, dist_resolution = dist_resolution, max_avl_dist = max_avl_dist))
 }
 
 
-
-#' Count Cells On Every Distance
+#' Count Cells On Every Distance - planar raster
 #'
 #' This internal function counts how many cells are reachable on each distance
-#' from any cells of template `r`. It takes raster's resolution into account.
+#' from any cells of template `r`. It takes raster's dist_resolution into account.
 #'
 #' @param template template [`SpatRaster`][terra::SpatRaster-class] object
+#' @param dist_resolution parameter calculated by [`calculate_dist_params`] function
 #'
 #' @return numeric vector; numbers of target cells on every possible distance
 #' range
@@ -576,37 +616,130 @@ target_ids <- function(idx, id, data, resolution, max_dist, id_within) {
 #'
 #' @noRd
 #'
-ncell_in_circle <- function(template) {
+ncell_in_circle_planar <- function(template, dist_resolution) {
 
-  # get resolution
-  resolution <- res(template)[1]
+  res <- res(template)
+
 
   # get extents in both dimensions
-  a <- xmax(template) - xmin(template) - resolution
-  b <- ymax(template) - ymin(template) - resolution
+  a <- xmax(template) - xmin(template)
+  b <- ymax(template) - ymin(template)
 
   # calculate maximum possible distance
-  max_dist <- round(sqrt(a**2 + b**2) / resolution) * resolution
+  max_dist <- round(sqrt(a**2 + b**2))
 
-  # raster based on max_dist
   e <- ext(
-    0, 2 * max_dist + resolution, 0,
-    2 * max_dist + resolution
+    xmin(template) - max_dist, xmax(template) + max_dist,
+    ymin(template) - max_dist, ymax(template) + max_dist
   )
-  d <- rast(e, resolution = resolution, crs = crs(template))
-  center_point <- max_dist + resolution / 2
-  center_vect <- vect(cbind(center_point, center_point))
+
+  d <- extend(template, e)
+  center_point <- cbind((e[2] - e[1]) / 2 + e[1], (e[4] - e[3]) / 2 + e[3])
+  center_vect <- vect(center_point)
   crs(center_vect) <- crs(template)
 
   # calculate all distances
   d <- distance(d, center_vect, progress = 0)
 
-  # adjust to resolution
-  d_cell <- as.matrix(round(d / resolution))
+  # adjust to dist_resolution
+  d_cell <- as.matrix(round(d / dist_resolution))
 
-  # return number of cells on each distance
-  return(tabulate(d_cell)[1:(max_dist / resolution)])
+  # number of cells on each distance
+  ncells_in_circle <-  tabulate(d_cell)[1:(max_dist / dist_resolution)]
+
+  return(ncells_in_circle)
 }
+
+
+
+#' Count Cells On Every Distance - lon/lat raster
+#'
+#' This internal function counts how many cells are reachable on each distance
+#' from any cells of template `r`. It takes raster's dist_resolution adn dist_bin into account.
+#'
+#' @param template template [`SpatRaster`][terra::SpatRaster-class] object
+#' @param max_avl_dist
+#' @inheritParams calc_dist
+#' @inheritParams initialise
+#'
+#' @return numeric matrix with number of columns corresponding to id_within and number of rows equal to max_avl_dist; numbers of target cells on every possible distance from each cell;
+#'
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#'
+#' @noRd
+#'
+ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_within, max_avl_dist, progress_bar, quiet, cl) {
+
+
+  xdiff <- xmax(template) - xmin(template)
+  ydiff <- ymax(template) - ymin(template)
+
+  # big raster
+  multiplier <- 2
+  e <- ext(
+    xmin(template) - xdiff * multiplier, xmax(template) + xdiff * multiplier,
+    ymin(template) - ydiff * multiplier, ymax(template) + ydiff * multiplier
+  )
+  extended <- extend(template, e)
+
+
+  # wrap rasters for parallel computing if necessary
+  if(!is.null(cl)) {
+    template <- wrap(template)
+    extended <- wrap(extended)
+  }
+
+  # calculates how many cells are reachable on each distance from each grid cell
+  circles_fun <- function(x) {
+
+    # unwrap rasters
+    template <- rast(template)
+    extended <- rast(extended)
+
+    xy <- vect(xyFromCell(template, x))
+    crs(xy) <- crs(template)
+    d <- distance(extended, xy, progress = 0)
+    d <- round(values(d / dist_resolution))
+    d <- d[d <= max_avl_dist]
+    d_table <-  tabulate(d)
+    d_avl <- (1:length(d_table))[d_table != 0]
+
+    bin_start <- ifelse(d_avl - dist_bin + 1 < 0, 0, d_avl - dist_bin + 1)
+    bin_stop <- d_avl + dist_bin
+
+
+    ds <- unlist(lapply(seq_len(length(d_avl)), function(x) {
+      rep(seq(bin_start[x], bin_stop[x]), times = d_table[x])
+    }))
+
+    circle <- tabulate(ds)[1:max_avl_dist]
+
+    return(circle)
+  }
+
+
+  if (!quiet) cat("Calculating number of cells on each distance...\nThis step may take some time. Consider using border = \"reprising\" with lon/lat rasters if possible.", "\n")
+
+  # calculate "circles" with or without parallelization / progress bar
+  if (progress_bar) { # with progress bar
+
+    circles <- pbvapply(id_within, circles_fun, numeric(max_avl_dist), cl = cl)
+
+  } else { # without progress bar
+
+    if (is.null(cl))
+      circles <- vapply(id_within, circles_fun, numeric(max_avl_dist))
+    else
+      circles <- parSapplyLB(cl = cl, id_within, circles_fun)
+
+  }
+
+  return(circles)
+}
+
+
 
 get_initialise_call <- function(call) {
 

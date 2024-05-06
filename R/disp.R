@@ -94,7 +94,8 @@
 #'
 disp <- function(
     N_t, id, data_table, kernel, dens_dep, dlist, id_within, within_mask,
-    border, max_dist, resolution, ncells_in_circle, cl = NULL) {
+    border, planar, dist_resolution, max_dist, dist_bin, ncells_in_circle,
+    cl = NULL) {
 
   # empty immigration/emigration matrices
   im <- em <- matrix(0L, nrow = nrow(N_t), ncol = ncol(N_t))
@@ -103,7 +104,7 @@ disp <- function(
   id_ok_mask <- N_t > 0 & within_mask # cell ids where the species is present
   id_ok <- as.matrix(id, wide = TRUE)[id_ok_mask]
   N_pos <- N_t[id_ok_mask]
-  disp_dist <- dists_tab(N_pos, kernel, resolution)
+  disp_dist <- dists_tab(N_pos, kernel, dist_resolution)
   if (is.null(dlist)) dlist <- vector("list", length(id_within))
 
   # version of dispersal (linear vs. parallel calculations)
@@ -118,10 +119,12 @@ disp <- function(
       dlist = dlist,
       data_table = data_table,
       id = id,
-      resolution = resolution,
+      dist_resolution = dist_resolution,
+      dist_bin = dist_bin,
       dens_dep = dens_dep,
       ncells_in_circle = ncells_in_circle,
-      border = border
+      border = border,
+      planar = planar
     )
 
   } else {
@@ -135,20 +138,24 @@ disp <- function(
       dlist = dlist,
       data_table = data_table,
       id = wrap(id),
-      resolution = resolution,
+      dist_resolution = dist_resolution,
+      dist_bin = dist_bin,
       dens_dep = dens_dep,
       ncells_in_circle = ncells_in_circle,
-      border = border
+      border = border,
+      planar = planar
     )
   }
 
   # fill immigration/emigration matrices
   for (i in seq_len(length(id_ok))) {
     targets <- disp_res[[i]]
+    for (j in targets) {
+      im[j] <- im[j] + 1L
+    }
 
-    n_disp <- length(targets)
-    em[id_ok[i]] <- em[id_ok[i]] + n_disp
-    im[targets] <- im[targets] + 1L
+    em[id_ok[i]] <- em[id_ok[i]] + length(targets)
+
   }
 
   # return immigration/emigration matrices
@@ -181,13 +188,13 @@ disp <- function(
 #'
 #' @noRd
 #'
-dists_tab <- function(N_pos, kernel, resolution) {
+dists_tab <- function(N_pos, kernel, dist_resolution) {
 
   tab <- function(x) {
-    dd <- kernel(x)
-    dd <- round(dd / resolution)
-    dd <- dd[dd > 0]
-    tabd <- tabulate(dd)
+    dd <- round(kernel(x) / dist_resolution)
+    dd_pos <- dd[dd > 0]
+    tabd <- tabulate(dd_pos)
+    tabd
   }
 
   lapply(N_pos, tab)
@@ -215,8 +222,8 @@ dists_tab <- function(N_pos, kernel, resolution) {
 #' @noRd
 #'
 sq_disp <- function(
-    i, disp_dist, id_within, id_ok, dlist, data_table, id, resolution, dens_dep,
-    ncells_in_circle, border) {
+    i, disp_dist, id_within, id_ok, dlist, data_table, id, dist_resolution,
+    dist_bin, dens_dep, ncells_in_circle, border, planar) {
 
   # max dispersal distance out from the cell id_ok[i] (in raster units):
   nd <- length(disp_dist[[i]])
@@ -229,18 +236,23 @@ sq_disp <- function(
   if ((no_info <- (pos > length(dlist))) || nd > length(dlist[[pos]])) {
 
     # calculate missing targets
-    more_targets <- target_ids_in_disp(
-      id_x_y = data_table[id_ok[i], 1:3],
+    more_targets <- target_ids(
+      idx = NULL,
       id = id,
-      id_within = id_within,
-      resolution = resolution,
-      min = ifelse(no_info, 1, length(dlist[[pos]]) + 1),
-      max = nd
+      data = data_table[id_ok[i], 1:3],
+      min_dist_scaled = ifelse(no_info, 1, length(dlist[[pos]]) + 1),
+      max_dist_scaled = nd,
+      dist_resolution = dist_resolution,
+      dist_bin = dist_bin,
+      id_within = id_within
     )
 
     dlist[[pos]][(length(dlist[[pos]]) + 1):nd] <- more_targets
   }
 
+  if(!is.null(dim(ncells_in_circle))) {
+    ncells_in_circle <- ncells_in_circle[, pos]
+  }
   # cycle over j distances within the cell id_ok[i]
   to <- lapply(
     seq_len(nd), one_dist_sq_disp, id_ok[i], dlist[[pos]], disp_dist[[i]],
@@ -250,76 +262,6 @@ sq_disp <- function(
 
   to <- unlist(to, use.names = FALSE)
   return(to)
-}
-
-#' Calculate Missing Indexes Of Target Cells
-#'
-#' This internal function is used during dispersal process
-#' in [sq_disp] function. It returns indexes of target cells that were not
-#'  precalculated during initialisation.
-#'
-#' There are two possible reason for usage of [target_ids_in_disp].
-#' First is that during simulation some individuals are dispersing beyond
-#' specified distance threshold (`max_dist` parameter in [`initialise`]).
-#' Second reason is that the user has chosen to not pre-calculate target cells
-#' (by setting `calculate_dist` to`FALSE` in [`initialise`]).
-#'
-#' @param id_x_y integer vector; index and coordinates of source cell
-#' @param id [`SpatRaster`][terra::SpatRaster-class] object; cells indexes
-#' from `sim_data` object created by [`sim`]
-#' @param id_within integer vector; indexes of cells inside study area
-#' @param resolution integer vector of length 1; resolution
-#' @param min integer vector of length 1; the closest distance for which
-#' target cells will be returned
-#' @param max integer vector of length 1; the farthest distance for which
-#' target cells will be returned
-#'
-#' @return List of target cells for each distance or `NULL` if there isn't any
-#'
-#'
-#' @srrstats {G1.4a} uses roxygen documentation (internal function)
-#' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a, SP2.6} documented types expectation
-#'
-#' @noRd
-#'
-target_ids_in_disp <- function(id_x_y, id, id_within, resolution, min, max) {
-
-  # get coordinates of given cell
-  xy_i <- vect(cbind(id_x_y["x"], id_x_y["y"]))
-  id <- unwrap(id)
-  crs(xy_i) <- crs(id)
-
-  # calculate distances
-  d <- distance(id, xy_i, progress = 0)
-  d <- round(c(as.matrix(d, wide = TRUE)) / resolution)
-
-  # check if cells are within study area and specified range
-  d_within <- d[id_within]
-  in_range <- d_within >= min & d_within <= max
-
-  # check if such a cell exists
-  if (!any(in_range)) {
-    return(NULL)
-  }
-
-  # extract cells ids and distance at which they are
-  ids <- id_within[in_range]
-  ds <- d_within[in_range]
-
-  # all needed distances
-  dists <- min:max
-
-  # make list of target cells for each distance
-  lapply(dists, function(x) {
-    out <- ids[ds == x] # get ids on distance x
-
-    if (length(out) == 0) { # if there isn't any target cell return null
-      out <- NULL
-    }
-
-    return(out)
-  })
 }
 
 
@@ -378,7 +320,6 @@ one_dist_sq_disp <- function(j, id_int, dlist_pos, disp_dist_i, data_table,
     } else {
       if (border == "absorbing") {
         # if absorbing borders and dispersal out available
-
         if ((ncells_in_circle[j] - length(Ns)) > 0) {
           # pick
           dij <- sum(sample(

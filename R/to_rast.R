@@ -74,6 +74,13 @@ to_rast <- function(
 
   } else {
 
+    # check if template and x have the same dimension
+    if (!all(dim(sim_results$N_map)[c(1, 2)] == dim(template)[c(1, 2)])) {
+      stop("sim_resulst and template are not compatible with each other - dimensions of the study area do not match")
+    }
+
+
+
     out <- template
     nlyr(out) <- length(time_points)
     values(out) <- sim_results$N_map[, , time_points]

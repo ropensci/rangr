@@ -14,8 +14,10 @@ disp(
   id_within,
   within_mask,
   border,
+  planar,
+  dist_resolution,
   max_dist,
-  resolution,
+  dist_bin,
   ncells_in_circle,
   cl = NULL
 )
@@ -53,23 +55,23 @@ study area}
 \item{border}{character vector of length 1 defining how to deal
 with borders (case-sensitive, default \code{"absorbing"}):
 \itemize{
-\item "absorbing" - individuals that disperse outside the study area
-are removed from the population
 \item "reprising" - cells outside the study area are not allowed
 as targets for dispersal
+\item "absorbing" - individuals that disperse outside the study area
+are removed from the population
 }}
 
 \item{max_dist}{a distance (in the same units as used in the raster \code{id})
 specifying the maximum range at which identifiers of target dispersal cells
 are determined in advance (see \code{\link{initialise}})}
 
-\item{resolution}{integer vector of length 1; spatial resolution of
-\code{id} raster}
-
 \item{ncells_in_circle}{numeric vector; number of cells on each distance}
 
 \item{cl}{if simulation is done in parallel, the name of a cluster object
 created by \code{\link[parallel:makeCluster]{makeCluster}}}
+
+\item{resolution}{integer vector of length 1; spatial resolution of
+\code{id} raster}
 }
 \value{
 The function returns a list that contains two matrices:
