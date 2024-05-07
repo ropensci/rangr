@@ -118,7 +118,7 @@ sim_data <- initialise(
 # disp
 disp_output <- disp(
   N_t = sim_data$n1_map,
-  id = sim_data$id,
+  id = unwrap(sim_data$id),
   data_table = sim_data$data_table,
   kernel = sim_data$kernel,
   dens_dep = sim_data$dens_dep,
