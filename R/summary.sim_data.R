@@ -33,7 +33,7 @@ summary.sim_data <- function(object, ...) {
 
   # prepare summaries
   n1_sm <- summary(as.numeric(object$n1_map))
-  K_sm <- summary(as.numeric(as.matrix(object$K_map)))
+  K_sm <- summary(as.numeric(as.matrix(unwrap(object$K_map))))
 
   names <- c(
     "growth", "r", "A", "kernel_fun", "dens_dep", "border",

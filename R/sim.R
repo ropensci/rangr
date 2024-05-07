@@ -176,14 +176,14 @@ sim <- function(
   options(warn = -1)
 
   # Extract data from the sim_data object
-  K_map <- obj$K_map # carrying capacity
+  K_map <- unwrap(obj$K_map) # carrying capacity
   K_sd <- obj$K_sd # sd of carrying capacity (additional cell specific variation) #nolint
   dynamics <- obj$dynamics # population growth function
   n1_map <- obj$n1_map # population numbers at the first time step
   r <- obj$r # intrinsic population growth rate
   r_sd <- obj$r_sd # sd of intrinsic growth rate (time specific variation)
   A <- obj$A # Allee effect coefficient
-  id <- obj$id # square identifiers
+  id <- unwrap(obj$id) # square identifiers
   ncells <- obj$ncells # number of cells in the study area
   data_table <- obj$data_table
   changing_env <- obj$changing_env
