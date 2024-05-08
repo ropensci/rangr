@@ -128,25 +128,6 @@ disp <- function(
       cl = cl
     )
 
-  # } else {
-  #
-  #   # cycle over non-empty grid cells
-  #   disp_res <- parLapply(
-  #     cl, seq_len(length(N_pos)), sq_disp,
-  #     disp_dist = disp_dist,
-  #     id_within = id_within,
-  #     id_ok = id_ok,
-  #     dlist = dlist,
-  #     data_table = data_table,
-  #     id = wrap(id),
-  #     dist_resolution = dist_resolution,
-  #     dist_bin = dist_bin,
-  #     dens_dep = dens_dep,
-  #     ncells_in_circle = ncells_in_circle,
-  #     border = border,
-  #     planar = planar
-  #   )
-  # }
 
   # fill immigration/emigration matrices
   for (i in seq_len(length(id_ok))) {
