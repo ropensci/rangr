@@ -10,6 +10,7 @@
 #' @importFrom parallel parLapply
 #' @importFrom parallel parLapplyLB
 #' @importFrom pbapply pblapply
+#' @importFrom pbapply pboptions
 #' @importFrom pbapply pbvapply
 #' @importFrom stats approx
 #' @importFrom stats getCall

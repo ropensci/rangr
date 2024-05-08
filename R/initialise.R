@@ -515,18 +515,13 @@ dist_list <- function(
                dist_resolution, dist_bin, id_within)
 
   # calculate targets id with or without parallelization / progress bar
-  if (progress_bar) { # with progress bar
+  if (!progress_bar) {
 
-    out <- pblapply(id_within, tfun, cl = cl)
-
-  } else { # without progress bar
-
-    if (is.null(cl))
-      out <- lapply(id_within, tfun)
-    else
-      out <- parLapplyLB(cl = cl, id_within, tfun)
-
+    pbo <- pboptions(type = "none")
+    on.exit(pboptions(pbo))
   }
+
+  out <- pblapply(id_within, tfun, cl = cl)
 
 
 
@@ -568,18 +563,14 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
 
   # calculate dist params with or without parallelization / progress bar
   if (!quiet) cat("Calculating distance parameters...", "\n")
-  if (progress_bar) { # with progress bar
+  if (!progress_bar) {
 
-    dist_params <- pbvapply(id_within, params_fun, numeric(3), cl = cl)
-
-  } else { # without progress bar
-
-    if (is.null(cl))
-      dist_params <- vapply(id_within, params_fun, numeric(3))
-    else
-      dist_params <- parSapplyLB(cl = cl, id_within, params_fun)
-
+    pbo <- pboptions(type = "none")
+    on.exit(pboptions(pbo))
   }
+
+  dist_params <- pbvapply(id_within, params_fun, numeric(3), cl = cl)
+
 
   # calculate dist_resolution - min distance between each neighbours
   dist_resolution <- round(min(dist_params["min_neighbour",]))
@@ -723,18 +714,14 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
   if (!quiet) cat("Calculating number of cells on each distance...\nThis step may take some time. Consider using border = \"reprising\" with lon/lat rasters if possible.", "\n")
 
   # calculate "circles" with or without parallelization / progress bar
-  if (progress_bar) { # with progress bar
+  if (!progress_bar) {
 
-    circles <- pbvapply(id_within, circles_fun, numeric(max_avl_dist), cl = cl)
-
-  } else { # without progress bar
-
-    if (is.null(cl))
-      circles <- vapply(id_within, circles_fun, numeric(max_avl_dist))
-    else
-      circles <- parSapplyLB(cl = cl, id_within, circles_fun)
-
+    pbo <- pboptions(type = "none")
+    on.exit(pboptions(pbo))
   }
+
+  circles <- pbvapply(id_within, circles_fun, numeric(max_avl_dist), cl = cl)
+
 
   return(circles)
 }

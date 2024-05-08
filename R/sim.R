@@ -184,6 +184,8 @@ sim <- function(
 
   # options
   options(warn = -1)
+  pbo <- pboptions(type = "none")
+  on.exit(pboptions(pbo))
 
   # Extract data from the sim_data object
   K_map <- obj$K_map # carrying capacity

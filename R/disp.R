@@ -108,10 +108,10 @@ disp <- function(
   if (is.null(dlist)) dlist <- vector("list", length(id_within))
 
   # version of dispersal (linear vs. parallel calculations)
-  if (is.null(cl)) {
+  if (!is.null(cl)) id <- wrap(id)
 
     # cycle over non-empty grid cells
-    disp_res <- lapply(
+    disp_res <- pblapply(
       seq_len(length(N_pos)), sq_disp,
       disp_dist = disp_dist,
       id_within = id_within,
@@ -124,28 +124,29 @@ disp <- function(
       dens_dep = dens_dep,
       ncells_in_circle = ncells_in_circle,
       border = border,
-      planar = planar
+      planar = planar,
+      cl = cl
     )
 
-  } else {
-
-    # cycle over non-empty grid cells
-    disp_res <- parLapply(
-      cl, seq_len(length(N_pos)), sq_disp,
-      disp_dist = disp_dist,
-      id_within = id_within,
-      id_ok = id_ok,
-      dlist = dlist,
-      data_table = data_table,
-      id = wrap(id),
-      dist_resolution = dist_resolution,
-      dist_bin = dist_bin,
-      dens_dep = dens_dep,
-      ncells_in_circle = ncells_in_circle,
-      border = border,
-      planar = planar
-    )
-  }
+  # } else {
+  #
+  #   # cycle over non-empty grid cells
+  #   disp_res <- parLapply(
+  #     cl, seq_len(length(N_pos)), sq_disp,
+  #     disp_dist = disp_dist,
+  #     id_within = id_within,
+  #     id_ok = id_ok,
+  #     dlist = dlist,
+  #     data_table = data_table,
+  #     id = wrap(id),
+  #     dist_resolution = dist_resolution,
+  #     dist_bin = dist_bin,
+  #     dens_dep = dens_dep,
+  #     ncells_in_circle = ncells_in_circle,
+  #     border = border,
+  #     planar = planar
+  #   )
+  # }
 
   # fill immigration/emigration matrices
   for (i in seq_len(length(id_ok))) {
