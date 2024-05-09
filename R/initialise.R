@@ -547,7 +547,7 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
   # calculate distance to the closest neighbour from each grid cell
   params_fun <- function(x) {
 
-    id <- rast(id)
+    id <- unwrap(id)
     neighbours <- adjacent(id, cells = x, directions = "queen")
     neighbours <- neighbours[!is.na(neighbours)]
 
@@ -686,8 +686,8 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
   circles_fun <- function(x) {
 
     # unwrap rasters
-    template <- rast(template)
-    extended <- rast(extended)
+    template <- unwrap(template)
+    extended <- unwrap(extended)
 
     xy <- vect(xyFromCell(template, x))
     crs(xy) <- crs(template)
