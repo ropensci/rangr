@@ -93,7 +93,7 @@
 #'
 #'
 disp <- function(
-    N_t, id, data_table, kernel, dens_dep, dlist, id_within, within_mask,
+    N_t, id, id_matrix, data_table, kernel, dens_dep, dlist, id_within, within_mask,
     border, planar, dist_resolution, max_dist, dist_bin, ncells_in_circle,
     cl = NULL) {
 
@@ -102,13 +102,13 @@ disp <- function(
 
   # necessary variables
   id_ok_mask <- N_t > 0 & within_mask # cell ids where the species is present
-  id_ok <- as.matrix(id, wide = TRUE)[id_ok_mask]
+  id_ok <- id_matrix[id_ok_mask]
   N_pos <- N_t[id_ok_mask]
   disp_dist <- dists_tab(N_pos, kernel, dist_resolution)
   if (is.null(dlist)) dlist <- vector("list", length(id_within))
 
   # version of dispersal (linear vs. parallel calculations)
-  if (!is.null(cl)) id <- wrap(id)
+
 
     # cycle over non-empty grid cells
     disp_res <- pblapply(

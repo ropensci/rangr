@@ -195,7 +195,8 @@ sim <- function(
   r <- obj$r # intrinsic population growth rate
   r_sd <- obj$r_sd # sd of intrinsic growth rate (time specific variation)
   A <- obj$A # Allee effect coefficient
-  id <- obj$id # grid cells identifiers
+  id <- obj$id # grid cells identifiers as raster
+  id_matrix <- as.matrix(id, wide = TRUE) # grid cells identifiers as matrix
   ncells <- obj$ncells # number of cells in the study area
   data_table <- obj$data_table
   changing_env <- obj$changing_env
@@ -222,6 +223,8 @@ sim <- function(
   # Matrix of population numbers at t = 1
   N[, , 1] <- n1_map
 
+  # Wrap id for parallel computations
+  if (!is.null(cl)) id <- wrap(id)
 
   # Loop through time
 
@@ -271,7 +274,7 @@ sim <- function(
     # 2. Dispersal
 
     m <- disp(
-      N_t = N[, , t], id = id,
+      N_t = N[, , t], id = id, id_matrix,
       data_table = data_table, kernel = obj$kernel,
       dens_dep = obj$dens_dep, dlist = obj$dlist, id_within = obj$id_within,
       within_mask = obj$within_mask, border = obj$border, planar = obj$planar,
