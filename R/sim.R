@@ -201,6 +201,28 @@ sim <- function(
   data_table <- obj$data_table
   changing_env <- obj$changing_env
 
+  # exports for parallel computations
+  if (!is.null(cl)) {
+    obj$id <- wrap(id)
+    obj$K_map <- wrap(K_map)
+
+    clusterExport(cl, c("obj"), envir = environment())
+    clusterEvalQ(cl, {
+      # library(terra)
+
+      id <- terra::unwrap(obj$id)
+      id_within <- obj$id_within
+      dlist <- obj$dlist
+      dist_resolution <- obj$dist_resolution
+      dist_bin <- obj$dist_bin
+      dens_dep <- obj$dens_dep
+      ncells_in_circle <- obj$ncells_in_circle
+      border <- obj$border
+      planar <- obj$planar
+      dist_resolution <- obj$dist_resolution
+
+    })
+  }
 
   # Specify other necessary data
   ## additional demographic stochasticity (time specific)
@@ -223,8 +245,7 @@ sim <- function(
   # Matrix of population numbers at t = 1
   N[, , 1] <- n1_map
 
-  # Wrap id for parallel computations
-  if (!is.null(cl)) id <- wrap(id)
+
 
   # Loop through time
 

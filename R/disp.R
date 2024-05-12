@@ -108,16 +108,19 @@ disp <- function(
   if (is.null(dlist)) dlist <- vector("list", length(id_within))
 
   # version of dispersal (linear vs. parallel calculations)
+  # cycle over non-empty grid cells
+  if(is.null(cl)) {
 
-
-    # cycle over non-empty grid cells
     disp_res <- pblapply(
       seq_len(length(N_pos)), sq_disp,
+      # not const args
       disp_dist = disp_dist,
-      id_within = id_within,
       id_ok = id_ok,
-      dlist = dlist,
       data_table = data_table,
+      is_parallel = !is.null(cl),
+      # const args
+      id_within = id_within,
+      dlist = dlist,
       id = id,
       dist_resolution = dist_resolution,
       dist_bin = dist_bin,
@@ -127,6 +130,17 @@ disp <- function(
       planar = planar,
       cl = cl
     )
+  } else {
+
+    disp_res <- pblapply(
+      seq_len(length(N_pos)), sq_disp,
+      disp_dist = disp_dist,
+      id_ok = id_ok,
+      data_table = data_table,
+      is_parallel = !is.null(cl),
+      cl = cl
+    )
+  }
 
 
   # fill immigration/emigration matrices
@@ -192,7 +206,7 @@ dists_tab <- function(N_pos, kernel, dist_resolution) {
 #'
 #' @param i integer vector of length 1; number of current source cell
 #' in relation to `disp_dist`
-#' @inheritParams disp_linear
+#' @inheritParams disp
 #'
 #' @return Indexes of cells that individuals emigrate to. One occurrence of
 #' the particular cell equals to one specimen that emigrates to it.
@@ -203,8 +217,23 @@ dists_tab <- function(N_pos, kernel, dist_resolution) {
 #'
 #' @noRd
 #'
+
 sq_disp <- function(
-    i, disp_dist, id_within, id_ok, dlist, data_table, id, dist_resolution,
+    i, disp_dist, id_ok, data_table, is_parallel, ...) {
+
+  if (!is_parallel) {
+    out <-  sq_disp_calc(i, disp_dist, id_ok, data_table, ...)
+  } else {
+    out <-  sq_disp_calc(
+      i, disp_dist,id_ok, data_table,
+      id_within, dlist, id, dist_resolution,
+      dist_bin, dens_dep, ncells_in_circle, border, planar)
+  }
+}
+
+sq_disp_calc <- function(
+    i, disp_dist,id_ok, data_table,
+    id_within, dlist, id, dist_resolution,
     dist_bin, dens_dep, ncells_in_circle, border, planar) {
 
   # max dispersal distance out from the cell id_ok[i] (in raster units):
@@ -246,6 +275,48 @@ sq_disp <- function(
   return(to)
 }
 
+sq_disp_parallel <- function(
+    i, disp_dist, id_ok, data_table) {
+
+
+  # max dispersal distance out from the cell id_ok[i] (in raster units):
+  nd <- length(disp_dist[[i]])
+
+  # position of a target id-s stored in a list "dlist"
+  # for the focal cell id_ok[i]
+  pos <- which(id_within == id_ok[i])
+
+  # no info in dlist about that particular cell OR beyond max_dist
+  if ((no_info <- (pos > length(dlist))) || nd > length(dlist[[pos]])) {
+
+    # calculate missing targets
+    more_targets <- target_ids(
+      idx = NULL,
+      id = id,
+      data = data_table[id_ok[i], 1:3],
+      min_dist_scaled = ifelse(no_info, 1, length(dlist[[pos]]) + 1),
+      max_dist_scaled = nd,
+      dist_resolution = dist_resolution,
+      dist_bin = dist_bin,
+      id_within = id_within
+    )
+
+    dlist[[pos]][(length(dlist[[pos]]) + 1):nd] <- more_targets
+  }
+
+  if(!is.null(dim(ncells_in_circle))) {
+    ncells_in_circle <- ncells_in_circle[, pos]
+  }
+  # cycle over j distances within the cell id_ok[i]
+  to <- lapply(
+    seq_len(nd), one_dist_sq_disp, id_ok[i], dlist[[pos]], disp_dist[[i]],
+    data_table, dens_dep, ncells_in_circle, border
+  )
+
+
+  to <- unlist(to, use.names = FALSE)
+  return(to)
+}
 
 
 #' Dispersal Simulation In One Grid Cell
