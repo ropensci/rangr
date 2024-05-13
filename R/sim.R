@@ -195,11 +195,33 @@ sim <- function(
   r <- obj$r # intrinsic population growth rate
   r_sd <- obj$r_sd # sd of intrinsic growth rate (time specific variation)
   A <- obj$A # Allee effect coefficient
-  id <- obj$id # grid cells identifiers
+  id <- obj$id # grid cells identifiers as raster
+  id_matrix <- as.matrix(id, wide = TRUE) # grid cells identifiers as matrix
   ncells <- obj$ncells # number of cells in the study area
   data_table <- obj$data_table
   changing_env <- obj$changing_env
 
+  # exports for parallel computations
+  if (!is.null(cl)) {
+    obj$id <- wrap(id)
+    obj$K_map <- wrap(K_map)
+
+    clusterExport(cl, c("obj"), envir = environment())
+    clusterEvalQ(cl, {
+
+      id <- terra::unwrap(obj$id)
+      id_within <- obj$id_within
+      dlist <- obj$dlist
+      dist_resolution <- obj$dist_resolution
+      dist_bin <- obj$dist_bin
+      dens_dep <- obj$dens_dep
+      ncells_in_circle <- obj$ncells_in_circle
+      border <- obj$border
+      planar <- obj$planar
+      dist_resolution <- obj$dist_resolution
+
+    })
+  }
 
   # Specify other necessary data
   ## additional demographic stochasticity (time specific)
@@ -221,6 +243,7 @@ sim <- function(
 
   # Matrix of population numbers at t = 1
   N[, , 1] <- n1_map
+
 
 
   # Loop through time
@@ -271,7 +294,7 @@ sim <- function(
     # 2. Dispersal
 
     m <- disp(
-      N_t = N[, , t], id = id,
+      N_t = N[, , t], id = id, id_matrix,
       data_table = data_table, kernel = obj$kernel,
       dens_dep = obj$dens_dep, dlist = obj$dlist, id_within = obj$id_within,
       within_mask = obj$within_mask, border = obj$border, planar = obj$planar,

@@ -93,7 +93,7 @@
 #'
 #'
 disp <- function(
-    N_t, id, data_table, kernel, dens_dep, dlist, id_within, within_mask,
+    N_t, id, id_matrix, data_table, kernel, dens_dep, dlist, id_within, within_mask,
     border, planar, dist_resolution, max_dist, dist_bin, ncells_in_circle,
     cl = NULL) {
 
@@ -102,22 +102,25 @@ disp <- function(
 
   # necessary variables
   id_ok_mask <- N_t > 0 & within_mask # cell ids where the species is present
-  id_ok <- as.matrix(id, wide = TRUE)[id_ok_mask]
+  id_ok <- id_matrix[id_ok_mask]
   N_pos <- N_t[id_ok_mask]
   disp_dist <- dists_tab(N_pos, kernel, dist_resolution)
   if (is.null(dlist)) dlist <- vector("list", length(id_within))
 
   # version of dispersal (linear vs. parallel calculations)
-  if (!is.null(cl)) id <- wrap(id)
+  # cycle over non-empty grid cells
+  if(is.null(cl)) {
 
-    # cycle over non-empty grid cells
     disp_res <- pblapply(
       seq_len(length(N_pos)), sq_disp,
+      # not const args
       disp_dist = disp_dist,
-      id_within = id_within,
       id_ok = id_ok,
-      dlist = dlist,
       data_table = data_table,
+      is_parallel = !is.null(cl),
+      # const args
+      id_within = id_within,
+      dlist = dlist,
       id = id,
       dist_resolution = dist_resolution,
       dist_bin = dist_bin,
@@ -127,6 +130,17 @@ disp <- function(
       planar = planar,
       cl = cl
     )
+  } else {
+
+    disp_res <- pblapply(
+      seq_len(length(N_pos)), sq_disp,
+      disp_dist = disp_dist,
+      id_ok = id_ok,
+      data_table = data_table,
+      is_parallel = !is.null(cl),
+      cl = cl
+    )
+  }
 
 
   # fill immigration/emigration matrices
@@ -186,13 +200,14 @@ dists_tab <- function(N_pos, kernel, dist_resolution) {
 
 #' Dispersal From Non-Empty Grid Cells
 #'
-#' This function calculates more possible target cells available
-#' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
-#' to find cells that individuals will emigrate to.
+#' This function calls [sq_disp_calc] with arguments passed from [disp] or
+#' without them (in case of parallel computations).
+#'
+#' Arguments for parallel computation are exported to clusters in [sim].
 #'
 #' @param i integer vector of length 1; number of current source cell
 #' in relation to `disp_dist`
-#' @inheritParams disp_linear
+#' @inheritParams disp
 #'
 #' @return Indexes of cells that individuals emigrate to. One occurrence of
 #' the particular cell equals to one specimen that emigrates to it.
@@ -203,8 +218,42 @@ dists_tab <- function(N_pos, kernel, dist_resolution) {
 #'
 #' @noRd
 #'
+
 sq_disp <- function(
-    i, disp_dist, id_within, id_ok, dlist, data_table, id, dist_resolution,
+    i, disp_dist, id_ok, data_table, is_parallel, ...) {
+
+  if (!is_parallel) {
+    out <-  sq_disp_calc(i, disp_dist, id_ok, data_table, ...)
+  } else {
+    out <-  sq_disp_calc(
+      i, disp_dist,id_ok, data_table,
+      id_within, dlist, id, dist_resolution,
+      dist_bin, dens_dep, ncells_in_circle, border, planar)
+  }
+}
+
+#' Calculate Dispersal From Non-Empty Grid Cells
+#'
+#' This function calculates more possible target cells available
+#' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
+#' to find cells that individuals will emigrate to.
+#'
+#' @param i integer vector of length 1; number of current source cell
+#' in relation to `disp_dist`
+#' @inheritParams sq_disp
+#'
+#' @return Indexes of cells that individuals emigrate to. One occurrence of
+#' the particular cell equals to one specimen that emigrates to it.
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#'
+#' @noRd
+#'
+sq_disp_calc <- function(
+    i, disp_dist,id_ok, data_table,
+    id_within, dlist, id, dist_resolution,
     dist_bin, dens_dep, ncells_in_circle, border, planar) {
 
   # max dispersal distance out from the cell id_ok[i] (in raster units):
@@ -245,7 +294,6 @@ sq_disp <- function(
   to <- unlist(to, use.names = FALSE)
   return(to)
 }
-
 
 
 #' Dispersal Simulation In One Grid Cell
