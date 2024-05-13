@@ -299,7 +299,7 @@ initialise <- function(
   # define max_dist
   max_dist <- ifelse(
     is.na(max_dist),
-    round(quantile(kernel(1e4), 0.9, names = FALSE) /
+    round(quantile(kernel(1e4), 0.99, names = FALSE) /
             dist_resolution) * dist_resolution,
     max_dist
   )
