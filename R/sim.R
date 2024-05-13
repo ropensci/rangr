@@ -208,7 +208,6 @@ sim <- function(
 
     clusterExport(cl, c("obj"), envir = environment())
     clusterEvalQ(cl, {
-      # library(terra)
 
       id <- terra::unwrap(obj$id)
       id_within <- obj$id_within
