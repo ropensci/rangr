@@ -7,6 +7,7 @@
 disp(
   N_t,
   id,
+  id_matrix,
   data_table,
   kernel,
   dens_dep,
