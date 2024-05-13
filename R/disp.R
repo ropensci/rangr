@@ -200,9 +200,10 @@ dists_tab <- function(N_pos, kernel, dist_resolution) {
 
 #' Dispersal From Non-Empty Grid Cells
 #'
-#' This function calculates more possible target cells available
-#' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
-#' to find cells that individuals will emigrate to.
+#' This function calls [sq_disp_calc] with arguments passed from [disp] or
+#' without them (in case of parallel computations).
+#'
+#' Arguments for parallel computation are exported to clusters in [sim].
 #'
 #' @param i integer vector of length 1; number of current source cell
 #' in relation to `disp_dist`
@@ -231,53 +232,29 @@ sq_disp <- function(
   }
 }
 
+#' Calculate Dispersal From Non-Empty Grid Cells
+#'
+#' This function calculates more possible target cells available
+#' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
+#' to find cells that individuals will emigrate to.
+#'
+#' @param i integer vector of length 1; number of current source cell
+#' in relation to `disp_dist`
+#' @inheritParams sq_disp
+#'
+#' @return Indexes of cells that individuals emigrate to. One occurrence of
+#' the particular cell equals to one specimen that emigrates to it.
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#'
+#' @noRd
+#'
 sq_disp_calc <- function(
     i, disp_dist,id_ok, data_table,
     id_within, dlist, id, dist_resolution,
     dist_bin, dens_dep, ncells_in_circle, border, planar) {
-
-  # max dispersal distance out from the cell id_ok[i] (in raster units):
-  nd <- length(disp_dist[[i]])
-
-  # position of a target id-s stored in a list "dlist"
-  # for the focal cell id_ok[i]
-  pos <- which(id_within == id_ok[i])
-
-  # no info in dlist about that particular cell OR beyond max_dist
-  if ((no_info <- (pos > length(dlist))) || nd > length(dlist[[pos]])) {
-
-    # calculate missing targets
-    more_targets <- target_ids(
-      idx = NULL,
-      id = id,
-      data = data_table[id_ok[i], 1:3],
-      min_dist_scaled = ifelse(no_info, 1, length(dlist[[pos]]) + 1),
-      max_dist_scaled = nd,
-      dist_resolution = dist_resolution,
-      dist_bin = dist_bin,
-      id_within = id_within
-    )
-
-    dlist[[pos]][(length(dlist[[pos]]) + 1):nd] <- more_targets
-  }
-
-  if(!is.null(dim(ncells_in_circle))) {
-    ncells_in_circle <- ncells_in_circle[, pos]
-  }
-  # cycle over j distances within the cell id_ok[i]
-  to <- lapply(
-    seq_len(nd), one_dist_sq_disp, id_ok[i], dlist[[pos]], disp_dist[[i]],
-    data_table, dens_dep, ncells_in_circle, border
-  )
-
-
-  to <- unlist(to, use.names = FALSE)
-  return(to)
-}
-
-sq_disp_parallel <- function(
-    i, disp_dist, id_ok, data_table) {
-
 
   # max dispersal distance out from the cell id_ok[i] (in raster units):
   nd <- length(disp_dist[[i]])
