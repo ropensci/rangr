@@ -54,15 +54,16 @@ test_dlist <- rangr:::calc_dist(
   calculate_dist = TRUE,
   id = test_id_rast,
   data_table = test_data_table,
-  resolution = res(test_id_rast)[1],
   id_within = test_data_table[!is.na(test_data_table[, "K"]), "id"],
   max_dist = 2000,
+  dist_resolution = res(test_id_rast)[1],
+  dist_bin = 0,
   progress_bar = TRUE,
   quiet = TRUE,
   cl = NULL
 )
 
-test_ncells_in_circle <- rangr:::ncell_in_circle(test_rast)
+test_ncells_in_circle <- rangr:::ncell_in_circle_planar(test_rast, res(test_id_rast)[1])
 
 test_time <- 20
 test_burn <- 2
