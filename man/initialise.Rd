@@ -167,6 +167,8 @@ n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
 K_small <- rast(system.file("input_maps/K_small.tif", package = "rangr"))
 K_small_changing <- rast(system.file("input_maps/K_small_changing.tif",
                          package = "rangr"))
+n1_small_lon_lat <- rast(system.file("input_maps/n1_small_lon_lat.tif", package = "rangr"))
+K_small_lon_lat <- rast(system.file("input_maps/K_small_lon_lat.tif", package = "rangr"))
 
 # basic example
 sim_data_1 <- initialise(
@@ -189,8 +191,16 @@ sim_data_2 <- initialise(
   rate = 1 / 1e3
 )
 
-# example with progress bar and messages
+# example with lon/lat rasters
 sim_data_3 <- initialise(
+  n1_map = n1_small_lon_lat,
+  K_map = K_small_lon_lat,
+  r = log(2),
+  rate = 1 / 1e3
+)
+
+# example with progress bar and messages
+sim_data_4 <- initialise(
   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
   r_sd = 4, growth = "ricker", rate = 1 / 200,
   max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
@@ -200,7 +210,7 @@ sim_data_3 <- initialise(
 library(parallel)
 cl <- makeCluster(detectCores())
 
-sim_data_4 <- initialise(
+sim_data_5 <- initialise(
   n1_map = n1_small,
   K_map = K_small,
   r = log(2),
