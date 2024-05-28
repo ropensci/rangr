@@ -74,7 +74,7 @@ Example maps available in rangr:
 #' @srrstats {SP1.0} Specified domain of applicability
 ```
 
-Note that the input maps must be in the Cartesian coordinate system. You can find additional information about these data sets in help files:
+You can find additional information about these data sets in help files:
 
 ```{r help_input_maps, eval=FALSE}
 ?n1_small.tif
