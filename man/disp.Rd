@@ -30,6 +30,8 @@ NA stands for cells that are outside the study area}
 \item{id}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object
 (of the same size as \code{N_t}) with cell identifiers}
 
+\item{id_matrix}{\code{id} in matrix format}
+
 \item{data_table}{matrix that contains information about all cells
 in current time points}
 
@@ -62,17 +64,23 @@ as targets for dispersal
 are removed from the population
 }}
 
+\item{planar}{logical vector of length 1; \code{TRUE} if input maps are planar rasters, \code{FALSE} if input maps are lon/lat rasters}
+
+\item{dist_resolution}{integer vector of length 1; dimension of one side of
+one cell of \code{id}; in case of an irregular grid or lon/lat raster it is
+calculated during \code{\link[=initialise]{initialisation}}}
+
 \item{max_dist}{a distance (in the same units as used in the raster \code{id})
 specifying the maximum range at which identifiers of target dispersal cells
 are determined in advance (see \code{\link{initialise}})}
+
+\item{dist_bin}{numeric vector of length 1 with value \verb{>= 0}; in case of an irregular grid or lon/lat raster it is
+calculated during \code{\link[=initialise]{initialisation}}}
 
 \item{ncells_in_circle}{numeric vector; number of cells on each distance}
 
 \item{cl}{if simulation is done in parallel, the name of a cluster object
 created by \code{\link[parallel:makeCluster]{makeCluster}}}
-
-\item{resolution}{integer vector of length 1; spatial resolution of
-\code{id} raster}
 }
 \value{
 The function returns a list that contains two matrices:
@@ -122,6 +130,7 @@ sim_data <- initialise(
 disp_output <- disp(
   N_t = sim_data$n1_map,
   id = sim_data$id,
+  id_matrix = as.matrix(sim_data$id, wide = TRUE),
   data_table = sim_data$data_table,
   kernel = sim_data$kernel,
   dens_dep = sim_data$dens_dep,
@@ -129,8 +138,10 @@ disp_output <- disp(
   id_within = sim_data$id_within,
   within_mask = sim_data$within_mask,
   border = sim_data$border,
+  planar = sim_data$planar,
+  dist_resolution = sim_data$dist_resolution,
   max_dist = sim_data$max_dist,
-  resolution = sim_data$resolution,
+  dist_bin = sim_data$dist_bin,
   ncells_in_circle = sim_data$ncells_in_circle
 )
 

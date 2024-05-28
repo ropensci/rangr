@@ -23,6 +23,7 @@
 #' NA stands for cells that are outside the study area
 #' @param id [`SpatRaster`][terra::SpatRaster-class] object
 #' (of the same size as `N_t`) with cell identifiers
+#' @param id_matrix `id` in matrix format
 #' @param data_table matrix that contains information about all cells
 #' in current time points
 #' @param kernel a function defining dispersal kernel
@@ -31,11 +32,15 @@
 #' @param id_within integer vector with identifiers of cells inside the
 #' study area
 #' @param within_mask logical matrix that specifies boundaries of the study area
+#' @param planar logical vector of length 1; `TRUE` if input maps are planar rasters, `FALSE` if input maps are lon/lat rasters
+#' @param dist_resolution integer vector of length 1; dimension of one side of
+#' one cell of `id`; in case of an irregular grid or lon/lat raster it is
+#' calculated during [`initialisation`][`initialise`]
 #' @param max_dist a distance (in the same units as used in the raster `id`)
 #' specifying the maximum range at which identifiers of target dispersal cells
 #' are determined in advance (see [`initialise`])
-#' @param resolution integer vector of length 1; spatial resolution of
-#' `id` raster
+#' @param dist_bin numeric vector of length 1 with value `>= 0`; in case of an irregular grid or lon/lat raster it is
+#' calculated during [`initialisation`][`initialise`]
 #' @param ncells_in_circle numeric vector; number of cells on each distance
 #' @param cl if simulation is done in parallel, the name of a cluster object
 #' created by [`makeCluster`][parallel::makeCluster()]
@@ -49,7 +54,6 @@
 #'
 #'
 #' @export
-#'
 #'
 #' @examples
 #'
@@ -70,6 +74,7 @@
 #' disp_output <- disp(
 #'   N_t = sim_data$n1_map,
 #'   id = sim_data$id,
+#'   id_matrix = as.matrix(sim_data$id, wide = TRUE),
 #'   data_table = sim_data$data_table,
 #'   kernel = sim_data$kernel,
 #'   dens_dep = sim_data$dens_dep,
@@ -77,8 +82,10 @@
 #'   id_within = sim_data$id_within,
 #'   within_mask = sim_data$within_mask,
 #'   border = sim_data$border,
+#'   planar = sim_data$planar,
+#'   dist_resolution = sim_data$dist_resolution,
 #'   max_dist = sim_data$max_dist,
-#'   resolution = sim_data$resolution,
+#'   dist_bin = sim_data$dist_bin,
 #'   ncells_in_circle = sim_data$ncells_in_circle
 #' )
 #'

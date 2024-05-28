@@ -448,9 +448,14 @@ K_get_init_values <- function(K_map, changing_env) {
 #' @param id [`SpatRaster`][terra::SpatRaster-class]; contains all cells ids
 #' @param data_table matrix; contains information about all cells in current
 #' time points
-#' @param dist_resolution integer vector of length 1; dimension of one side of one cell of `id`; in case of an irregular grid or lon/lat raster it is calculated by [`calculate_dist_params`]
+#' @param dist_resolution integer vector of length 1; dimension of one side of
+#' one cell of `id`; in case of an irregular grid or lon/lat raster it is calculated during [`initialisation`][`initialise`]
+#' calculated by [`calculate_dist_params`]
+#' @param dist_bin numeric vector of length 1 with value `>= 0`; in case of an irregular grid or lon/lat raster it is
+#' calculated by [`calculate_dist_params`]
+#' is equal to 0 if  input maps are planar raster; if input maps are lon/lat it is calculated by
+#' rasters, `dist_bin` is calculated by [`calculate_dist_params`]
 #' @param id_within numeric vector; ids of cells inside the study area
-#' @param dist_bin
 #' @inheritParams initialise
 #'
 #' @return List of target cells ids for each target cells in any distance
@@ -534,8 +539,7 @@ dist_list <- function(
 #'
 #' @inheritParams calc_dist
 #'
-#' @return
-#' @export
+#' @return List of available target cells from each cell within the study area,
 #'
 #' @noRd
 #'
@@ -584,7 +588,7 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
 
   }
 
-  # calculate max_avl_dist - max distance between any grid cells divided by dist_resolution and then
+  # calculate max_avl_dist - max distance between any grid cells divided by dist_resolution plus dist_bin
   max_avl_dist <- round(max(dist_params["max_avl_dist",]) / dist_resolution) + dist_bin
 
   return(c(dist_bin = dist_bin, dist_resolution = dist_resolution, max_avl_dist = max_avl_dist))
@@ -646,14 +650,19 @@ ncell_in_circle_planar <- function(template, dist_resolution) {
 #' Count Cells On Every Distance - lon/lat raster
 #'
 #' This internal function counts how many cells are reachable on each distance
-#' from any cells of template `r`. It takes raster's dist_resolution adn dist_bin into account.
+#' from any cells of template `r`. It takes raster's dist_resolution adn dist_bin
+#' into account.
 #'
 #' @param template template [`SpatRaster`][terra::SpatRaster-class] object
-#' @param max_avl_dist
+#' @param max_avl_dist numeric vector of length 1; max distance between any grid
+#' cells divided by dist_resolution plus dist_bin; describes max available
+#' distance achievable in given input maps
 #' @inheritParams calc_dist
 #' @inheritParams initialise
 #'
-#' @return numeric matrix with number of columns corresponding to id_within and number of rows equal to max_avl_dist; numbers of target cells on every possible distance from each cell;
+#' @return numeric matrix with number of columns corresponding to id_within
+#' and number of rows equal to max_avl_dist; numbers of target cells on
+#' every possible distance from each cell;
 #'
 #'
 #'

@@ -61,13 +61,16 @@ target_ids <- function(
 
 
 
-#' Title
+#' Create SpatVector
 #'
-#' @param template
-#' @param xy_cell
-#' @param idx
+#' Creates [`SpatVector`][terra::SpatVector-class] from given data.
 #'
-#' @return
+#' @param template template [`SpatRaster`][terra::SpatRaster-class] object
+#' @param xy_cell numeric matrix with 4 columns: "id", "x", "y", "dist" or named numeric vector with 4 elements: "id", "x", "y", "dist"
+#'
+#' @inheritParams target_ids
+#'
+#' @return [`SpatVector`][terra::SpatVector-class] object
 #'
 #' @noRd
 #'
@@ -86,16 +89,19 @@ get_vect_from_xy <- function(template, xy_cell, idx = NULL) {
 
 
 
-#' Title
+#' Get Available Ids And Their Corresponding Distances
 #'
-#' @param template
-#' @param xy_vect
-#' @param id_within
-#' @param dist_resolution
-#' @param min_dist_scaled
-#' @param max_dist_scaled
+#' @param xy_vect [`SpatVector`][terra::SpatVector-class] object; represents current cell
+#' @param dist_resolution integer vector of length 1; dimension of one side of
+#' one cell of `id`; in case of an irregular grid or lon/lat raster it is
+#' calculated by [`calculate_dist_params`]
+#' @param min_dist_scaled integer vector of length 1; minimum distance to calculate target cell scaled by `dist_resolution`
+#' @param max_dist_scaled integer vector of length 1; maximum distance to calculate target cell scaled by `dist_resolution`
 #'
-#' @return
+#' @inheritParams get_vect_from_xy
+#'
+#' @return numeric matrix with 2 columns representing: cells ids and distances
+#' at which they are
 #'
 #' @noRd
 #'
@@ -128,14 +134,17 @@ get_ds <- function(template, xy_vect, id_within, dist_resolution,
 
 
 
-#' Title
+#' Add Distance Bins To Distances
 #'
-#' @param ids
-#' @param ds
-#' @param idx
-#' @param dist_bin
+#' Used for planar rastera with irregular resolution or lon/lat rasters.
 #'
-#' @return
+#' @param ids numeric vector; cells ids
+#' @param ds numeric vector; cells distances
+#' @param idx numeric vector of length 1; current source cell
+#' @param dist_bin numeric vector of length 1; distance bin size
+#'
+#' @return numeric matrix with 2 columns representing: cells ids and distances
+#' at which they are
 #'
 #' @noRd
 #'
@@ -164,13 +173,16 @@ get_bins <- function(ids, ds, idx, dist_bin) {
 
 
 
-#' Title
+#' Get Cells Ids At Each Distance
 #'
-#' @param dists
-#' @param ids
-#' @param ds
+#' @param dists numeric vector; distances for which cells ids are supposed
+#' to be returned
+#' @param ids numeric vector; cells ids
+#' @param ds numeric vector; cells distances
 #'
-#' @return
+#' @return list of the same length as `dists`, each element of this list
+#' contains numeric vector with cells ids available at the corresponding
+#' distance
 #'
 #' @noRd
 #'
