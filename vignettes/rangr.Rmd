@@ -62,13 +62,21 @@ library(terra)
 
 One of the most important input parameters for simulation are maps specifying the abundance of the virtual species at the starting point of the simulation and carrying capacity of environment in which simulation takes place. In this section, we will not generate them from scratch. Instead, we will use maps provided with the package.
 
-Example maps available in rangr:
+Example maps available in rangr in the Cartesian coordinate system:
 
 -   `n1_small.tif`
 -   `n1_big.tif`
 -   `K_small.tif`
 -   `K_small_changing.tif`
 -   `K_big.tif`
+
+Example maps available in rangr in the longitude/latitude coordinate system:
+
+-   `n1_small_lon_lat.tif`
+-   `n1_big_lon_lat.tif`
+-   `K_small_lon_lat.tif`
+-   `K_small_changing_lon_lat.tif`
+-   `K_big_lon_lat.tif`
 
 ```{r SP1.0, eval=FALSE, include=FALSE}
 #' @srrstats {SP1.0} Specified domain of applicability
