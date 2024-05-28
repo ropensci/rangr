@@ -121,7 +121,8 @@ contains all necessary information to perform a simulation using
 \description{
 This function generates a \code{sim_data} object which contains all the necessary
 information needed to run a simulation by the \code{\link{sim}} function. Note that the
-input maps (\code{n1_map} and \code{K_map}) must be in the Cartesian coordinate system.
+input maps (\code{n1_map} and \code{K_map}) can be in the Cartesian or longitude/latitude
+coordinate system.
 }
 \details{
 The most time-consuming part of computations performed by the \code{\link{sim}}
@@ -132,7 +133,21 @@ even more, these calculations can be done in parallel, providing that
 a cluster object created by \code{\link[parallel:makeCluster]{makeCluster}} is
 specified using the \code{cl} parameter. The parameter \code{max_dist} sets
 the maximum distance at which this pre-calculation is done. If \code{max_dist}
-is \code{NULL} then it is set to 0.9 quantile from the \code{kernel_fun}.
+is \code{NULL} then it is set to 0.99 quantile from the \code{kernel_fun}.
+
+If input maps are in the Cartesian coordinate system and grid cells are squares,
+the distances between cells are calculated by \code{\link[terra:distance]{distance}}
+function from \code{terra} package. This distances are then divided by the input
+maps resolution.
+In case of input maps with grid cells in different shapes than square (with
+rectangular cells or longitude/latitude coordinate system), we calculate
+distance resolution by finding the shortest distance between each "queen" type
+neighbors. All distances calculated by the \code{\link[terra:distance]{distance}}
+function are divided by this distance resolution. In addition, in order to
+avoid discontinuities in the distances at which the target cells are, we also
+calculate an additional parameter \code{dist_bin}. It is used to expand distances
+at which target cells are, from a single number to a range. \code{dist_bin} is
+calculated as half of the maximum distance between each neighbours.
 
 NA in input maps stands for cells that are outside the study area.
 

@@ -2,7 +2,8 @@
 #'
 #' This function generates a `sim_data` object which contains all the necessary
 #' information needed to run a simulation by the [`sim`] function. Note that the
-#' input maps (`n1_map` and `K_map`) must be in the Cartesian coordinate system.
+#' input maps (`n1_map` and `K_map`) can be in the Cartesian or longitude/latitude
+#' coordinate system.
 #'
 #'
 #' The most time-consuming part of computations performed by the [`sim`]
@@ -13,13 +14,28 @@
 #' a cluster object created by [`makeCluster`][parallel::makeCluster()] is
 #' specified using the `cl` parameter. The parameter `max_dist` sets
 #' the maximum distance at which this pre-calculation is done. If `max_dist`
-#' is `NULL` then it is set to 0.9 quantile from the `kernel_fun`.
+#' is `NULL` then it is set to 0.99 quantile from the `kernel_fun`.
+#'
+#' If input maps are in the Cartesian coordinate system and grid cells are squares,
+#' the distances between cells are calculated by [`distance`][terra::distance]
+#' function from `terra` package. This distances are then divided by the input
+#' maps resolution.
+#' In case of input maps with grid cells in different shapes than square (with
+#' rectangular cells or longitude/latitude coordinate system), we calculate
+#' distance resolution by finding the shortest distance between each "queen" type
+#' neighbors. All distances calculated by the [`distance`][terra::distance]
+#' function are divided by this distance resolution. In addition, in order to
+#' avoid discontinuities in the distances at which the target cells are, we also
+#' calculate an additional parameter `dist_bin`. It is used to expand distances
+#' at which target cells are, from a single number to a range. `dist_bin` is
+#' calculated as half of the maximum distance between each neighbours.
 #'
 #' NA in input maps stands for cells that are outside the study area.
 #'
 #' [`K_get_interpolation`] function can be used to prepare `K_map` that changes
 #' in time. This may be useful, when simulating environmental change or
 #' exploring the effects of ecological disturbances.
+#'
 #'
 #'
 #' @param n1_map [`SpatRaster`][terra::SpatRaster-class] object with one layer;
@@ -536,6 +552,10 @@ dist_list <- function(
 
 
 #' Calculate distance parameters
+#'
+#' Calculates `dist_bin`, `dist_resolution` and `max_avl_dist`. These parameters
+#' are necessary to dispersal process if input maps have cells in differen shape
+#' than squares.
 #'
 #' @inheritParams calc_dist
 #'
