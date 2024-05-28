@@ -16,19 +16,21 @@
 #' the maximum distance at which this pre-calculation is done. If `max_dist`
 #' is `NULL` then it is set to 0.99 quantile from the `kernel_fun`.
 #'
-#' If input maps are in the Cartesian coordinate system and grid cells are squares,
-#' the distances between cells are calculated by [`distance`][terra::distance]
-#' function from `terra` package. This distances are then divided by the input
-#' maps resolution.
-#' In case of input maps with grid cells in different shapes than square (with
-#' rectangular cells or longitude/latitude coordinate system), we calculate
+#' If the input maps are in the Cartesian coordinate system and the grid cells
+#' are squares,
+#' the distances between cells are calculated using the [`distance`][terra::distance]
+#' function from `terra` package. These distances are then divided by the
+#' resolution of the input maps.
+#'
+#' For input maps with grid cells in shapes other than squares (with
+#' rectangular cells or longitude/latitude coordinate system), we calculate the
 #' distance resolution by finding the shortest distance between each "queen" type
 #' neighbors. All distances calculated by the [`distance`][terra::distance]
-#' function are divided by this distance resolution. In addition, in order to
-#' avoid discontinuities in the distances at which the target cells are, we also
-#' calculate an additional parameter `dist_bin`. It is used to expand distances
-#' at which target cells are, from a single number to a range. `dist_bin` is
-#' calculated as half of the maximum distance between each neighbours.
+#' function are then divided by this distance resolution.
+#' To avoid discontinuities in the distances at which the target cells are located,
+#' we also calculate an additional parameter `dist_bin` as half of the maximum
+#' distance between each neighbours. It is used to expand the
+#' distances at which target cells are located, from a single number to a range.
 #'
 #' NA in input maps stands for cells that are outside the study area.
 #'
@@ -106,6 +108,8 @@
 #' K_small <- rast(system.file("input_maps/K_small.tif", package = "rangr"))
 #' K_small_changing <- rast(system.file("input_maps/K_small_changing.tif",
 #'                          package = "rangr"))
+#' n1_small_lon_lat <- rast(system.file("input_maps/n1_small_lon_lat.tif", package = "rangr"))
+#' K_small_lon_lat <- rast(system.file("input_maps/K_small_lon_lat.tif", package = "rangr"))
 #'
 #' # basic example
 #' sim_data_1 <- initialise(
@@ -128,8 +132,16 @@
 #'   rate = 1 / 1e3
 #' )
 #'
-#' # example with progress bar and messages
+#' # example with lon/lat rasters
 #' sim_data_3 <- initialise(
+#'   n1_map = n1_small_lon_lat,
+#'   K_map = K_small_lon_lat,
+#'   r = log(2),
+#'   rate = 1 / 1e3
+#' )
+#'
+#' # example with progress bar and messages
+#' sim_data_4 <- initialise(
 #'   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
 #'   r_sd = 4, growth = "ricker", rate = 1 / 200,
 #'   max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
@@ -139,7 +151,7 @@
 #' library(parallel)
 #' cl <- makeCluster(detectCores())
 #'
-#' sim_data_4 <- initialise(
+#' sim_data_5 <- initialise(
 #'   n1_map = n1_small,
 #'   K_map = K_small,
 #'   r = log(2),

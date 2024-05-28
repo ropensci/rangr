@@ -135,19 +135,21 @@ specified using the \code{cl} parameter. The parameter \code{max_dist} sets
 the maximum distance at which this pre-calculation is done. If \code{max_dist}
 is \code{NULL} then it is set to 0.99 quantile from the \code{kernel_fun}.
 
-If input maps are in the Cartesian coordinate system and grid cells are squares,
-the distances between cells are calculated by \code{\link[terra:distance]{distance}}
-function from \code{terra} package. This distances are then divided by the input
-maps resolution.
-In case of input maps with grid cells in different shapes than square (with
-rectangular cells or longitude/latitude coordinate system), we calculate
+If the input maps are in the Cartesian coordinate system and the grid cells
+are squares,
+the distances between cells are calculated using the \code{\link[terra:distance]{distance}}
+function from \code{terra} package. These distances are then divided by the
+resolution of the input maps.
+
+For input maps with grid cells in shapes other than squares (with
+rectangular cells or longitude/latitude coordinate system), we calculate the
 distance resolution by finding the shortest distance between each "queen" type
 neighbors. All distances calculated by the \code{\link[terra:distance]{distance}}
-function are divided by this distance resolution. In addition, in order to
-avoid discontinuities in the distances at which the target cells are, we also
-calculate an additional parameter \code{dist_bin}. It is used to expand distances
-at which target cells are, from a single number to a range. \code{dist_bin} is
-calculated as half of the maximum distance between each neighbours.
+function are then divided by this distance resolution.
+To avoid discontinuities in the distances at which the target cells are located,
+we also calculate an additional parameter \code{dist_bin} as half of the maximum
+distance between each neighbours. It is used to expand the
+distances at which target cells are located, from a single number to a range.
 
 NA in input maps stands for cells that are outside the study area.
 
