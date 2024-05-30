@@ -1,3 +1,17 @@
+# rangr 1.0.4 (2024-05-30)
+
+### Major improvements
+
+-   Added support for lon/lat rasters as input maps
+
+### Minor improvements
+
+-   Default value of `max_dist` in `initialise()` is now equal to 0.99 quantile of `kernel_fun` instead of 0.9
+
+-   Added examples of lon/lat rasters to package data
+
+-   Input maps (`K_map` and `n1_map`) are now wrapped in `sim_data` object
+
 # rangr 1.0.3 (2024-01-23)
 
 ### Minor improvements
