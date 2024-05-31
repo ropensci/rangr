@@ -558,6 +558,6 @@ test_that("K_add_stochasticity works", {
   )
 
 
-  expect_s4_class(test_sim_data_1$K_map, "SpatRaster")
-  expect_s4_class(test_sim_data_2$K_map, "SpatRaster")
+  expect_s4_class(test_sim_data_1$K_map, "PackedSpatRaster")
+  expect_s4_class(test_sim_data_2$K_map, "PackedSpatRaster")
 })

@@ -32,7 +32,7 @@ print.sim_data <- function(x, ...) {
 
   # prepare output
   n1_sm <- summary(as.numeric(x$n1_map))
-  K_sm <- x$K_map
+  K_sm <- unwrap(x$K_map)
 
   names <- names(x)
   names <- names[(names %in% c(

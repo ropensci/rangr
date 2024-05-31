@@ -73,7 +73,7 @@
 #' # disp
 #' disp_output <- disp(
 #'   N_t = sim_data$n1_map,
-#'   id = sim_data$id,
+#'   id = unwrap(sim_data$id),
 #'   id_matrix = as.matrix(sim_data$id, wide = TRUE),
 #'   data_table = sim_data$data_table,
 #'   kernel = sim_data$kernel,

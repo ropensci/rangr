@@ -359,12 +359,12 @@ initialise <- function(
   # output list ---------------------------------------------
   out <- list(
     n1_map = as.matrix(n1_map, wide = TRUE),
-    id = id,
+    id = wrap(id),
     dist_bin = dist_bin,
     dist_resolution = dist_resolution,
     r = r,
     r_sd = r_sd,
-    K_map = K_map,
+    K_map = wrap(K_map),
     K_sd = K_sd,
     growth = growth,
     A = A,

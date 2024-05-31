@@ -98,6 +98,11 @@ update.sim_data <- function(object, ..., evaluate = TRUE) {
       }
     }
 
+    # unwrap K_map if not updated
+    if(!"K_map" %in% names(extras)) {
+      call$K_map <- unwrap(object$K_map)
+    }
+
     # transform call to call object
     call <- as.call(call)
 
