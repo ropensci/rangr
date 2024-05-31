@@ -85,7 +85,7 @@ plot.sim_results <- function(
   x_rast <- to_rast(
     sim_results = x,
     time_points = time_points,
-    template = template
+    template = unwrap(template)
   )
 
   plot(x_rast, type = type, range = range, ...)
