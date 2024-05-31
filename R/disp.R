@@ -74,7 +74,7 @@
 #' disp_output <- disp(
 #'   N_t = sim_data$n1_map,
 #'   id = unwrap(sim_data$id),
-#'   id_matrix = as.matrix(sim_data$id, wide = TRUE),
+#'   id_matrix = as.matrix(unwrap(sim_data$id), wide = TRUE),
 #'   data_table = sim_data$data_table,
 #'   kernel = sim_data$kernel,
 #'   dens_dep = sim_data$dens_dep,
