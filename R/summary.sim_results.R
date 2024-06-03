@@ -55,7 +55,7 @@ summary.sim_results <- function(object, ...) {
     means <- apply(object$N_map, 3, mean, na.rm = TRUE)
     plot(1:object$simulated_time, means,
       type = "l",
-      main = "Mean abundance from each time step",
+      main = "Mean abundance at each time step",
       xlab = "Time step",
       ylab = "Mean abundance"
     )

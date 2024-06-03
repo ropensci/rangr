@@ -55,7 +55,7 @@ plot.sim_results <- function(
   default_n_panels <- 4
 
   if (!is.null(time_points)) {
-    if (x$simulated_time < time_points[length(x)]) {
+    if (any(x$simulated_time < time_points)) {
       stop(
         "Invalid \"time_points\" argument: ",
         "some of its values exceed the simulation time."
@@ -85,7 +85,7 @@ plot.sim_results <- function(
   x_rast <- to_rast(
     sim_results = x,
     time_points = time_points,
-    template = template
+    template = unwrap(template)
   )
 
   plot(x_rast, type = type, range = range, ...)

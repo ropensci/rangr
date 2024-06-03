@@ -1,8 +1,8 @@
 #' Simulating Dispersal
 #'
-#' The function simulates dispersal, for every square calculating the no. of
-#' individuals that disperse out of this square and the no. of individuals that
-#'  disperse into this square.
+#' The function simulates dispersal, for every grid cell calculating the number
+#' of individuals that disperse out of this cell and the number of individuals
+#' that disperse into this cell.
 #'
 #' This is the function used by [`sim`] internally and is not intended to be
 #' called by the user. The parameters for this function are passed from
@@ -23,6 +23,7 @@
 #' NA stands for cells that are outside the study area
 #' @param id [`SpatRaster`][terra::SpatRaster-class] object
 #' (of the same size as `N_t`) with cell identifiers
+#' @param id_matrix `id` in matrix format
 #' @param data_table matrix that contains information about all cells
 #' in current time points
 #' @param kernel a function defining dispersal kernel
@@ -31,11 +32,15 @@
 #' @param id_within integer vector with identifiers of cells inside the
 #' study area
 #' @param within_mask logical matrix that specifies boundaries of the study area
+#' @param planar logical vector of length 1; `TRUE` if input maps are planar rasters, `FALSE` if input maps are lon/lat rasters
+#' @param dist_resolution integer vector of length 1; dimension of one side of
+#' one cell of `id`; in case of an irregular grid or lon/lat raster it is
+#' calculated during [`initialisation`][`initialise`]
 #' @param max_dist a distance (in the same units as used in the raster `id`)
 #' specifying the maximum range at which identifiers of target dispersal cells
 #' are determined in advance (see [`initialise`])
-#' @param resolution integer vector of length 1; spatial resolution of
-#' `id` raster
+#' @param dist_bin numeric vector of length 1 with value `>= 0`; in case of an irregular grid or lon/lat raster it is
+#' calculated during [`initialisation`][`initialise`]
 #' @param ncells_in_circle numeric vector; number of cells on each distance
 #' @param cl if simulation is done in parallel, the name of a cluster object
 #' created by [`makeCluster`][parallel::makeCluster()]
@@ -49,7 +54,6 @@
 #'
 #'
 #' @export
-#'
 #'
 #' @examples
 #'
@@ -70,6 +74,7 @@
 #' disp_output <- disp(
 #'   N_t = sim_data$n1_map,
 #'   id = unwrap(sim_data$id),
+#'   id_matrix = as.matrix(unwrap(sim_data$id), wide = TRUE),
 #'   data_table = sim_data$data_table,
 #'   kernel = sim_data$kernel,
 #'   dens_dep = sim_data$dens_dep,
@@ -77,8 +82,10 @@
 #'   id_within = sim_data$id_within,
 #'   within_mask = sim_data$within_mask,
 #'   border = sim_data$border,
+#'   planar = sim_data$planar,
+#'   dist_resolution = sim_data$dist_resolution,
 #'   max_dist = sim_data$max_dist,
-#'   resolution = sim_data$resolution,
+#'   dist_bin = sim_data$dist_bin,
 #'   ncells_in_circle = sim_data$ncells_in_circle
 #' )
 #'
@@ -93,62 +100,65 @@
 #'
 #'
 disp <- function(
-    N_t, id, data_table, kernel, dens_dep, dlist, id_within, within_mask,
-    border, max_dist, resolution, ncells_in_circle, cl = NULL) {
+    N_t, id, id_matrix, data_table, kernel, dens_dep, dlist, id_within, within_mask,
+    border, planar, dist_resolution, max_dist, dist_bin, ncells_in_circle,
+    cl = NULL) {
 
   # empty immigration/emigration matrices
   im <- em <- matrix(0L, nrow = nrow(N_t), ncol = ncol(N_t))
 
   # necessary variables
-  id_ok_mask <- N_t > 0 & within_mask # square ids where the species is present
-  id_ok <- as.matrix(id, wide = TRUE)[id_ok_mask]
+  id_ok_mask <- N_t > 0 & within_mask # cell ids where the species is present
+  id_ok <- id_matrix[id_ok_mask]
   N_pos <- N_t[id_ok_mask]
-  disp_dist <- dists_tab(N_pos, kernel, resolution)
+  disp_dist <- dists_tab(N_pos, kernel, dist_resolution)
   if (is.null(dlist)) dlist <- vector("list", length(id_within))
 
   # version of dispersal (linear vs. parallel calculations)
-  if (is.null(cl)) {
+  # cycle over non-empty grid cells
+  if(is.null(cl)) {
 
-    # cycle over non-empty squares
-    disp_res <- lapply(
+    disp_res <- pblapply(
       seq_len(length(N_pos)), sq_disp,
+      # not const args
       disp_dist = disp_dist,
-      id_within = id_within,
       id_ok = id_ok,
-      dlist = dlist,
       data_table = data_table,
+      is_parallel = !is.null(cl),
+      # const args
+      id_within = id_within,
+      dlist = dlist,
       id = id,
-      resolution = resolution,
+      dist_resolution = dist_resolution,
+      dist_bin = dist_bin,
       dens_dep = dens_dep,
       ncells_in_circle = ncells_in_circle,
-      border = border
+      border = border,
+      planar = planar,
+      cl = cl
     )
-
   } else {
 
-    # cycle over non-empty squares
-    disp_res <- parLapply(
-      cl, seq_len(length(N_pos)), sq_disp,
+    disp_res <- pblapply(
+      seq_len(length(N_pos)), sq_disp,
       disp_dist = disp_dist,
-      id_within = id_within,
       id_ok = id_ok,
-      dlist = dlist,
       data_table = data_table,
-      id = wrap(id),
-      resolution = resolution,
-      dens_dep = dens_dep,
-      ncells_in_circle = ncells_in_circle,
-      border = border
+      is_parallel = !is.null(cl),
+      cl = cl
     )
   }
+
 
   # fill immigration/emigration matrices
   for (i in seq_len(length(id_ok))) {
     targets <- disp_res[[i]]
+    for (j in targets) {
+      im[j] <- im[j] + 1L
+    }
 
-    n_disp <- length(targets)
-    em[id_ok[i]] <- em[id_ok[i]] + n_disp
-    im[targets] <- im[targets] + 1L
+    em[id_ok[i]] <- em[id_ok[i]] + length(targets)
+
   }
 
   # return immigration/emigration matrices
@@ -181,13 +191,13 @@ disp <- function(
 #'
 #' @noRd
 #'
-dists_tab <- function(N_pos, kernel, resolution) {
+dists_tab <- function(N_pos, kernel, dist_resolution) {
 
   tab <- function(x) {
-    dd <- kernel(x)
-    dd <- round(dd / resolution)
-    dd <- dd[dd > 0]
-    tabd <- tabulate(dd)
+    dd <- round(kernel(x) / dist_resolution)
+    dd_pos <- dd[dd > 0]
+    tabd <- tabulate(dd_pos)
+    tabd
   }
 
   lapply(N_pos, tab)
@@ -195,15 +205,16 @@ dists_tab <- function(N_pos, kernel, resolution) {
 
 
 
-#' Dispersal From Non-Empty Square
+#' Dispersal From Non-Empty Grid Cells
 #'
-#' This function calculates more possible target squares available
-#' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
-#' to find cells that individuals will emigrate to.
+#' This function calls [sq_disp_calc] with arguments passed from [disp] or
+#' without them (in case of parallel computations).
+#'
+#' Arguments for parallel computation are exported to clusters in [sim].
 #'
 #' @param i integer vector of length 1; number of current source cell
 #' in relation to `disp_dist`
-#' @inheritParams disp_linear
+#' @inheritParams disp
 #'
 #' @return Indexes of cells that individuals emigrate to. One occurrence of
 #' the particular cell equals to one specimen that emigrates to it.
@@ -214,34 +225,73 @@ dists_tab <- function(N_pos, kernel, resolution) {
 #'
 #' @noRd
 #'
-sq_disp <- function(
-    i, disp_dist, id_within, id_ok, dlist, data_table, id, resolution, dens_dep,
-    ncells_in_circle, border) {
 
-  # max dispersal distance out from the square id_ok[i] (in raster units):
+sq_disp <- function(
+    i, disp_dist, id_ok, data_table, is_parallel, ...) {
+
+  if (!is_parallel) {
+    out <-  sq_disp_calc(i, disp_dist, id_ok, data_table, ...)
+  } else {
+    out <-  sq_disp_calc(
+      i, disp_dist,id_ok, data_table,
+      id_within, dlist, id, dist_resolution,
+      dist_bin, dens_dep, ncells_in_circle, border, planar)
+  }
+}
+
+#' Calculate Dispersal From Non-Empty Grid Cells
+#'
+#' This function calculates more possible target cells available
+#' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
+#' to find cells that individuals will emigrate to.
+#'
+#' @param i integer vector of length 1; number of current source cell
+#' in relation to `disp_dist`
+#' @inheritParams sq_disp
+#'
+#' @return Indexes of cells that individuals emigrate to. One occurrence of
+#' the particular cell equals to one specimen that emigrates to it.
+#'
+#'
+#' @srrstats {G1.4a} uses roxygen documentation (internal function)
+#' @srrstats {G2.0a} documented lengths expectation
+#'
+#' @noRd
+#'
+sq_disp_calc <- function(
+    i, disp_dist,id_ok, data_table,
+    id_within, dlist, id, dist_resolution,
+    dist_bin, dens_dep, ncells_in_circle, border, planar) {
+
+  # max dispersal distance out from the cell id_ok[i] (in raster units):
   nd <- length(disp_dist[[i]])
 
   # position of a target id-s stored in a list "dlist"
-  # for the focal square id_ok[i]
+  # for the focal cell id_ok[i]
   pos <- which(id_within == id_ok[i])
 
-  # no info in dlist about that particular square OR beyond max_dist
+  # no info in dlist about that particular cell OR beyond max_dist
   if ((no_info <- (pos > length(dlist))) || nd > length(dlist[[pos]])) {
 
     # calculate missing targets
-    more_targets <- target_ids_in_disp(
-      id_x_y = data_table[id_ok[i], 1:3],
+    more_targets <- target_ids(
+      idx = NULL,
       id = id,
-      id_within = id_within,
-      resolution = resolution,
-      min = ifelse(no_info, 1, length(dlist[[pos]]) + 1),
-      max = nd
+      data = data_table[id_ok[i], 1:3],
+      min_dist_scaled = ifelse(no_info, 1, length(dlist[[pos]]) + 1),
+      max_dist_scaled = nd,
+      dist_resolution = dist_resolution,
+      dist_bin = dist_bin,
+      id_within = id_within
     )
 
     dlist[[pos]][(length(dlist[[pos]]) + 1):nd] <- more_targets
   }
 
-  # cycle over j distances within the square id_ok[i]
+  if(!is.null(dim(ncells_in_circle))) {
+    ncells_in_circle <- ncells_in_circle[, pos]
+  }
+  # cycle over j distances within the cell id_ok[i]
   to <- lapply(
     seq_len(nd), one_dist_sq_disp, id_ok[i], dlist[[pos]], disp_dist[[i]],
     data_table, dens_dep, ncells_in_circle, border
@@ -252,79 +302,8 @@ sq_disp <- function(
   return(to)
 }
 
-#' Calculate Missing Indexes Of Target Cells
-#'
-#' This internal function is used during dispersal process
-#' in [sq_disp] function. It returns indexes of target cells that were not
-#'  precalculated during initialisation.
-#'
-#' There are two possible reason for usage of [target_ids_in_disp].
-#' First is that during simulation some individuals are dispersing beyond
-#' specified distance threshold (`max_dist` parameter in [`initialise`]).
-#' Second reason is that the user has chosen to not pre-calculate target cells
-#' (by setting `calculate_dist` to`FALSE` in [`initialise`]).
-#'
-#' @param id_x_y integer vector; index and coordinates of source cell
-#' @param id [`SpatRaster`][terra::SpatRaster-class] object; cells indexes
-#' from `sim_data` object created by [`sim`]
-#' @param id_within integer vector; indexes of cells inside study area
-#' @param resolution integer vector of length 1; resolution
-#' @param min integer vector of length 1; the closest distance for which
-#' target cells will be returned
-#' @param max integer vector of length 1; the farthest distance for which
-#' target cells will be returned
-#'
-#' @return List of target cells for each distance or `NULL` if there isn't any
-#'
-#'
-#' @srrstats {G1.4a} uses roxygen documentation (internal function)
-#' @srrstats {G2.0a} documented lengths expectation
-#' @srrstats {G2.1a, SP2.6} documented types expectation
-#'
-#' @noRd
-#'
-target_ids_in_disp <- function(id_x_y, id, id_within, resolution, min, max) {
 
-  # get coordinates of given cell
-  xy_i <- vect(cbind(id_x_y["x"], id_x_y["y"]))
-  id <- unwrap(id)
-  crs(xy_i) <- crs(id)
-
-  # calculate distances
-  d <- distance(id, xy_i, progress = 0)
-  d <- round(c(as.matrix(d, wide = TRUE)) / resolution)
-
-  # check if cells are within study area and specified range
-  d_within <- d[id_within]
-  in_range <- d_within >= min & d_within <= max
-
-  # check if such a cell exists
-  if (!any(in_range)) {
-    return(NULL)
-  }
-
-  # extract cells ids and distance at which they are
-  ids <- id_within[in_range]
-  ds <- d_within[in_range]
-
-  # all needed distances
-  dists <- min:max
-
-  # make list of target cells for each distance
-  lapply(dists, function(x) {
-    out <- ids[ds == x] # get ids on distance x
-
-    if (length(out) == 0) { # if there isn't any target cell return null
-      out <- NULL
-    }
-
-    return(out)
-  })
-}
-
-
-
-#' Dispersal Simulation In One Square
+#' Dispersal Simulation In One Grid Cell
 #'
 #' `one_dist_sq_disp` simulates dispersal in one cell to given distance
 #'
@@ -358,27 +337,26 @@ one_dist_sq_disp <- function(j, id_int, dlist_pos, disp_dist_i, data_table,
       out <- rep(id_int, times = disp_dist_i[j])
     }
   } else {
-    # tij target squares at the distance j from the focal square id_ok[i]
+    # tij target cells at the distance j from the focal cell id_ok[i]
     tij <- dlist_pos[[j]]
 
     Ks <- data_table[tij, "K"]
     Ns <- data_table[tij, "N"]
 
-    # dij - no. of individuals dispersing out from the square id_ok[i]
+    # dij - number of individuals dispersing out from the cell id_ok[i]
     # at the distance j:
     if ((dij <- disp_dist_i[j]) == 0) {
       # if no individuals
 
       out <- NULL
     } else if (sum(Ks) == 0 && dens_dep != "none") {
-      # if K in all target squares is 0 and dispersal is ~ to K -
+      # if K in all target cells is 0 and dispersal is ~ to K -
       # all individuals stay in current sq
 
       out <- rep(id_int, disp_dist_i[j])
     } else {
       if (border == "absorbing") {
         # if absorbing borders and dispersal out available
-
         if ((ncells_in_circle[j] - length(Ns)) > 0) {
           # pick
           dij <- sum(sample(

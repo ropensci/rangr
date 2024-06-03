@@ -53,9 +53,7 @@ Example maps available in rangr:
 - `K_small_changing.tif`
 - `K_big.tif`
 
-Note that the input maps must be in the geodetic (i.e. Cartesian)
-coordinate system. You can find additional information about these data
-sets in help files:
+You can find additional information about these data sets in help files:
 
 ``` r
 library(rangr)
@@ -73,7 +71,7 @@ and their dimensions, you can use the following commands:
 
 ``` r
 library(terra)
-#> terra 1.7.55
+#> terra 1.7.23
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
 K_small <-  rast(system.file("input_maps/K_small.tif", package = "rangr"))

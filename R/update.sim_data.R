@@ -76,7 +76,9 @@ update.sim_data <- function(object, ..., evaluate = TRUE) {
 
 
     # dlist: given, inherited or to calculate
-    if (!"dlist" %in% names(extras)) {
+    if (!"dlist" %in% names(extras)) { # not given dlist
+
+      # check if old dlist should be removed
       rm_old_dlist <- any(!is.na(match(
         names(extras),
         c(
@@ -91,7 +93,7 @@ update.sim_data <- function(object, ..., evaluate = TRUE) {
 
       if (rm_old_dlist) {
         call$dlist <- NULL
-      } else {
+      } else { # given dlist
         call$dlist <- object$dlist
       }
     }

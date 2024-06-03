@@ -125,34 +125,43 @@ test_that("target_ids_in_disp works", {
   test_dlist_pos_01 <-
     (readRDS(test_path("fixtures", "test_dlist_mini.rds")))[[test_id]]
 
+  test_sim_data <-
+    (readRDS(test_path("fixtures", "test_sim_data.rds")))
+
   # no target cells
-  expect_null(target_ids_in_disp(
-    id_x_y = test_id_x_y,
+  expect_null(target_ids(
+    idx = test_id,
     id = test_rast,
-    id_within = test_id_within,
-    resolution = test_resolution,
-    min = 10,
-    max = 12
+    data = test_data_table_01,
+    min_dist_scaled = 10,
+    max_dist_scaled = 12,
+    dist_resolution = test_sim_data$dist_resolution,
+    dist_bin = test_sim_data$dist_bin,
+    id_within = test_id_within
   ))
 
   # targets for one distance
-  expect_equal(target_ids_in_disp(
-    id_x_y = test_id_x_y,
+  expect_equal(target_ids(
+    idx = test_id,
     id = test_rast,
-    id_within = test_id_within,
-    resolution = test_resolution,
-    min = 1,
-    max = 1
+    data = test_data_table_01,
+    min_dist_scaled = 1,
+    max_dist_scaled = 1,
+    dist_resolution = test_sim_data$dist_resolution,
+    dist_bin = test_sim_data$dist_bin,
+    id_within = test_id_within
   ), test_dlist_pos_01[1])
 
   # targets for more distances
-  expect_equal(target_ids_in_disp(
-    id_x_y = test_id_x_y,
+  expect_equal(target_ids(
+    idx = test_id,
     id = test_rast,
-    id_within = test_id_within,
-    resolution = test_resolution,
-    min = 1,
-    max = 2
+    data = test_data_table_01,
+    min_dist_scaled = 1,
+    max_dist_scaled = 2,
+    dist_resolution = test_sim_data$dist_resolution,
+    dist_bin = test_sim_data$dist_bin,
+    id_within = test_id_within
   ), test_dlist_pos_01)
 })
 
@@ -183,6 +192,9 @@ test_that("sq_disp works", {
 
   test_border_01 <- "absorbing"
   test_border_02 <- "reprising"
+  test_is_parallel <- FALSE
+  test_sim_data <-
+    (readRDS(test_path("fixtures", "test_sim_data.rds")))
 
 
   expect_lte(
@@ -193,8 +205,10 @@ test_that("sq_disp works", {
       id_ok = test_id_ok_01,
       dlist = test_dlist_01,
       data_table = test_data_table_01,
+      is_parallel = test_is_parallel,
       id = test_rast,
-      resolution = test_resolution,
+      dist_resolution = test_resolution,
+      dist_bin = test_sim_data$dist_bin,
       dens_dep = test_dens_dep_01,
       ncells_in_circle = test_ncells_in_circle,
       border = test_border_01
@@ -210,8 +224,10 @@ test_that("sq_disp works", {
       id_ok = test_id_ok_01,
       dlist = test_dlist_01,
       data_table = test_data_table_01,
+      is_parallel = test_is_parallel,
       id = test_rast,
-      resolution = test_resolution,
+      dist_resolution = test_resolution,
+      dist_bin = test_sim_data$dist_bin,
       dens_dep = test_dens_dep_01,
       ncells_in_circle = test_ncells_in_circle,
       border = test_border_02
@@ -253,6 +269,7 @@ test_that("disp works", {
   # reclassify to remove NaNs (that were NAs before saving)
   test_rast <- classify(test_rast, cbind(NaN, NA))
   test_id_rast <- rast(test_path("fixtures", "test_id_rast.tif"))
+  test_id_matrix <- as.matrix(test_id_rast, wide = TRUE) # grid cells
   test_N_t <- as.matrix(test_rast, wide = TRUE)
   test_kernel_01 <- function(n) match.fun("rexp")(n, rate = 1 / 1e3)
 
@@ -274,10 +291,16 @@ test_that("disp works", {
   test_ncells_in_circle <-
     readRDS(test_path("fixtures", "test_ncells_in_circle_mini.rds"))
 
+  test_sim_data <-
+    (readRDS(test_path("fixtures", "test_sim_data.rds")))
+
+
+
 
   disp_res_01 <- disp(
     N_t = test_N_t,
     id = test_id_rast,
+    id_matrix = test_id_matrix,
     data_table = test_data_table_01,
     kernel = test_kernel_01,
     dens_dep = test_dens_dep_01,
@@ -285,23 +308,28 @@ test_that("disp works", {
     id_within = test_id_within_01,
     within_mask = test_within_mask,
     border = test_border_01,
+    planar = TRUE,
     max_dist = test_max_dist,
-    resolution = test_resolution,
+    dist_bin = test_sim_data$dist_bin,
+    dist_resolution = test_resolution,
     ncells_in_circle = test_ncells_in_circle
   )
 
   disp_res_02 <- disp(
     N_t = test_N_t,
     id = test_id_rast,
+    id_matrix = test_id_matrix,
     data_table = test_data_table_01,
     kernel = test_kernel_01,
     dens_dep = test_dens_dep_02,
     dlist = NULL,
     id_within = test_id_within_01,
     within_mask = test_within_mask,
+    planar = TRUE,
     border = test_border_02,
     max_dist = test_max_dist,
-    resolution = test_resolution,
+    dist_bin = test_sim_data$dist_bin,
+    dist_resolution = test_resolution,
     ncells_in_circle = test_ncells_in_circle
   )
 

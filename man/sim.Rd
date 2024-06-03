@@ -51,7 +51,7 @@ the spatial aspect of the output and the third dimension represents time.
 }
 
 In case of a total extinction, a simulation is stopped before reaching
-the specified no. of time steps. If the population died out before reaching
+the specified number of time steps. If the population died out before reaching
 the \code{burn} threshold, then nothing can be returned and an error occurs.
 }
 \description{
@@ -109,34 +109,37 @@ sim_data <- initialise(
 )
 
 # simulation
-sim_1 <- sim(obj = sim_data, time = 100)
+sim_1 <- sim(obj = sim_data, time = 20)
 
 # simulation with burned time steps and progress bar
-sim_2 <- sim(obj = sim_data, time = 100, burn = 20, progress_bar = TRUE)
+sim_2 <- sim(obj = sim_data, time = 20, burn = 10, progress_bar = TRUE)
 
 # example with parallelization
 library(parallel)
 cl <- makeCluster(detectCores())
 
 # parallelized simulation
-sim_3 <- sim(obj = sim_data, time = 100, cl = cl, progress_bar = TRUE)
+sim_3 <- sim(obj = sim_data, time = 20, cl = cl, progress_bar = TRUE)
 stopCluster(cl)
 
 
 # visualisation
-plot(n1_small)
-
-plot(to_rast(
+plot(
   sim_1,
-  time_points = 100,
+  time_points = 20,
   template = sim_data$K_map
-))
+)
 
-plot(to_rast(
+plot(
   sim_1,
-  time_points = c(1, 10, 50, 100),
+  time_points = c(1, 5, 10, 20),
   template = sim_data$K_map
-), range = range(sim_1$N_map, na.rm = TRUE))
+)
+
+plot(
+  sim_1,
+  template = sim_data$K_map
+)
 
 }
 

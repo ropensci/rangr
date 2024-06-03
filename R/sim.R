@@ -67,7 +67,7 @@
 #' }
 #'
 #' In case of a total extinction, a simulation is stopped before reaching
-#' the specified no. of time steps. If the population died out before reaching
+#' the specified number of time steps. If the population died out before reaching
 #' the `burn` threshold, then nothing can be returned and an error occurs.
 #'
 #' @export
@@ -90,34 +90,37 @@
 #' )
 #'
 #' # simulation
-#' sim_1 <- sim(obj = sim_data, time = 100)
+#' sim_1 <- sim(obj = sim_data, time = 20)
 #'
 #' # simulation with burned time steps and progress bar
-#' sim_2 <- sim(obj = sim_data, time = 100, burn = 20, progress_bar = TRUE)
+#' sim_2 <- sim(obj = sim_data, time = 20, burn = 10, progress_bar = TRUE)
 #'
 #' # example with parallelization
 #' library(parallel)
 #' cl <- makeCluster(detectCores())
 #'
 #' # parallelized simulation
-#' sim_3 <- sim(obj = sim_data, time = 100, cl = cl, progress_bar = TRUE)
+#' sim_3 <- sim(obj = sim_data, time = 20, cl = cl, progress_bar = TRUE)
 #' stopCluster(cl)
 #'
 #'
 #' # visualisation
-#' plot(n1_small)
-#'
-#' plot(to_rast(
+#' plot(
 #'   sim_1,
-#'   time_points = 100,
+#'   time_points = 20,
 #'   template = sim_data$K_map
-#' ))
+#' )
 #'
-#' plot(to_rast(
+#' plot(
 #'   sim_1,
-#'   time_points = c(1, 10, 50, 100),
+#'   time_points = c(1, 5, 10, 20),
 #'   template = sim_data$K_map
-#' ), range = range(sim_1$N_map, na.rm = TRUE))
+#' )
+#'
+#' plot(
+#'   sim_1,
+#'   template = sim_data$K_map
+#' )
 #'
 #' }
 #'
@@ -152,12 +155,19 @@ sim <- function(
   ## time
   assert_that(length(time) == 1)
   assert_that(is.numeric(time))
+  assert_that(
+    time %% 1 == 0,
+    msg = "the time parameter must be an integer")
   assert_that(time > 1)
 
   ## burn
   assert_that(length(burn) == 1)
   assert_that(is.numeric(burn))
+  assert_that(
+    burn %% 1 == 0,
+    msg = "the burn parameter must be an integer")
   assert_that(burn >= 0)
+  assert_that(burn < time)
 
   ## return_mu
   assert_that(length(return_mu) == 1)
@@ -174,6 +184,8 @@ sim <- function(
 
   # options
   options(warn = -1)
+  pbo <- pboptions(type = "none")
+  on.exit(pboptions(pbo))
 
   # Extract data from the sim_data object
   K_map <- unwrap(obj$K_map) # carrying capacity
@@ -183,12 +195,33 @@ sim <- function(
   r <- obj$r # intrinsic population growth rate
   r_sd <- obj$r_sd # sd of intrinsic growth rate (time specific variation)
   A <- obj$A # Allee effect coefficient
-  id <- unwrap(obj$id) # square identifiers
+  id <- unwrap(obj$id) # grid cells identifiers as raster
+  id_matrix <- as.matrix(id, wide = TRUE) # grid cells identifiers as matrix
   ncells <- obj$ncells # number of cells in the study area
   data_table <- obj$data_table
   changing_env <- obj$changing_env
-  resolution <- obj$resolution
 
+  # exports for parallel computations
+  if (!is.null(cl)) {
+    obj$id <- wrap(id)
+    obj$K_map <- wrap(K_map)
+
+    clusterExport(cl, c("obj"), envir = environment())
+    clusterEvalQ(cl, {
+
+      id <- terra::unwrap(obj$id)
+      id_within <- obj$id_within
+      dlist <- obj$dlist
+      dist_resolution <- obj$dist_resolution
+      dist_bin <- obj$dist_bin
+      dens_dep <- obj$dens_dep
+      ncells_in_circle <- obj$ncells_in_circle
+      border <- obj$border
+      planar <- obj$planar
+      dist_resolution <- obj$dist_resolution
+
+    })
+  }
 
   # Specify other necessary data
   ## additional demographic stochasticity (time specific)
@@ -212,6 +245,7 @@ sim <- function(
   N[, , 1] <- n1_map
 
 
+
   # Loop through time
 
   if (progress_bar) {
@@ -233,7 +267,7 @@ sim <- function(
       N[, , t] <- round(mu[, , t - 1])
     } else{
       # demographic stochasticity (random numbers drown from a Poisson distribution) #nolint
-      # of no. of individuals in each square predicted by the deterministic model)
+      # of number of individuals in each cell predicted by the deterministic model)
       N[, , t] <- rpois(ncells, mu[, , t - 1])
     }
 
@@ -260,11 +294,11 @@ sim <- function(
     # 2. Dispersal
 
     m <- disp(
-      N_t = N[, , t], id = id,
+      N_t = N[, , t], id = id, id_matrix,
       data_table = data_table, kernel = obj$kernel,
       dens_dep = obj$dens_dep, dlist = obj$dlist, id_within = obj$id_within,
-      within_mask = obj$within_mask, border = obj$border,
-      max_dist = obj$max_dist, resolution = resolution,
+      within_mask = obj$within_mask, border = obj$border, planar = obj$planar,
+      obj$dist_resolution, max_dist = obj$max_dist, dist_bin = obj$dist_bin,
       ncells_in_circle = obj$ncells_in_circle, cl = cl
     )
 

@@ -127,6 +127,130 @@ NULL
 #' @srrstats {G5.1} dataset used in examples is exported and documented
 NULL
 
+#' @name K_small_lon_lat.tif
+#' @title Example Of Carrying Capacity Map (Small)
+#' @docType data
+#'
+#' @description
+#' [`SpatRaster`][terra::SpatRaster-class] object that represents a carrying
+#' capacity map projected to WGS 84 (CRS84) from the original raster `K_small`.
+#' This map can be used as a carrying capacity map to initialize data necessary
+#' to perform a simulation. It is compatible with the `n1_small_lon_lat.tif` raster.
+#'
+#' @format [`SpatRaster`][terra::SpatRaster-class] object with 12 rows
+#' and 14 columns containing integer values 0-100 and NA's
+#' (indicating unsuitable areas).
+#'
+#' @source Data generated in-house to serve as an example
+#' (using spatial autocorrelation)
+#'
+#' @examples
+#' system.file("input_maps/K_small_lon_lat.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G5.1} dataset used in examples is exported and documented
+NULL
+
+
+#' @name K_small_changing_lon_lat.tif
+#' @title Example Of Changing Carrying Capacity Maps (Small)
+#' @docType data
+#'
+#' @description
+#' [`SpatRaster`][terra::SpatRaster-class] object representing changing carrying
+#' capacity maps projected to WGS 84 (CRS84) from the original raster
+#' `K_small_changing`. These maps can be used as carrying capacity maps to initialize
+#' data necessary to perform a simulation. To use these maps in the initialization
+#' process, the user first has to use [`K_get_interpolation`] to generate a map for
+#' every time step of the simulation. These maps are compatible with the
+#' `n1_small_lon_lat.tif` raster.
+#'
+#' @format [`SpatRaster`][terra::SpatRaster-class] object with 3 layers,
+#' each having 12 rows and 14 columns containing integer values 0-170 and NA's
+#' (indicating unsuitable areas).
+#'
+#' @source Data generated in-house to serve as an example
+#' (using spatial autocorrelation)
+#'
+#' @examples
+#' system.file("input_maps/K_small_changing_lon_lat.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G5.1} dataset used in examples is exported and documented
+NULL
+
+
+#' @name K_big_lon_lat.tif
+#' @title Example Of Carrying Capacity Map (Big)
+#' @docType data
+#'
+#' @description
+#' [`SpatRaster`][terra::SpatRaster-class] object representing a carrying
+#' capacity map projected to WGS 84 (CRS84) from the original raster `K_big`.
+#' This map can be used as a carrying capacity map to initialize data necessary
+#' to perform a simulation. It is compatible with the `n1_big_lon_lat.tif` raster.
+#'
+#' @format [`SpatRaster`][terra::SpatRaster-class] object with 74 rows
+#' and 125 columns containing integer values 0-25 and NA's
+#' (indicating unsuitable areas).
+#'
+#' @source Data generated in-house to serve as an example
+#' (using spatial autocorrelation)
+#'
+#' @examples
+#' system.file("input_maps/K_big_lon_lat.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+NULL
+
+
+#' @name n1_small_lon_lat.tif
+#' @title Example Of Abundance Map At First Time Step Of The Simulation (Small)
+#' @docType data
+#'
+#' @description
+#' [`SpatRaster`][terra::SpatRaster-class] object representing an abundance map
+#' at the first time step of the simulation projected to WGS 84 (CRS84) from the
+#' original raster `n1_small`. This map can be used as a simulation starting point
+#' to initialize data necessary to perform a simulation. It is compatible with the
+#' `K_small_lon_lat.tif` and `K_small_changing_lon_lat.tif` maps.
+#'
+#' @format [`SpatRaster`][terra::SpatRaster-class] object with 12 rows
+#' and 14 columns containing integer values 0-10 and NA's
+#' (indicating unsuitable areas).
+#'
+#' @source Data generated in-house to serve as an example
+#'
+#' @examples
+#' system.file("input_maps/n1_small_lon_lat.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+NULL
+
+
+#' @name n1_big_lon_lat.tif
+#' @title Example Of Abundance Map At First Time Step Of The Simulation (Big)
+#' @docType data
+#'
+#' @description
+#' [`SpatRaster`][terra::SpatRaster-class] object representing an abundance map
+#' at the first time step of the simulation projected to WGS 84 (CRS84) from the
+#' original raster `n1_big`. This map can be used as a simulation starting point
+#' to initialize data necessary to perform a simulation. It is compatible with the
+#' `K_big_lon_lat.tif` map.
+#'
+#' @format [`SpatRaster`][terra::SpatRaster-class] object with 74 rows
+#' and 125 columns containing integer values 0-50 and NA's
+#' (indicating unsuitable areas).
+#'
+#' @source Data generated in-house to serve as an example
+#'
+#' @examples
+#' system.file("input_maps/n1_big_lon_lat.tif", package = "rangr")
+#'
+#' @srrstats {G1.4} uses roxygen documentation
+#' @srrstats {G5.1} dataset used in examples is exported and documented
+NULL
 
 
 #' @title Example Of Observation Points List

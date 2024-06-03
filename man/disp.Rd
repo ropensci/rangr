@@ -7,6 +7,7 @@
 disp(
   N_t,
   id,
+  id_matrix,
   data_table,
   kernel,
   dens_dep,
@@ -14,8 +15,10 @@ disp(
   id_within,
   within_mask,
   border,
+  planar,
+  dist_resolution,
   max_dist,
-  resolution,
+  dist_bin,
   ncells_in_circle,
   cl = NULL
 )
@@ -27,19 +30,21 @@ NA stands for cells that are outside the study area}
 \item{id}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object
 (of the same size as \code{N_t}) with cell identifiers}
 
+\item{id_matrix}{\code{id} in matrix format}
+
 \item{data_table}{matrix that contains information about all cells
 in current time points}
 
 \item{kernel}{a function defining dispersal kernel}
 
 \item{dens_dep}{character vector of length 1 specifying if the probability
-of settling in a target square is (case-sensitive, default \code{"K2N"}):
+of settling in a target grid cell is (case-sensitive, default \code{"K2N"}):
 \itemize{
 \item "none" - fully random,
-\item "K" - proportional to the carrying capacity of a target square,
+\item "K" - proportional to the carrying capacity of a target cell,
 \item "K2N" - density-dependent, i.e. proportional to the ratio of
-carrying capacity of a target square to the number of individuals
-already present in a target square
+carrying capacity of a target cell to the number of individuals
+already present in a target cell
 }}
 
 \item{dlist}{a list with identifiers of target cells at a specified
@@ -53,18 +58,24 @@ study area}
 \item{border}{character vector of length 1 defining how to deal
 with borders (case-sensitive, default \code{"absorbing"}):
 \itemize{
-\item "absorbing" - individuals that disperse outside the study area
-are removed from the population
 \item "reprising" - cells outside the study area are not allowed
 as targets for dispersal
+\item "absorbing" - individuals that disperse outside the study area
+are removed from the population
 }}
+
+\item{planar}{logical vector of length 1; \code{TRUE} if input maps are planar rasters, \code{FALSE} if input maps are lon/lat rasters}
+
+\item{dist_resolution}{integer vector of length 1; dimension of one side of
+one cell of \code{id}; in case of an irregular grid or lon/lat raster it is
+calculated during \code{\link[=initialise]{initialisation}}}
 
 \item{max_dist}{a distance (in the same units as used in the raster \code{id})
 specifying the maximum range at which identifiers of target dispersal cells
 are determined in advance (see \code{\link{initialise}})}
 
-\item{resolution}{integer vector of length 1; spatial resolution of
-\code{id} raster}
+\item{dist_bin}{numeric vector of length 1 with value \verb{>= 0}; in case of an irregular grid or lon/lat raster it is
+calculated during \code{\link[=initialise]{initialisation}}}
 
 \item{ncells_in_circle}{numeric vector; number of cells on each distance}
 
@@ -80,9 +91,9 @@ from each cell
 to each cell
 }
 \description{
-The function simulates dispersal, for every square calculating the no. of
-individuals that disperse out of this square and the no. of individuals that
-disperse into this square.
+The function simulates dispersal, for every grid cell calculating the number
+of individuals that disperse out of this cell and the number of individuals
+that disperse into this cell.
 }
 \details{
 This is the function used by \code{\link{sim}} internally and is not intended to be
@@ -119,6 +130,7 @@ sim_data <- initialise(
 disp_output <- disp(
   N_t = sim_data$n1_map,
   id = unwrap(sim_data$id),
+  id_matrix = as.matrix(unwrap(sim_data$id), wide = TRUE),
   data_table = sim_data$data_table,
   kernel = sim_data$kernel,
   dens_dep = sim_data$dens_dep,
@@ -126,8 +138,10 @@ disp_output <- disp(
   id_within = sim_data$id_within,
   within_mask = sim_data$within_mask,
   border = sim_data$border,
+  planar = sim_data$planar,
+  dist_resolution = sim_data$dist_resolution,
   max_dist = sim_data$max_dist,
-  resolution = sim_data$resolution,
+  dist_bin = sim_data$dist_bin,
   ncells_in_circle = sim_data$ncells_in_circle
 )
 

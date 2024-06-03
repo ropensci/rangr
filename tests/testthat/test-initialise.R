@@ -4,7 +4,7 @@ test_that("initialise works", {
   test_rast <- classify(test_rast_with_nan, cbind(NaN, NA))
 
   test_rast_res <- test_rast
-  res(test_rast_res) <- c(1000, 500)
+  test_rast_res <- terra::aggregate(test_rast, fact = c(1,2))
 
   test_rast_neg <- test_rast
   values(test_rast_neg)[2:3] <- c(-2, -3)
@@ -19,8 +19,7 @@ test_that("initialise works", {
     initialise(
       n1_map = 1,
       K_map = test_rast,
-      r = log(1.2),
-      quiet = TRUE
+      r = log(1.2)
     ),
     "n1_map does not inherit from class SpatRaster")
 
@@ -29,18 +28,18 @@ test_that("initialise works", {
       n1_map = test_rast,
       K_map = 1,
       r = log(1.2),
-      quiet = TRUE
+
     ),
     "K_map does not inherit from class SpatRaster")
 
 
   expect_error(
     initialise(
-      n1_map = test_rast_res,
+      n1_map = test_rast,
       K_map = test_rast_res,
       r = log(1.2)
     ),
-    "rangr only supports rasters with square cells")
+    "number of rows and/or columns do not match")
 
   expect_message(
     initialise(
@@ -122,8 +121,7 @@ test_that("initialise works", {
     initialise(
       n1_map = test_rast,
       K_map = test_rast,
-      r = c(1, 2, NA),
-      quiet = TRUE
+      r = c(1, 2, NA)
     ),
     "length(r) not equal to 1",
     fixed = TRUE)
@@ -132,8 +130,7 @@ test_that("initialise works", {
     initialise(
       n1_map = test_rast,
       K_map = test_rast,
-      r = "1",
-      quiet = TRUE
+      r = "1"
     ),
     "r is not a numeric or integer vector",
     fixed = TRUE)
@@ -448,6 +445,7 @@ test_that("target ids precalculation works", {
 
   dist_list_res <- readRDS(test_path("fixtures", "test_dlist_mini.rds"))
 
+
   test_sim_data <- initialise(
     n1_map = test_rast,
     K_map = test_rast,
@@ -457,19 +455,48 @@ test_that("target ids precalculation works", {
   )
 
   expect_equal(calc_dist(
-    TRUE, test_rast, test_data_table, test_resolution, test_id_within,
-    test_max_dist, FALSE, TRUE, NULL), dist_list_res)
+    calculate_dist = TRUE,
+    id = test_rast,
+    data_table = test_data_table,
+    id_within = test_id_within,
+    max_dist = test_max_dist,
+    dist_resolution = test_sim_data$dist_resolution,
+    dist_bin = test_sim_data$dist_bin,
+    progress_bar = FALSE,
+    quiet = TRUE,
+    cl = NULL),
+  dist_list_res)
+
   expect_null(calc_dist(
-    FALSE, test_rast, test_data_table, test_resolution, test_id_within,
-    test_max_dist, FALSE, TRUE, NULL))
+    calculate_dist = FALSE,
+    id = test_rast,
+    data_table = test_data_table,
+    id_within = test_id_within,
+    max_dist = test_max_dist,
+    dist_resolution = test_sim_data$dist_resolution,
+    dist_bin = test_sim_data$dist_bin,
+    progress_bar = FALSE,
+    quiet = TRUE,
+    cl = NULL))
+
   expect_null(test_sim_data$dlist)
 
   expect_equal(
-    dist_list(test_rast, test_data_table, test_resolution, test_id_within,
-              test_max_dist, FALSE, NULL), dist_list_res)
+    dist_list(
+      id = test_rast,
+      data_table = test_data_table,
+      id_within = test_id_within,
+      max_dist = test_max_dist,
+      dist_resolution = test_resolution,
+      dist_bin = test_sim_data$dist_bin,
+      progress_bar = FALSE,
+      cl = NULL),
+    dist_list_res)
+
   expect_equal(
-    target_ids(1, test_rast, test_data, test_resolution,
-               test_max_dist, test_id_within), dist_list_res[[1]])
+    target_ids(1, test_rast, test_data, 1, test_max_dist / test_resolution,
+               test_resolution, test_sim_data$dist_bin, test_id_within),
+    dist_list_res[[1]])
 })
 
 
@@ -479,7 +506,7 @@ test_that("ncell_in_circle works", {
   test_ncells_in_circle <-
     readRDS(test_path("fixtures", "test_ncells_in_circle_mini.rds"))
 
-  expect_equal(ncell_in_circle(test_rast), test_ncells_in_circle)
+  expect_equal(ncell_in_circle_planar(test_rast, res(test_rast)[1]), test_ncells_in_circle)
 })
 
 
