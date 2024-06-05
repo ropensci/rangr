@@ -45,13 +45,22 @@ Here’s an example of how to use the `rangr` package.
 
 ## Input maps
 
-Example maps available in rangr:
+Example maps available in rangr in the Cartesian coordinate system:
 
 - `n1_small.tif`
 - `n1_big.tif`
 - `K_small.tif`
 - `K_small_changing.tif`
 - `K_big.tif`
+
+Example maps available in rangr in the longitude/latitude coordinate
+system:
+
+- `n1_small_lon_lat.tif`
+- `n1_big_lon_lat.tif`
+- `K_small_lon_lat.tif`
+- `K_small_changing_lon_lat.tif`
+- `K_big_lon_lat.tif`
 
 You can find additional information about these data sets in help files:
 
@@ -71,7 +80,7 @@ and their dimensions, you can use the following commands:
 
 ``` r
 library(terra)
-#> terra 1.7.23
+#> terra 1.7.55
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
 K_small <-  rast(system.file("input_maps/K_small.tif", package = "rangr"))
@@ -123,8 +132,8 @@ summary(sim_data_01)
 #> A                    -
 #> kernel_fun        rexp
 #> dens_dep           K2N
-#> border       absorbing
-#> max_dist          2000
+#> border       reprising
+#> max_dist          5000
 #> changing_env     FALSE
 #> dlist             TRUE
 ```
