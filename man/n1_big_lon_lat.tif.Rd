@@ -16,7 +16,7 @@ Data generated in-house to serve as an example
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object representing an abundance map
 at the first time step of the simulation projected to WGS 84 (CRS84) from the
 original raster \code{n1_big}. This map can be used as a simulation starting point
-to initialize data necessary to perform a simulation. It is compatible with the
+to initialise data necessary to perform a simulation. It is compatible with the
 \code{K_big_lon_lat.tif} map.
 }
 \examples{

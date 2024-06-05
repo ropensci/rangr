@@ -16,7 +16,7 @@ Data generated in-house to serve as an example
 \description{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object representing a carrying
 capacity map projected to WGS 84 (CRS84) from the original raster \code{K_big}.
-This map can be used as a carrying capacity map to initialize data necessary
+This map can be used as a carrying capacity map to initialise data necessary
 to perform a simulation. It is compatible with the \code{n1_big_lon_lat.tif} raster.
 }
 \examples{

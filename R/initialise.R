@@ -9,10 +9,8 @@
 #' The most time-consuming part of computations performed by the [`sim`]
 #' function is the simulation of dispersal. To speed it up, a list containing
 #' indexes of target cells at a specified distance from a focal cell,
-#' is calculated in advance and stored in a `dlist` slot. This process can be
-#' parallelized, using
-#' a cluster object created by [`makeCluster`][parallel::makeCluster()],
-#' specified by the `cl` parameter. The parameter `max_dist` sets
+#' is calculated in advance and stored in a `dlist` slot.
+#' The parameter `max_dist` sets
 #' the maximum distance at which this pre-calculation  will be performed. If `max_dist`
 #' is `NULL`, it is set to 0.99 quantile from the `kernel_fun`.
 #'
@@ -89,7 +87,6 @@
 #' @param progress_bar logical vector of length 1; determines if progress bar
 #' for calculating distances should be displayed (used only if dlist is `NULL`)
 #' @param quiet logical vector of length 1; determines if messages should be displayed
-#' @param cl cluster object created by [`makeCluster`][parallel::makeCluster()]
 #'
 #' @return Object of class `sim_data` which inherits from `list`. This object
 #' contains all necessary information to perform a simulation using
@@ -146,21 +143,6 @@
 #'   r_sd = 4, growth = "ricker", rate = 1 / 200,
 #'   max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
 #' )
-#'
-#' # example with parallelization
-#' library(parallel)
-#' cl <- makeCluster(detectCores())
-#'
-#' sim_data_5 <- initialise(
-#'   n1_map = n1_small,
-#'   K_map = K_small,
-#'   r = log(2),
-#'   rate = 1 / 1e3,
-#'   cl = cl,
-#'   progress_bar = TRUE,
-#    quiet = FALSE
-#' )
-#' stopCluster(cl)
 #' }
 #'
 #'
@@ -183,7 +165,7 @@ initialise <- function(
     n1_map, K_map, K_sd = 0, r, r_sd = 0, growth = "gompertz", A = NA,
     dens_dep = c("K2N", "K", "none"), border = c("reprising", "absorbing"),
     kernel_fun = "rexp", ..., max_dist = NA, calculate_dist = TRUE,
-    dlist = NULL, progress_bar = FALSE, quiet = TRUE, cl = NULL) {
+    dlist = NULL, progress_bar = FALSE, quiet = TRUE) {
 
   #' @srrstats {G2.0, G2.2, G2.13} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6, SP2.7} assert input type
@@ -303,7 +285,7 @@ initialise <- function(
 
   # define dist_params
   if(!planar) { # lon/lat
-    dist_params <- calculate_dist_params(id, id_within, data_table,  progress_bar, quiet, cl)
+    dist_params <- calculate_dist_params(id, id_within, data_table,  progress_bar, quiet)
     dist_bin <- dist_params["dist_bin"]
     dist_resolution <- dist_params["dist_resolution"]
   } else { # planar
@@ -311,7 +293,7 @@ initialise <- function(
     dist_resolution <- res(n1_map)
     if(dist_resolution[1] != dist_resolution[2]) { # if not square grid cells
 
-      dist_params <- calculate_dist_params(id, ncells, data_table, progress_bar, quiet, cl)
+      dist_params <- calculate_dist_params(id, ncells, data_table, progress_bar, quiet)
       dist_bin <- dist_params["dist_bin"]
       dist_resolution <- dist_params["dist_resolution"]
 
@@ -337,7 +319,7 @@ initialise <- function(
   if (is.null(dlist)) {
     dlist <- calc_dist(
       calculate_dist, id, data_table, id_within, max_dist, dist_resolution,
-      dist_bin, progress_bar, quiet, cl
+      dist_bin, progress_bar, quiet
     )
   }
 
@@ -350,7 +332,7 @@ initialise <- function(
       ncells_in_circle <- ncell_in_circle_planar(id, dist_resolution)
     }
     else {
-      ncells_in_circle <- ncell_in_circle_lonlat(id, dist_resolution, dist_bin, id_within, dist_params["max_avl_dist"], progress_bar, quiet, cl)
+      ncells_in_circle <- ncell_in_circle_lonlat(id, dist_resolution, dist_bin, id_within, dist_params["max_avl_dist"], progress_bar, quiet)
       ncells_in_circle <- ncells_in_circle
     }
   }
@@ -389,12 +371,6 @@ initialise <- function(
 
   return(out)
 }
-
-# alias for initialise
-#' @rdname initialise
-#' @export
-initialize <- initialise
-
 
 
 # internal functions -----------------------------------------------------------
@@ -499,14 +475,14 @@ K_get_init_values <- function(K_map, changing_env) {
 #'
 calc_dist <- function(
     calculate_dist, id, data_table, id_within, max_dist, dist_resolution,
-    dist_bin, progress_bar, quiet, cl) {
+    dist_bin, progress_bar, quiet) {
 
   if (calculate_dist) {
     if (!quiet) cat("Calculating distances...", "\n")
 
     dlist <- dist_list(
       id, data_table, id_within, max_dist, dist_resolution,
-      dist_bin, progress_bar, cl
+      dist_bin, progress_bar
     )
   } else {
     dlist <- NULL
@@ -519,8 +495,8 @@ calc_dist <- function(
 
 #' Precalculating Target Cells For Dispersal
 #'
-#' `dist_list` checks if precalculation of target cells ids should be done
-#' in a linear or parallel way and then uses [target_ids] for calculation
+#' `dist_list` prepares data for precalculation of target cells ids
+#' and then uses [`target_ids`] for calculation
 #'
 #' @inheritParams calc_dist
 #'
@@ -534,27 +510,26 @@ calc_dist <- function(
 #'
 dist_list <- function(
     id, data_table, id_within, max_dist, dist_resolution,
-    dist_bin, progress_bar, cl) {
+    dist_bin, progress_bar) {
 
   # within_list <- !is.na(data_table[, "K"])
   data <- cbind(data_table[, c("id", "x", "y")], dist = NA)
 
 
   # specify function and arguments (for clarity)
-  if(!is.null(cl)) id <- wrap(id)
   tfun <- function(x)
     target_ids(x, id, data, min_dist_scaled = 1,
                max_dist_scaled = max_dist / dist_resolution,
                dist_resolution, dist_bin, id_within)
 
-  # calculate targets id with or without parallelization / progress bar
+  # calculate targets id with or without progress bar
   if (!progress_bar) {
 
     pbo <- pboptions(type = "none")
     on.exit(pboptions(pbo))
   }
 
-  out <- pblapply(id_within, tfun, cl = cl)
+  out <- pblapply(id_within, tfun)
 
 
 
@@ -575,15 +550,11 @@ dist_list <- function(
 #'
 #' @noRd
 #'
-calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet, cl) {
-
-  # wrap id for parallel computing if necessary
-  if(!is.null(cl)) id <- wrap(id)
+calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet) {
 
   # calculate distance to the closest neighbour from each grid cell
   params_fun <- function(x) {
 
-    id <- unwrap(id)
     neighbours <- adjacent(id, cells = x, directions = "queen")
     neighbours <- neighbours[!is.na(neighbours)]
 
@@ -605,7 +576,7 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
     on.exit(pboptions(pbo))
   }
 
-  dist_params <- pbvapply(id_within, params_fun, numeric(3), cl = cl)
+  dist_params <- pbvapply(id_within, params_fun, numeric(3))
 
 
   # calculate dist_resolution - min distance between each neighbours
@@ -702,7 +673,7 @@ ncell_in_circle_planar <- function(template, dist_resolution) {
 #'
 #' @noRd
 #'
-ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_within, max_avl_dist, progress_bar, quiet, cl) {
+ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_within, max_avl_dist, progress_bar, quiet) {
 
 
   xdiff <- xmax(template) - xmin(template)
@@ -717,18 +688,8 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
   extended <- extend(template, e)
 
 
-  # wrap rasters for parallel computing if necessary
-  if(!is.null(cl)) {
-    template <- wrap(template)
-    extended <- wrap(extended)
-  }
-
   # calculates how many cells are reachable on each distance from each grid cell
   circles_fun <- function(x) {
-
-    # unwrap rasters
-    template <- unwrap(template)
-    extended <- unwrap(extended)
 
     xy <- vect(xyFromCell(template, x))
     crs(xy) <- crs(template)
@@ -761,7 +722,7 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
     on.exit(pboptions(pbo))
   }
 
-  circles <- pbvapply(id_within, circles_fun, numeric(max_avl_dist), cl = cl)
+  circles <- pbvapply(id_within, circles_fun, numeric(max_avl_dist))
 
 
   return(circles)

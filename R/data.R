@@ -134,7 +134,7 @@ NULL
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object that represents a carrying
 #' capacity map projected to WGS 84 (CRS84) from the original raster `K_small`.
-#' This map can be used as a carrying capacity map to initialize data necessary
+#' This map can be used as a carrying capacity map to initialise data necessary
 #' to perform a simulation. It is compatible with the `n1_small_lon_lat.tif` raster.
 #'
 #' @format [`SpatRaster`][terra::SpatRaster-class] object with 12 rows
@@ -159,7 +159,7 @@ NULL
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object representing changing carrying
 #' capacity maps projected to WGS 84 (CRS84) from the original raster
-#' `K_small_changing`. These maps can be used as carrying capacity maps to initialize
+#' `K_small_changing`. These maps can be used as carrying capacity maps to initialise
 #' data necessary to perform a simulation. To use these maps in the initialization
 #' process, the user first has to use [`K_get_interpolation`] to generate a map for
 #' every time step of the simulation. These maps are compatible with the
@@ -187,7 +187,7 @@ NULL
 #' @description
 #' [`SpatRaster`][terra::SpatRaster-class] object representing a carrying
 #' capacity map projected to WGS 84 (CRS84) from the original raster `K_big`.
-#' This map can be used as a carrying capacity map to initialize data necessary
+#' This map can be used as a carrying capacity map to initialise data necessary
 #' to perform a simulation. It is compatible with the `n1_big_lon_lat.tif` raster.
 #'
 #' @format [`SpatRaster`][terra::SpatRaster-class] object with 74 rows
@@ -212,7 +212,7 @@ NULL
 #' [`SpatRaster`][terra::SpatRaster-class] object representing an abundance map
 #' at the first time step of the simulation projected to WGS 84 (CRS84) from the
 #' original raster `n1_small`. This map can be used as a simulation starting point
-#' to initialize data necessary to perform a simulation. It is compatible with the
+#' to initialise data necessary to perform a simulation. It is compatible with the
 #' `K_small_lon_lat.tif` and `K_small_changing_lon_lat.tif` maps.
 #'
 #' @format [`SpatRaster`][terra::SpatRaster-class] object with 12 rows
@@ -236,7 +236,7 @@ NULL
 #' [`SpatRaster`][terra::SpatRaster-class] object representing an abundance map
 #' at the first time step of the simulation projected to WGS 84 (CRS84) from the
 #' original raster `n1_big`. This map can be used as a simulation starting point
-#' to initialize data necessary to perform a simulation. It is compatible with the
+#' to initialise data necessary to perform a simulation. It is compatible with the
 #' `K_big_lon_lat.tif` map.
 #'
 #' @format [`SpatRaster`][terra::SpatRaster-class] object with 74 rows

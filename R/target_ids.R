@@ -23,9 +23,6 @@ target_ids <- function(
     dist_resolution, dist_bin, id_within) {
 
 
-  # unwrap id raster
-  id <- unwrap(id)
-
   # get coordinates of current cell
   xy_vect <- get_vect_from_xy(id, data, idx)
 

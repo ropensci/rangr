@@ -16,7 +16,7 @@ Data generated in-house to serve as an example
 \description{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object representing changing carrying
 capacity maps projected to WGS 84 (CRS84) from the original raster
-\code{K_small_changing}. These maps can be used as carrying capacity maps to initialize
+\code{K_small_changing}. These maps can be used as carrying capacity maps to initialise
 data necessary to perform a simulation. To use these maps in the initialization
 process, the user first has to use \code{\link{K_get_interpolation}} to generate a map for
 every time step of the simulation. These maps are compatible with the
