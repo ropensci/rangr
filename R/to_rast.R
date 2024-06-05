@@ -81,7 +81,7 @@ to_rast <- function(
 
 
 
-    out <- template
+    out <- unwrap(template)
     nlyr(out) <- length(time_points)
     values(out) <- sim_results$N_map[, , time_points]
 
