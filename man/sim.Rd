@@ -32,8 +32,7 @@ should be used}
 \code{\link[parallel:makeCluster]{makeCluster}} needed for parallel calculations}
 
 \item{progress_bar}{logical vector of length 1 determines if progress bar
-for simulation
-should be displayed}
+for simulation should be displayed}
 
 \item{quiet}{logical vector of length 1; determines if warnings should
 be displayed}
@@ -111,15 +110,15 @@ sim_data <- initialise(
 # simulation
 sim_1 <- sim(obj = sim_data, time = 20)
 
-# simulation with burned time steps and progress bar
-sim_2 <- sim(obj = sim_data, time = 20, burn = 10, progress_bar = TRUE)
+# simulation with burned time steps
+sim_2 <- sim(obj = sim_data, time = 20, burn = 10)
 
 # example with parallelization
 library(parallel)
 cl <- makeCluster(detectCores())
 
 # parallelized simulation
-sim_3 <- sim(obj = sim_data, time = 20, cl = cl, progress_bar = TRUE)
+sim_3 <- sim(obj = sim_data, time = 20, cl = cl)
 stopCluster(cl)
 
 

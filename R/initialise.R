@@ -85,7 +85,7 @@
 #' @param dlist list; target cells at a specified distance calculated
 #' for every cell within the study area
 #' @param progress_bar logical vector of length 1; determines if progress bar
-#' for calculating distances should be displayed (used only if dlist is `NULL`)
+#' for calculating distances should be displayed
 #' @param quiet logical vector of length 1; determines if messages should be displayed
 #'
 #' @return Object of class `sim_data` which inherits from `list`. This object
@@ -137,11 +137,11 @@
 #'   rate = 1 / 1e3
 #' )
 #'
-#' # example with progress bar and messages
+#' # example without progress bar and messages
 #' sim_data_4 <- initialise(
 #'   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
 #'   r_sd = 4, growth = "ricker", rate = 1 / 200,
-#'   max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
+#'   max_dist = 5000, dens_dep = "K2N", progress_bar = FALSE, quiet = TRUE
 #' )
 #' }
 #'
@@ -165,7 +165,16 @@ initialise <- function(
     n1_map, K_map, K_sd = 0, r, r_sd = 0, growth = "gompertz", A = NA,
     dens_dep = c("K2N", "K", "none"), border = c("reprising", "absorbing"),
     kernel_fun = "rexp", ..., max_dist = NA, calculate_dist = TRUE,
-    dlist = NULL, progress_bar = FALSE, quiet = TRUE) {
+    dlist = NULL, progress_bar = TRUE, quiet = FALSE) {
+
+
+  # check if session is interactive
+  if(!interactive()) {
+    call_names <- names(match.call())
+
+    if(!("progress_bar" %in% call_names)) progress_bar <-  FALSE
+    if(!("quiet" %in% call_names)) quiet <-  TRUE
+  }
 
   #' @srrstats {G2.0, G2.2, G2.13} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6, SP2.7} assert input type
@@ -568,7 +577,7 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
     return(c(min_neighbour = min(neibours_d), max_neighbour = max(neibours_d), max_avl_dist = max(d)))
   }
 
-  # calculate dist params with or without parallelization / progress bar
+  # calculate dist params with or without progress bar
   if (!quiet) cat("Calculating distance parameters...", "\n")
   if (!progress_bar) {
 
@@ -715,7 +724,7 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
 
   if (!quiet) cat("Calculating number of cells on each distance...\nThis step may take some time. Consider using border = \"reprising\" with lon/lat rasters if possible.", "\n")
 
-  # calculate "circles" with or without parallelization / progress bar
+  # calculate "circles" with or without progress bar
   if (!progress_bar) {
 
     pbo <- pboptions(type = "none")

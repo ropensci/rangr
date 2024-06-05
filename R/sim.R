@@ -50,8 +50,7 @@
 #' @param cl an optional cluster object created by
 #' [`makeCluster`][parallel::makeCluster()] needed for parallel calculations
 #' @param progress_bar logical vector of length 1 determines if progress bar
-#' for simulation
-#' should be displayed
+#' for simulation should be displayed
 #' @param quiet logical vector of length 1; determines if warnings should
 #' be displayed
 #'
@@ -92,15 +91,15 @@
 #' # simulation
 #' sim_1 <- sim(obj = sim_data, time = 20)
 #'
-#' # simulation with burned time steps and progress bar
-#' sim_2 <- sim(obj = sim_data, time = 20, burn = 10, progress_bar = TRUE)
+#' # simulation with burned time steps
+#' sim_2 <- sim(obj = sim_data, time = 20, burn = 10)
 #'
 #' # example with parallelization
 #' library(parallel)
 #' cl <- makeCluster(detectCores())
 #'
 #' # parallelized simulation
-#' sim_3 <- sim(obj = sim_data, time = 20, cl = cl, progress_bar = TRUE)
+#' sim_3 <- sim(obj = sim_data, time = 20, cl = cl)
 #' stopCluster(cl)
 #'
 #'
@@ -144,7 +143,15 @@
 #' @srrstats {SP4.2} returned values are documented
 #'
 sim <- function(
-    obj, time, burn = 0, return_mu = FALSE, cl = NULL, progress_bar = FALSE, quiet = TRUE) {
+    obj, time, burn = 0, return_mu = FALSE, cl = NULL, progress_bar = TRUE, quiet = FALSE) {
+
+  # check if session is interactive
+  if(!interactive()) {
+    call_names <- names(match.call())
+
+    if(!("progress_bar" %in% call_names)) progress_bar <-  FALSE
+    if(!("quiet" %in% call_names)) quiet <-  TRUE
+  }
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.6, SP2.7} assert input type

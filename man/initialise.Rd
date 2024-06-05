@@ -19,8 +19,8 @@ initialise(
   max_dist = NA,
   calculate_dist = TRUE,
   dlist = NULL,
-  progress_bar = FALSE,
-  quiet = TRUE
+  progress_bar = TRUE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -85,7 +85,7 @@ will be precalculated}
 for every cell within the study area}
 
 \item{progress_bar}{logical vector of length 1; determines if progress bar
-for calculating distances should be displayed (used only if dlist is \code{NULL})}
+for calculating distances should be displayed}
 
 \item{quiet}{logical vector of length 1; determines if messages should be displayed}
 }
@@ -173,11 +173,11 @@ sim_data_3 <- initialise(
   rate = 1 / 1e3
 )
 
-# example with progress bar and messages
+# example without progress bar and messages
 sim_data_4 <- initialise(
   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
   r_sd = 4, growth = "ricker", rate = 1 / 200,
-  max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
+  max_dist = 5000, dens_dep = "K2N", progress_bar = FALSE, quiet = TRUE
 )
 }
 
