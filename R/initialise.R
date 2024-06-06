@@ -297,6 +297,8 @@ initialise <- function(
     dist_params <- calculate_dist_params(id, id_within, data_table,  progress_bar, quiet)
     dist_bin <- dist_params["dist_bin"]
     dist_resolution <- dist_params["dist_resolution"]
+    max_avl_dist <- dist_params["max_avl_dist"]
+
   } else { # planar
 
     dist_resolution <- res(n1_map)
@@ -305,11 +307,13 @@ initialise <- function(
       dist_params <- calculate_dist_params(id, ncells, data_table, progress_bar, quiet)
       dist_bin <- dist_params["dist_bin"]
       dist_resolution <- dist_params["dist_resolution"]
+      max_avl_dist <- dist_params["max_avl_dist"]
 
     } else {
 
       dist_resolution <- dist_resolution[1]
       dist_bin <- 0
+      max_avl_dist <- NULL
     }
 
 
@@ -341,7 +345,7 @@ initialise <- function(
       ncells_in_circle <- ncell_in_circle_planar(id, dist_resolution)
     }
     else {
-      ncells_in_circle <- ncell_in_circle_lonlat(id, dist_resolution, dist_bin, id_within, dist_params["max_avl_dist"], progress_bar, quiet)
+      ncells_in_circle <- ncell_in_circle_lonlat(id, dist_resolution, dist_bin, id_within, max_avl_dist, progress_bar, quiet)
       ncells_in_circle <- ncells_in_circle
     }
   }
@@ -364,6 +368,7 @@ initialise <- function(
     border = border,
     planar = planar,
     max_dist = max_dist,
+    max_avl_dist = max_avl_dist,
     kernel_fun = kernel_fun,
     kernel = kernel,
     dlist = dlist,
@@ -733,6 +738,9 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
 
   circles <- pbvapply(id_within, circles_fun, numeric(max_avl_dist))
 
+  if (any(is.na(circles))) {
+    stop("Your study area is too big for the \"absorbing\" border. Change the border parameter to \"reprising\".")
+  }
 
   return(circles)
 }

@@ -10,8 +10,8 @@ sim(
   burn = 0,
   return_mu = FALSE,
   cl = NULL,
-  progress_bar = FALSE,
-  quiet = TRUE
+  progress_bar = TRUE,
+  quiet = FALSE
 )
 }
 \arguments{
