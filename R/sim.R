@@ -130,8 +130,8 @@
 #'   burn = 0,
 #'   return_mu = FALSE,
 #'   cl = NULL,
-#'   progress_bar = FALSE,
-#'   quiet = TRUE
+#'   progress_bar = TRUE,
+#'   quiet = FALSE
 #' )
 #'
 #' @srrstats {G1.4} uses roxygen documentation
@@ -190,6 +190,7 @@ sim <- function(
 
 
   # options
+  op <- options()
   options(warn = -1)
   pbo <- pboptions(type = "none")
   on.exit(pboptions(pbo))
@@ -236,6 +237,7 @@ sim <- function(
 
   if (changing_env) {
     if (nlyr(K_map) != time) {
+      options(op)
       stop("Number of layers in \"K_map\" and \"time\"  are not equal ")
     }
   } else {
@@ -340,7 +342,7 @@ sim <- function(
     ))
   }
 
-
+  options(op)
   return(out)
 }
 
