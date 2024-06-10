@@ -187,9 +187,6 @@ initialise <- function(
   assert_that(inherits(K_map, "SpatRaster"))
   assert_that(inherits(n1_map, "SpatRaster"))
 
-
-
-
   changing_env <- nlyr(K_map) != 1
   K_n1_map_check(K_map, n1_map, changing_env)
 
@@ -289,38 +286,47 @@ initialise <- function(
   colnames(data_table) <- c("id", "x", "y", "K", "N")
   data_table <- data_table[order(data_table[, "id"]), ]
 
+  # ids of cells within the study are
+  id_within <- data_table[!is.na(data_table[, "K"]), "id"]
 
-  id_within <- data_table[!is.na(data_table[, "K"]), "id"] # ids of cells within the study are #nolint
-  within_mask <- as.matrix(!is.na(n1_map), wide = TRUE) # bool matrix -  the study area #nolint
+  # bool matrix -  the study area
+  within_mask <- as.matrix(!is.na(n1_map), wide = TRUE)
 
   # check if raster is planar
   planar <- !is.lonlat(id)
 
-  # define dist_params
-  if(!planar) { # lon/lat
+  # define dist_params: dist_bin, dist_resolution, max_avl_dist
+  if(!planar) {
+    # lon/lat input maps
+
+    # calculate and extract dist_params
     dist_params <- calculate_dist_params(id, id_within, data_table,  progress_bar, quiet)
     dist_bin <- dist_params["dist_bin"]
     dist_resolution <- dist_params["dist_resolution"]
     max_avl_dist <- dist_params["max_avl_dist"]
 
-  } else { # planar
+  } else {
+    # planar input maps
 
+    # get input map resolution
     dist_resolution <- res(n1_map)
-    if(dist_resolution[1] != dist_resolution[2]) { # if not square grid cells
+    if(dist_resolution[1] != dist_resolution[2]) {
+      # not square grid cells
 
+      # calculate and extract dist_params
       dist_params <- calculate_dist_params(id, ncells, data_table, progress_bar, quiet)
       dist_bin <- dist_params["dist_bin"]
       dist_resolution <- dist_params["dist_resolution"]
       max_avl_dist <- dist_params["max_avl_dist"]
 
     } else {
+      # square grid cells
 
+      # set default dist_params
       dist_resolution <- dist_resolution[1]
       dist_bin <- 0
       max_avl_dist <- NULL
     }
-
-
   }
 
   # define max_dist
@@ -340,17 +346,19 @@ initialise <- function(
     )
   }
 
-  # number of cells at each distance for "absorbing" border
+  # define number of cells at each distance for "absorbing" border
   if(border == "reprising") {
     ncells_in_circle <- NULL
 
   } else if (border == "absorbing") {
     if(planar) {
+      # planar input maps
       ncells_in_circle <- ncell_in_circle_planar(id, dist_resolution)
     }
     else {
-      ncells_in_circle <- ncell_in_circle_lonlat(id, dist_resolution, dist_bin, id_within, max_avl_dist, progress_bar, quiet)
-      ncells_in_circle <- ncells_in_circle
+      # lon/lat input maps
+      ncells_in_circle <- ncell_in_circle_lonlat(
+        id, dist_resolution, dist_bin, id_within, max_avl_dist, progress_bar, quiet)
     }
   }
 
@@ -385,6 +393,7 @@ initialise <- function(
     call = get_initialise_call(match.call())
   )
 
+  # set class
   class(out) <- c("sim_data", class(out))
 
   return(out)
@@ -452,9 +461,12 @@ K_n1_map_check <- function(K_map, n1_map, changing_env) {
 #'
 K_get_init_values <- function(K_map, changing_env) {
 
+
   if (!changing_env) {
+    # get values from K_map
     K_values <- values(K_map)
   } else {
+    # get values from first K_map if changing environment
     K_values <- values(subset(K_map, 1))
   }
 
@@ -496,13 +508,17 @@ calc_dist <- function(
     dist_bin, progress_bar, quiet) {
 
   if (calculate_dist) {
+
+    # message for user
     if (!quiet) cat("Calculating distances...", "\n")
 
+    # calculate dlist
     dlist <- dist_list(
       id, data_table, id_within, max_dist, dist_resolution,
       dist_bin, progress_bar
     )
   } else {
+    # set dlist to NULL
     dlist <- NULL
   }
 
@@ -530,7 +546,7 @@ dist_list <- function(
     id, data_table, id_within, max_dist, dist_resolution,
     dist_bin, progress_bar) {
 
-  # within_list <- !is.na(data_table[, "K"])
+  # prepare data table - add dist column anf fill it with NAs
   data <- cbind(data_table[, c("id", "x", "y")], dist = NA)
 
 
@@ -573,21 +589,26 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
   # calculate distance to the closest neighbour from each grid cell
   params_fun <- function(x) {
 
+    # get neighbours ids
     neighbours <- adjacent(id, cells = x, directions = "queen")
     neighbours <- neighbours[!is.na(neighbours)]
 
-
+    # get raster with distances from current id
     xy <- vect(xyFromCell(id, x))
     crs(xy) <- crs(id)
     d <- values(distance(id, xy, progress = 0))
 
-    neibours_d <-  round(d[neighbours])
+    # select distances to the neighbours
+    neighbour_d <-  round(d[neighbours])
 
-    return(c(min_neighbour = min(neibours_d), max_neighbour = max(neibours_d), max_avl_dist = max(d)))
+    # return minimum and maximum distance to neighbour and maximum available distance
+    return(c(min_neighbour = min(neighbour_d), max_neighbour = max(neighbour_d), max_avl_dist = max(d)))
   }
 
-  # calculate dist params with or without progress bar
+  # message to the user
   if (!quiet) cat("Calculating distance parameters...", "\n")
+
+  # calculate dist params with or without progress bar
   if (!progress_bar) {
 
     pbo <- pboptions(type = "none")
@@ -634,8 +655,8 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
 #'
 ncell_in_circle_planar <- function(template, dist_resolution) {
 
+  # get the resolution
   res <- res(template)
-
 
   # get extents in both dimensions
   a <- xmax(template) - xmin(template)
@@ -644,12 +665,16 @@ ncell_in_circle_planar <- function(template, dist_resolution) {
   # calculate maximum possible distance
   max_dist <- round(sqrt(a**2 + b**2))
 
+  # prep new extent
   e <- ext(
     xmin(template) - max_dist, xmax(template) + max_dist,
     ymin(template) - max_dist, ymax(template) + max_dist
   )
 
+  # prep raster to calculate distances
   d <- extend(template, e)
+
+  # prep the center (as vector)
   center_point <- cbind((e[2] - e[1]) / 2 + e[1], (e[4] - e[3]) / 2 + e[3])
   center_vect <- vect(center_point)
   crs(center_vect) <- crs(template)
@@ -693,44 +718,55 @@ ncell_in_circle_planar <- function(template, dist_resolution) {
 #'
 ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_within, max_avl_dist, progress_bar, quiet) {
 
-
+  # get extents in both dimensions
   xdiff <- xmax(template) - xmin(template)
   ydiff <- ymax(template) - ymin(template)
 
-  # big raster
+  # prep new extent
   multiplier <- 2
   e <- ext(
     xmin(template) - xdiff * multiplier, xmax(template) + xdiff * multiplier,
     ymin(template) - ydiff * multiplier, ymax(template) + ydiff * multiplier
   )
+  # prep raster to calculate distances
   extended <- extend(template, e)
 
 
   # calculates how many cells are reachable on each distance from each grid cell
   circles_fun <- function(x) {
 
+    # get current grid cell location
     xy <- vect(xyFromCell(template, x))
     crs(xy) <- crs(template)
+
+    # calculate distance to each cell in extended raster from current grid cell
     d <- distance(extended, xy, progress = 0)
     d <- round(values(d / dist_resolution))
+
+    # get only distances that are reachable in the input maps
     d <- d[d <= max_avl_dist]
+
+    # number of cells on each distance
     d_table <-  tabulate(d)
+
+    # available distances
     d_avl <- (1:length(d_table))[d_table != 0]
 
+    # expand distances by dist_bin
     bin_start <- ifelse(d_avl - dist_bin + 1 < 0, 0, d_avl - dist_bin + 1)
     bin_stop <- d_avl + dist_bin
-
 
     ds <- unlist(lapply(seq_len(length(d_avl)), function(x) {
       rep(seq(bin_start[x], bin_stop[x]), times = d_table[x])
     }))
 
+    # number of cells on each expanded distance
     circle <- tabulate(ds)[1:max_avl_dist]
 
     return(circle)
   }
 
-
+  # message for user
   if (!quiet) cat("Calculating number of cells on each distance...\nThis step may take some time. Consider using border = \"reprising\" with lon/lat rasters if possible.", "\n")
 
   # calculate "circles" with or without progress bar
@@ -742,6 +778,7 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
 
   circles <- pbvapply(id_within, circles_fun, numeric(max_avl_dist))
 
+  # error if NA
   if (any(is.na(circles))) {
     stop("Your study area is too big for the \"absorbing\" border. Change the border parameter to \"reprising\".")
   }
@@ -750,7 +787,7 @@ ncell_in_circle_lonlat <- function(template, dist_resolution, dist_bin, id_withi
 }
 
 
-
+# helper function to get initialise call with info about dlist
 get_initialise_call <- function(call) {
 
   if ("dlist" %in% names(call)) {
