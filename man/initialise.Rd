@@ -108,6 +108,10 @@ is calculated in advance and stored in a \code{dlist} slot.
 The parameter \code{max_dist} sets
 the maximum distance at which this pre-calculation  will be performed. If \code{max_dist}
 is \code{NULL}, it is set to 0.99 quantile from the \code{kernel_fun}.
+All distance calculations are always based on metres if the input maps are
+latitude/longitude. For planar input maps, distances are calculated in map
+units, which are typically metres, but check the \code{\link[terra:crs]{crs()}}
+if in doubt.
 
 If the input maps are in the Cartesian coordinate system and the grid cells
 are squares,

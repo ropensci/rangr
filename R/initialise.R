@@ -13,6 +13,10 @@
 #' The parameter `max_dist` sets
 #' the maximum distance at which this pre-calculation  will be performed. If `max_dist`
 #' is `NULL`, it is set to 0.99 quantile from the `kernel_fun`.
+#' All distance calculations are always based on metres if the input maps are
+#' latitude/longitude. For planar input maps, distances are calculated in map
+#' units, which are typically metres, but check the [`crs()`][terra::crs]
+#' if in doubt.
 #'
 #' If the input maps are in the Cartesian coordinate system and the grid cells
 #' are squares,
