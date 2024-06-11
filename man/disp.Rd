@@ -64,7 +64,8 @@ as targets for dispersal
 are removed from the population
 }}
 
-\item{planar}{logical vector of length 1; \code{TRUE} if input maps are planar rasters, \code{FALSE} if input maps are lon/lat rasters}
+\item{planar}{logical vector of length 1; \code{TRUE} if input maps are planar
+rasters, \code{FALSE} if input maps are lon/lat rasters}
 
 \item{dist_resolution}{integer vector of length 1; dimension of one side of
 one cell of \code{id}; in case of an irregular grid or lon/lat raster it is
@@ -74,7 +75,8 @@ calculated during \code{\link[=initialise]{initialisation}}}
 specifying the maximum range at which identifiers of target dispersal cells
 are determined in advance (see \code{\link{initialise}})}
 
-\item{dist_bin}{numeric vector of length 1 with value \verb{>= 0}; in case of an irregular grid or lon/lat raster it is
+\item{dist_bin}{numeric vector of length 1 with value \verb{>= 0}; in case of
+an irregular grid or lon/lat raster it is
 calculated during \code{\link[=initialise]{initialisation}}}
 
 \item{ncells_in_circle}{numeric vector; number of cells on each distance}

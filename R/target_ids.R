@@ -133,7 +133,7 @@ get_ds <- function(template, xy_vect, id_within, dist_resolution,
 
 #' Add Distance Bins To Distances
 #'
-#' Used for planar rastera with irregular resolution or lon/lat rasters.
+#' Used for planar rasters with irregular resolution or lon/lat rasters.
 #'
 #' @param ids numeric vector; cells ids
 #' @param ds numeric vector; cells distances
