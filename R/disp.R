@@ -304,7 +304,7 @@ sq_disp_calc <- function(
     # calculate missing targets
     more_targets <- target_ids(
 
-      # NULL because current id given by data parameter
+      # NULL because current id is given by data parameter
       idx = NULL,
 
       # raster with cells ids

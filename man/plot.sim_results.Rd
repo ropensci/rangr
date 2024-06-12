@@ -46,6 +46,7 @@ sim_data <- initialise(
 )
 sim_res <- sim(sim_data, time = 10)
 plot(sim_res)
+plot(sim_res, template = n1_small, time_points = c(1, 10))
 
 # plot specific area
 plot(sim_res, xlim = c(4, 10), ylim = c(0, 10))

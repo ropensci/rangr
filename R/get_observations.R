@@ -118,7 +118,7 @@
 #'
 #' # 4. monitoring_based
 #' # define observations sites
-#' all_points <- xyFromCell(sim_data$id, cells(sim_data$K_map))
+#' all_points <- xyFromCell(unwrap(sim_data$id), cells(unwrap(sim_data$K_map)))
 #' sample_idx <- sample(1:nrow(all_points), size = 20)
 #' sample_points <- all_points[sample_idx, ]
 #'
@@ -165,6 +165,7 @@ get_observations <- function(
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6, SP2.7} assert input type
+
   # arguments validation
   type <- match.arg(type)
   obs_error <- match.arg(obs_error)
@@ -175,24 +176,32 @@ get_observations <- function(
               msg = "parameter obs_error_param can be set either as NULL or as a single number") #nolint
 
   # transform N_map to raster based on id
+  id <- unwrap(sim_data$id)
   N_rast <- rast(
-    sim_results$N_map, extent = ext(sim_data$id), crs = crs(sim_data$id)
+    sim_results$N_map,
+    extent = ext(id),
+    crs = crs(id)
   )
 
-  # call the right sampling function
+  # call one of sampling functions
   if (type %in% c("random_one_layer", "random_all_layers")) {
+    # random VE
     out <- get_observations_random(N_rast, type, ...)
   } else if (type == "from_data") {
+    # VE based on provided data
     out <- get_observations_from_data(N_rast, ...)
   } else if (type == "monitoring_based") {
+    # VE that replicates ecological monitoring process
     out <- get_observations_monitoring_based(N_rast, ...)
   }
 
-  # add noise
+  # add noise to the "observations"
   if (!is.null(obs_error_param)) {
     if (obs_error == "rlnorm")
+      # the log normal distribution
       out$value <- rlnorm(nrow(out), log(out$value), obs_error_param)
     else if(obs_error == "rbinom")
+      # the binomial distribution
       out$value <- rbinom(nrow(out), out$value, obs_error_param)
   }
 
@@ -228,20 +237,27 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+
+  # Validation of arguments
+
+  ## prop
   assert_that(length(prop) == 1)
   assert_that(is.numeric(prop))
   assert_that(prop > 0 && prop <= 1,
-              msg = "prop parameter must be greater than 0 but less than or equal to 1") #nolint
+              msg = "prop parameter must be greater than 0 but less than or equal to 1")
 
   # set sample size
   size <- ncell(N_rast) * prop
 
   # sample
-  if (type == "random_one_layer") { # the same cells in each layer
+  if (type == "random_one_layer") {
+    # the same cells in each layer
 
+    # spatial sample
     out <- spatSample(N_rast, size, xy = TRUE, na.rm = TRUE)
     colnames(out) <- c("x", "y", seq_len(nlyr(N_rast)))
 
+    # reshape from wide to long format
     out <- as.data.frame(reshape(
       out,
       direction = "long",
@@ -252,8 +268,10 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
       times = seq_len(nlyr(N_rast))))
     rownames(out) <- seq_len(nrow(out))
 
-  } else if (type == "random_all_layers") { # different cells in each layer
+  } else if (type == "random_all_layers") {
+    # different cells in each layer
 
+    # different spatial sample from each time step
     out <- lapply(
       seq_len(nlyr(N_rast)),
       function(i) {
@@ -266,6 +284,7 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
       }
     )
 
+    # row bind samples from each time step
     out <- do.call(rbind, out)
   }
 
@@ -295,8 +314,12 @@ get_observations_from_data <- function(N_rast, points) {
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
-  #' @srrstats {G2.8} matrix to dataframe
+  #' @srrstats {G2.8} matrix to data.frame
   #' @srrstats {G2.14a} error on missing data
+
+  # Validation of arguments
+
+  ## points
   assert_that(is.data.frame(points) || is.matrix(points))
   points <- as.data.frame(points)
   assert_that(ncol(points) == 3)
@@ -306,11 +329,12 @@ get_observations_from_data <- function(N_rast, points) {
     msg = "missing data found in \"points\"")
   assert_that(
     all(names(points) == c("x", "y", "time_step")),
-    msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"") #nolint
+    msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"")
   assert_that(
     all(apply(points, 2, is.numeric)),
     msg = "some element of point are not numeric")
 
+  # get "observations" from cells given in points dataset
   value <- unlist(lapply(
     seq_len(nlyr(N_rast)),
     function(i) {
@@ -321,7 +345,8 @@ get_observations_from_data <- function(N_rast, points) {
     }
   ))
 
-  out <- cbind(points, value = unlist(value))
+  # column bind points and "observations"
+  out <- cbind(points, value = value)
 }
 
 
@@ -351,8 +376,12 @@ get_observations_monitoring_based <- function(
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
-  #' @srrstats {G2.8} matrix to dataframe
+  #' @srrstats {G2.8} matrix to data.frame
   #' @srrstats {G2.14a} error on missing data
+
+  # Validation of arguments
+
+  ## cells_coords
   assert_that(is.data.frame(cells_coords) || is.matrix(cells_coords))
   cells_coords <- as.data.frame(cells_coords)
   assert_that(ncol(cells_coords) == 2)
@@ -360,19 +389,18 @@ get_observations_monitoring_based <- function(
   assert_that(
     all(!is.na(cells_coords)),
     msg = "missing data found in \"cells_coords\"")
-
   assert_that(
     all(names(cells_coords) == c("x", "y")),
-    msg = "columns in cells_coords parameter should have the following names: \"x\", \"y\"") #nolint
+    msg = "columns in cells_coords parameter should have the following names: \"x\", \"y\"")
   assert_that(
     all(apply(cells_coords, 2, is.numeric)),
     msg = "some element of cells_coords are not numeric")
 
-
+  # extract number of study sited (cells) and time steps
   ncells <- nrow(cells_coords)
   time_steps <- nlyr(N_rast)
 
-
+  # prepare data structure with coordinates, time step and column for observer id
   points <- data.frame(
     x = rep(cells_coords[, "x"], each = time_steps),
     y = rep(cells_coords[, "y"], each = time_steps),
@@ -380,55 +408,81 @@ get_observations_monitoring_based <- function(
     obs_id = NA
   )
 
+  # progress bar set up
   if (progress_bar) {
     pb <- txtProgressBar(
       min = 1, max = ncells, style = 3
     )
   }
 
+  # loop through each study site (cell) and assign observers at each time step
   for (i in 1:ncells) {
+
+    # set up time step and id counters
     curr_time_steps <- 1
     curr_id <- 1
 
+    # while in specified time frame
     while (curr_time_steps < time_steps) {
+
+      # how long many time steps one observer will stay on study site (cell) i
       observers_sequence <- rgeom(1, prob)
 
       if (observers_sequence > 0) {
+        # if observers stays in current cell at all
 
-        # the last observer for current cell
+        # if the current observer is the last one for the current cell
         if (curr_time_steps + observers_sequence > time_steps) {
+          # adjust the time so that it does not exceed the simulated time steps
           observers_sequence <- time_steps - curr_time_steps
         }
 
+        # calculate row number for current cell and time step
         row_id <- (i - 1) * time_steps + curr_time_steps
+
+        # assign the observer to the study site (cell) for specified time steps
         points$obs_id[row_id:(row_id + observers_sequence - 1)] <-
           rep(paste0("obs", curr_id), observers_sequence)
 
+        # update counters
         curr_time_steps <- curr_time_steps + observers_sequence
         curr_id <- curr_id + 1
+
       } else {
+        # no observation in current cell i at current time step
         curr_time_steps <- curr_time_steps + 1
       }
     }
+    # update progress bar
     if (progress_bar) setTxtProgressBar(pb, i)
   }
+  # close progress bar
   if (progress_bar) close(pb)
 
+  # remove rows without observers
   points <- points[!is.na(points$obs_id), ]
 
+  # get "observations"
   value <- lapply(
+    # for each simulated time step
     seq_len(nlyr(N_rast)),
     function(i) {
+      # get cells coordinates
       tmp_points <- points[points$time_step == i, ]
+      # get "observations" from cells
       tmp_vals <- extract(
         N_rast[[i]],
-        tmp_points[c("x", "y")])[,2]
+        tmp_points[c("x", "y")])[, 2]
 
+      # return coordinates with "observed" values
       cbind(tmp_points, value = tmp_vals)
     }
   )
 
+  # row bind results
   out <- do.call(rbind, value)
+
+  # sort results
   out <- out[order(as.numeric(rownames(out))),]
 
   return(out)

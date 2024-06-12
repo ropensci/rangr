@@ -73,10 +73,14 @@ target_ids <- function(
 #'
 get_vect_from_xy <- function(template, xy_cell, idx = NULL) {
 
-  if(!is.null(idx))
+  if(!is.null(idx)) {
+    # extract row with cell specified by idx
     xy_cell <- xy_cell[xy_cell[, "id"] == idx, ]
+  }
 
+  # transform coordinates to vector
   xy_vect <- vect(cbind(xy_cell["x"], xy_cell["y"]))
+  # assign templates crs to vector
   crs(xy_vect) <- crs(template)
 
 
@@ -147,18 +151,18 @@ get_ds <- function(template, xy_vect, id_within, dist_resolution,
 #'
 get_bins <- function(ids, ds, idx, dist_bin) {
 
+  # if current id id provided - add it to ds and ids
   if(!is.null(idx)) {
     ds <- c(0, ds)
     ids <- c(idx, ids)
   }
 
-
+  # calculated starts and stops of the expanded distances
   bin_start <- ifelse(ds - dist_bin + 1 < 0, 0, ds - dist_bin + 1)
   bin_stop <- ds + dist_bin
 
   # update cells ids and distance at which they are
   ids <- rep(ids, times = bin_stop - bin_start + 1)
-  # ids <- rep(ids, each = dist_bin + 1)
 
   ds <- unlist(lapply(seq_len(length(ds)), function(x) {
     seq(bin_start[x], bin_stop[x])
@@ -185,10 +189,13 @@ get_bins <- function(ids, ds, idx, dist_bin) {
 #'
 get_targets_list <- function(dists, ids, ds) {
 
+  # loop through distances
   targets_list <- lapply(dists, function(x) {
+    # select indexes at distance x
     out <- ids[ds == x]
 
-    if (length(out) == 0) { # if there isn't any target cell return null
+    if (length(out) == 0) {
+      # if there isn't any target cell - return null
       out <- NULL
     }
 

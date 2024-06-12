@@ -47,8 +47,7 @@
 #'
 subset.sim_results <- function(x, from = NULL, time_points = NULL, ...) {
 
-  available_time_points <- ifelse(length(dim(x$N_map)) == 3, dim(x$N_map)[3], 1)
-
+  # check if necessary arguments are present
   if (is.null(from) & is.null(time_points)) {
     stop(
       "Subsetting can't be preformed without \"from\" ",
@@ -56,7 +55,11 @@ subset.sim_results <- function(x, from = NULL, time_points = NULL, ...) {
     )
   }
 
-  # from arg validation
+  # calculate available time point
+  available_time_points <- ifelse(length(dim(x$N_map)) == 3, dim(x$N_map)[3], 1)
+
+  # Validation of arguments
+  ## from
   if (!is.null(from)) {
     if (from <= 0) {
       stop("Invalid \"from\" argument: it can't be less than or equal to 0")
@@ -69,7 +72,7 @@ subset.sim_results <- function(x, from = NULL, time_points = NULL, ...) {
     }
   }
 
-  # time_points arg validation
+  ## time_points
   if (!is.null(time_points)) {
     if (any(time_points <= 0)) {
       stop(
@@ -85,18 +88,21 @@ subset.sim_results <- function(x, from = NULL, time_points = NULL, ...) {
     }
   }
 
-  # if anything to do
+  # check if all time point are supposed to be subset
   if (length(time_points) == available_time_points) {
     stop("Nothing to subset")
   }
 
-
+  # default time_points
   if (is.null(time_points)) {
     time_points <- c(from:x$simulated_time)
   }
 
 
+  # extract specified time_points
   x$N_map <- x$N_map[, , time_points]
+
+  # update simulated_time
   x$simulated_time <- length(time_points)
 
   return(x)

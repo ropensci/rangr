@@ -66,6 +66,7 @@ to_rast <- function(
   assert_that(inherits(sim_results, "sim_results"))
 
   if(is.null(template)) {
+    # if no template provide - make raster only with values
 
     #' @srrstats {G2.9} make default raster and show warning
 
@@ -73,6 +74,7 @@ to_rast <- function(
     out <- rast(sim_results$N_map[, , time_points])
 
   } else {
+    # if template provided
 
     # check if template and x have the same dimension
     if (!all(dim(sim_results$N_map)[c(1, 2)] == dim(template)[c(1, 2)])) {
@@ -80,13 +82,14 @@ to_rast <- function(
     }
 
 
-
+    # make raster bases on the template
     out <- unwrap(template)
     nlyr(out) <- length(time_points)
     values(out) <- sim_results$N_map[, , time_points]
 
   }
 
+  # name layers
   names(out) <- paste("t", time_points, sep = "_")
 
   return(out)

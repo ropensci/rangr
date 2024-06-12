@@ -4,7 +4,7 @@ test_that("get_observations works", {
   test_sim_res <- readRDS(test_path("fixtures", "test_sim_res.rds"))
   test_id_rast <- rast(test_path("fixtures", "test_id_rast.tif"))
   test_points <- readRDS(test_path("fixtures", "test_points.rds"))
-  test_sim_data$id <- test_id_rast
+  test_sim_data$id <- wrap(test_id_rast)
   test_random_time_steps <- sample(1:test_sim_res$simulated_time, 2)
 
 

@@ -137,7 +137,7 @@ sample3 <- get_observations(
 
 # 4. monitoring_based
 # define observations sites
-all_points <- xyFromCell(sim_data$id, cells(sim_data$K_map))
+all_points <- xyFromCell(unwrap(sim_data$id), cells(unwrap(sim_data$K_map)))
 sample_idx <- sample(1:nrow(all_points), size = 20)
 sample_points <- all_points[sample_idx, ]
 

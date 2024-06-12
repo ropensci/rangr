@@ -31,10 +31,11 @@
 #'
 summary.sim_data <- function(object, ...) {
 
-  # prepare summaries
+  # prepare input maps summaries
   n1_sm <- summary(as.numeric(object$n1_map))
   K_sm <- summary(as.numeric(as.matrix(unwrap(object$K_map))))
 
+  # prepare other parameters summaries
   names <- c(
     "growth", "r", "A", "kernel_fun", "dens_dep", "border",
     "max_dist", "changing_env"
