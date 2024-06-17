@@ -4,12 +4,12 @@
 #' capacity maps.
 #'
 #'
-#' To simulate dynamic environmental scenarios (i.e. climate change, land use
+#' To simulate dynamic environmental scenarios (e.g. climate change, land use
 #' change, ecological disturbance, etc.) one needs to provide time-varying
 #' carrying capacity maps.
 #'
-#' Either `K_time_points` or the `time` parameter is needed to calculate
-#' interpolation. If interpolation should be calculated between two carrying
+#' Either `K_time_points` or the `time` parameter is needed to perform
+#' interpolation. If the interpolation should be calculated between two carrying
 #' capacity maps, there is no need to pass the time points, because 1 will
 #' be set as the starting time point and `time` will be used as the ending point.
 #' On the other hand, in the absence of the `time` argument, the maximum element
@@ -24,7 +24,7 @@
 #' (this is defined when evoking the function `sim`).
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] object with number of layers
-#' equal to `time`
+#' equal to `time`.
 #'
 #'
 #' @export

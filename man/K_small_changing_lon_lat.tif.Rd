@@ -6,21 +6,20 @@
 \title{Example Of Changing Carrying Capacity Maps (Small)}
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 3 layers,
-each having 12 rows and 14 columns containing integer values 0-170 and NA's
-(indicating unsuitable areas).
+each having 12 rows and 14 columns containing integer values 0-170 and NA's indicating unsuitable areas.
 }
 \source{
 Data generated in-house to serve as an example
-(using spatial autocorrelation)
+(using spatial autocorrelation).
 }
 \description{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object representing changing carrying
 capacity maps projected to WGS 84 (CRS84) from the original raster
-\code{K_small_changing}. These maps can be used as carrying capacity maps to initialise
-data necessary to perform a simulation. To use these maps in the initialization
-process, the user first has to use \code{\link{K_get_interpolation}} to generate a map for
-every time step of the simulation. These maps are compatible with the
-\code{n1_small_lon_lat.tif} raster.
+\code{K_small_changing}. These maps can be used as carrying capacity maps to \code{\link{initialise}}
+data necessary to perform a simulation with the \code{\link{sim}} function. To utilise
+these maps in \code{\link{initialise}} the user must first use \code{\link{K_get_interpolation}}
+to generate a map for every time step of the simulation. These maps are
+compatible with the \code{n1_small_lon_lat.tif} raster.
 }
 \examples{
 system.file("input_maps/K_small_changing_lon_lat.tif", package = "rangr")

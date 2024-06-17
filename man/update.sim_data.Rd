@@ -12,15 +12,15 @@
 \item{...}{further arguments passed to or from other methods;
 currently none specified}
 
-\item{evaluate}{logical vector of length 1 if \code{TRUE} evaluate the new call
-else return the call}
+\item{evaluate}{logical vector of length 1; if \code{TRUE} evaluates the new call, otherwise
+returns the call}
 }
 \value{
-If \code{evaluate = TRUE} the updated \code{sim_data} object,
+If \code{evaluate = TRUE} then the updated \code{sim_data} object,
 otherwise the updated call.
 }
 \description{
-Update \code{sim_data} Object
+This function updates a \code{sim_data} object.
 }
 \examples{
 \dontrun{

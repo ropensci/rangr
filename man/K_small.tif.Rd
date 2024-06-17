@@ -6,21 +6,18 @@
 \title{Example Of Carrying Capacity Map (Small)}
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 15 rows
-and 10 columns containing integer values 0-100 and NA's
-(that indicates unsuitable areas).
+and 10 columns containing integer values 0-100 and NA's indicating
+unsuitable areas.
 }
 \source{
 Data generated in-house to serve as an example
-(using spatial autocorrelation)
+(using spatial autocorrelation).
 }
 \description{
-\code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used as carrying
-capacity map to \code{\link{initialise}} data necessary to perform a \code{\link{sim}}ulation.
-This map is compatible with \code{\link{n1_small.tif}}
-\itemize{
-\item \code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used
-as simulation starting point.
-}
+\code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used a carrying
+capacity map to \code{\link{initialise}} data necessary to perform a simulation
+with the \code{\link{sim}} function.
+This map is compatible with \code{\link{n1_small.tif}}.
 }
 \examples{
 system.file("input_maps/K_small.tif", package = "rangr")

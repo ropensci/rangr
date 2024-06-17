@@ -1,17 +1,17 @@
 #' Prepare Data Required To Perform A Simulation
 #'
-#' This function generates a `sim_data` object which contains all the necessary
-#' information needed to run a simulation by the [`sim`] function. Note that the
+#' This funtion generates a `sim_data` object containing all the necessary
+#' information required to run a simulation by the [`sim`] function. The
 #' input maps (`n1_map` and `K_map`) can be in the Cartesian or longitude/latitude
 #' coordinate system.
 #'
 #'
 #' The most time-consuming part of computations performed by the [`sim`]
 #' function is the simulation of dispersal. To speed it up, a list containing
-#' indexes of target cells at a specified distance from a focal cell,
+#' indexes of target cells at a specified distance from a focal cell
 #' is calculated in advance and stored in a `dlist` slot.
-#' The parameter `max_dist` sets
-#' the maximum distance at which this pre-calculation  will be performed. If `max_dist`
+#' The `max_dist` parameter sets
+#' the maximum distance at which this pre-calculation is performed. If `max_dist`
 #' is `NULL`, it is set to 0.99 quantile from the `kernel_fun`.
 #' All distance calculations are always based on metres if the input maps are
 #' latitude/longitude. For planar input maps, distances are calculated in map
@@ -19,16 +19,16 @@
 #' if in doubt.
 #'
 #' If the input maps are in the Cartesian coordinate system and the grid cells
-#' are squares,
+#' are squares, then
 #' the distances between cells are calculated using the [`distance`][terra::distance]
-#' function from the `terra` package. These distances are then divided by the
+#' function from the `terra` package. These distances are later divided by the
 #' resolution of the input maps.
 #'
 #' For input maps with grid cells in shapes other than squares (e.g. with
 #' rectangular cells or longitude/latitude coordinate system), the distance
 #' resolution is calculated by finding the shortest distance between each
 #' "queen" type neighbor. All distances calculated by the [`distance`][terra::distance]
-#' function are then divided by this distance resolution.
+#' function are further divided by this distance resolution.
 #' To avoid discontinuities in the distances at which the target cells are located,
 #' an additional parameter `dist_bin` is calculated as half of the maximum
 #' distance between each "queen" type neighbour. It is used to expand the

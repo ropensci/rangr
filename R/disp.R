@@ -1,33 +1,32 @@
 #' Simulating Dispersal
 #'
-#' The function simulates dispersal, for every grid cell calculating the number
-#' of individuals that disperse out of this cell and the number of individuals
-#' that disperse into this cell.
+#'This function simulates dispersal for each grid cell by calculating the number
+#'of individuals dispersing out of the cell and the number of individuals
+#'dispersing into the cell.
 #'
-#' This is the function used by [`sim`] internally and is not intended to be
+#' The function is used by [`sim`] internally and is not intended to be
 #' called by the user. The parameters for this function are passed from
 #' a `sim_data` object created by [`initialise`].
 #'
 #' Dispersal distance is expressed in original spatial units of the
-#' [`SpatRaster`][terra::SpatRaster-class] provided to [`sim`] function
-#' (`n1_map` and `K_map`), however, it is internally converted to units
-#' of the simulation (i.e. to the size of a single cell) by calculating
-#' `round(distance/resolution)`. Thus, if the selected dispersal distance is
-#' smaller than `resolution/2`, it effectively means that an individual
-#' does not disperse, i.e. it lands in the same cell as it was before.
+#' [`SpatRaster`][terra::SpatRaster-class] provided to the [`sim`] function
+#' (`n1_map` and `K_map`). However, it is internally converted to units
+#' of the simulation (i.e. the size of a single cell) by calculating `round(distance/resolution)`. If the selected dispersal distance is
+#' smaller than `resolution/2`, the individual
+#' does not disperse effectively and remains in the same cell.
 #' The dispersal rate (proportion of dispersing individuals) can be estimated
 #' from the dispersal kernel probability function by calculating the probability
 #' that the dispersal distance is greater than `resolution/2`.
 #'
-#' @param N_t integer matrix of population numbers at a single time step;
-#' NA stands for cells that are outside the study area
+#' @param N_t integer matrix representing population numbers at a single time step;
+#' NA indicates cells outside the study area
 #' @param id [`SpatRaster`][terra::SpatRaster-class] object
 #' (of the same size as `N_t`) with cell identifiers
 #' @param id_matrix `id` in matrix format
 #' @param data_table matrix that contains information about all cells
 #' in current time points
-#' @param kernel a function defining dispersal kernel
-#' @param dlist a list with identifiers of target cells at a specified
+#' @param kernel function defining dispersal kernel
+#' @param dlist list with identifiers of target cells at a specified
 #' distance from a focal cell
 #' @param id_within integer vector with identifiers of cells inside the
 #' study area
@@ -37,7 +36,7 @@
 #' @param dist_resolution integer vector of length 1; dimension of one side of
 #' one cell of `id`; in case of an irregular grid or lon/lat raster it is
 #' calculated during [`initialisation`][`initialise`]
-#' @param max_dist a distance (in the same units as used in the raster `id`)
+#' @param max_dist distance (in the same units as used in the raster `id`)
 #' specifying the maximum range at which identifiers of target dispersal cells
 #' are determined in advance (see [`initialise`])
 #' @param dist_bin numeric vector of length 1 with value `>= 0`; in case of
@@ -51,6 +50,7 @@
 #'
 #' `em` - emigration matrix with the number of individuals that dispersed
 #' from each cell
+#'
 #' `im` - immigration matrix with the number of individuals that dispersed
 #' to each cell
 #'

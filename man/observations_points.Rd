@@ -9,7 +9,7 @@ A data frame with 1500 rows and 3 variables:
 \describe{
 \item{x}{x coordinate}
 \item{y}{y coordinate}
-\item{time_step}{time_step in which the abundances should be observed}
+\item{time_step}{time_step at which the abundances should be observed}
 }
 }
 \source{
@@ -20,8 +20,8 @@ observations_points
 }
 \description{
 A \code{data.frame} containing a sample input data to the function
-\code{\link{get_observations}}  (while \code{type} argument is set to "from_file").
-This data is compatible with \code{\link{n1_small.tif}}
-and \code{\link{K_small.tif}}/\code{\link{K_small_changing.tif}} maps.
+\code{\link{get_observations}}  when \code{type} argument is set to "from_file".
+This data is compatible with \code{\link{n1_small.tif}},
+\code{\link{K_small.tif}} and \code{\link{K_small_changing.tif}} maps.
 }
 \keyword{datasets}

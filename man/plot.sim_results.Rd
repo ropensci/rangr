@@ -10,7 +10,7 @@
 \item{x}{\code{sim_results} object; returned by \code{\link{sim}}}
 
 \item{template}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object;
-can be used as template to create returned object}
+can be used as a template to create returned object}
 
 \item{time_points}{numeric vector; specifies points in time from which
 plots will be generated}

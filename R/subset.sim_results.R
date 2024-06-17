@@ -1,6 +1,8 @@
-#' Subset Of The Given Time Points From `sim_results` Object
+#' Subset of Given Time Points from `sim_results` Object
 #'
-#' @param x `sim_results` object; returned by [`sim`] function
+#' @description This function creates a subset of given time points from the `sim_results` object.
+#'
+#' @param x `sim_results` object; returned by the [`sim`] function
 #' @param from numeric vector of length 1; indicates the starting time point
 #' from which all time point should be kept
 #' @param time_points numeric vector; indicates all time points to keep

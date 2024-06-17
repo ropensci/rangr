@@ -24,8 +24,8 @@ disp(
 )
 }
 \arguments{
-\item{N_t}{integer matrix of population numbers at a single time step;
-NA stands for cells that are outside the study area}
+\item{N_t}{integer matrix representing population numbers at a single time step;
+NA indicates cells outside the study area}
 
 \item{id}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object
 (of the same size as \code{N_t}) with cell identifiers}
@@ -35,7 +35,7 @@ NA stands for cells that are outside the study area}
 \item{data_table}{matrix that contains information about all cells
 in current time points}
 
-\item{kernel}{a function defining dispersal kernel}
+\item{kernel}{function defining dispersal kernel}
 
 \item{dens_dep}{character vector of length 1 specifying if the probability
 of settling in a target grid cell is (case-sensitive, default \code{"K2N"}):
@@ -47,7 +47,7 @@ carrying capacity of a target cell to the number of individuals
 already present in a target cell
 }}
 
-\item{dlist}{a list with identifiers of target cells at a specified
+\item{dlist}{list with identifiers of target cells at a specified
 distance from a focal cell}
 
 \item{id_within}{integer vector with identifiers of cells inside the
@@ -71,7 +71,7 @@ rasters, \code{FALSE} if input maps are lon/lat rasters}
 one cell of \code{id}; in case of an irregular grid or lon/lat raster it is
 calculated during \code{\link[=initialise]{initialisation}}}
 
-\item{max_dist}{a distance (in the same units as used in the raster \code{id})
+\item{max_dist}{distance (in the same units as used in the raster \code{id})
 specifying the maximum range at which identifiers of target dispersal cells
 are determined in advance (see \code{\link{initialise}})}
 
@@ -89,26 +89,26 @@ The function returns a list that contains two matrices:
 
 \code{em} - emigration matrix with the number of individuals that dispersed
 from each cell
+
 \code{im} - immigration matrix with the number of individuals that dispersed
 to each cell
 }
 \description{
-The function simulates dispersal, for every grid cell calculating the number
-of individuals that disperse out of this cell and the number of individuals
-that disperse into this cell.
+This function simulates dispersal for each grid cell by calculating the number
+of individuals dispersing out of the cell and the number of individuals
+dispersing into the cell.
 }
 \details{
-This is the function used by \code{\link{sim}} internally and is not intended to be
+The function is used by \code{\link{sim}} internally and is not intended to be
 called by the user. The parameters for this function are passed from
 a \code{sim_data} object created by \code{\link{initialise}}.
 
 Dispersal distance is expressed in original spatial units of the
-\code{\link[terra:SpatRaster-class]{SpatRaster}} provided to \code{\link{sim}} function
-(\code{n1_map} and \code{K_map}), however, it is internally converted to units
-of the simulation (i.e. to the size of a single cell) by calculating
-\code{round(distance/resolution)}. Thus, if the selected dispersal distance is
-smaller than \code{resolution/2}, it effectively means that an individual
-does not disperse, i.e. it lands in the same cell as it was before.
+\code{\link[terra:SpatRaster-class]{SpatRaster}} provided to the \code{\link{sim}} function
+(\code{n1_map} and \code{K_map}). However, it is internally converted to units
+of the simulation (i.e. the size of a single cell) by calculating \code{round(distance/resolution)}. If the selected dispersal distance is
+smaller than \code{resolution/2}, the individual
+does not disperse effectively and remains in the same cell.
 The dispersal rate (proportion of dispersing individuals) can be estimated
 from the dispersal kernel probability function by calculating the probability
 that the dispersal distance is greater than \code{resolution/2}.

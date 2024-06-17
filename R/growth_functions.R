@@ -1,14 +1,14 @@
 #' Population Growth Functions
 #'
-#' Population growth functions that can be used during simulation
-#' conducted by [`sim`].
-#' The user needs to specify the name of a growth function while initialising
+#' Population growth functions are used during simulation
+#' conducted by the [`sim`] function.
+#' The user is required  to specify the name of a growth function while initialising the
 #' `sim_data` object using [`initialise`].
 #'
-#' `x` can be a vector, matrix, [`SpatRaster`][terra::SpatRaster-class]
-#' or any other `R` object for which basic arithmetic operations make sense.
-#' These functions are intended to be used in [`sim`] function and there `x`
-#' is a matrix of the same dimensions as [`SpatRaster`][terra::SpatRaster-class]
+#'`x` can be a vector, matrix, [`SpatRaster`][terra::SpatRaster-class]
+#' or any other `R` object for which basic arithmetic operations produce valid results.
+#' These functions are intended to be used in the [`sim`] function, where `x`
+#' is a matrix of the same dimensions as the [`SpatRaster`][terra::SpatRaster-class]
 #' object specified in `n1_map` parameter.
 #'
 #' @name growth
@@ -25,7 +25,7 @@
 #' Journal of Theoretical Biology, 218(3), 375-394.
 #'  https://doi.org/10.1006/jtbi.2002.3084
 #'
-#' @return Object of the same dimensions as `x` containing expected number
+#' @return Object of the same dimensions as `x` that contains expected number
 #' of individuals in the next time step.
 #' @export
 #'

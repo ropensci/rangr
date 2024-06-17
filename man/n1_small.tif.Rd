@@ -7,16 +7,16 @@
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 15 rows
 and 10 columns containing integer values 0-10 and NA's
-(that indicates unsuitable areas).
+indicating unsuitable areas.
 }
 \source{
-Data generated in-house to serve as an example
+Data generated in-house to serve as an example.
 }
 \description{
-\code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used
+\code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used a
 as simulation starting point to \code{\link{initialise}} data necessary
-to perform a \code{\link{sim}}ulation. This map is compatible with \code{\link{K_small.tif}}
-and \code{\link{K_small_changing.tif}} maps.
+to perform a simulation with the \code{\link{sim}} function. This map is compatible
+with \code{\link{K_small.tif}} and \code{\link{K_small_changing.tif}} maps.
 }
 \examples{
 system.file("input_maps/n1_small.tif", package = "rangr")

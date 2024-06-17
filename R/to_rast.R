@@ -2,19 +2,21 @@
 #'
 #' This function transforms selected subset of abundance matrices from
 #' `sim_results` into [`SpatRaster`][terra::SpatRaster-class] object. Layers are
-#' specified by `time_points` that can be one point in time or many.
+#' specified by `time_points`, which can be one or multiple points in time.
+#'
+#'
 #'
 #' @param sim_results `sim_results` object created by [`sim`]
 #' @param time_points numeric vector of length 1 or more; specifies points in
-#' time from which [`SpatRaster`][terra::SpatRaster-class] will be created
-#' - as default the last year of simulation; if `length(time_points) > 0`
+#' time from which [`SpatRaster`][terra::SpatRaster-class] will be created - as
+#' default the last year of simulation; if `length(time_points) > 0`
 #' [`SpatRaster`][terra::SpatRaster-class] will be returned with layers for
 #' each element of `time_points`
 #' @param template [`SpatRaster`][terra::SpatRaster-class] object; can be used
-#' as template to create returned object
+#' as a template to create returned object
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] based on `sim_results` object
-#' with layers corresponding to `time_points`
+#' with layers corresponding to `time_points`.
 #' @export
 #'
 #' @examples

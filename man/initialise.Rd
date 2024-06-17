@@ -95,18 +95,18 @@ contains all necessary information to perform a simulation using
 \code{\link{sim}} function.
 }
 \description{
-This function generates a \code{sim_data} object which contains all the necessary
-information needed to run a simulation by the \code{\link{sim}} function. Note that the
+This funtion generates a \code{sim_data} object containing all the necessary
+information required to run a simulation by the \code{\link{sim}} function. The
 input maps (\code{n1_map} and \code{K_map}) can be in the Cartesian or longitude/latitude
 coordinate system.
 }
 \details{
 The most time-consuming part of computations performed by the \code{\link{sim}}
 function is the simulation of dispersal. To speed it up, a list containing
-indexes of target cells at a specified distance from a focal cell,
+indexes of target cells at a specified distance from a focal cell
 is calculated in advance and stored in a \code{dlist} slot.
-The parameter \code{max_dist} sets
-the maximum distance at which this pre-calculation  will be performed. If \code{max_dist}
+The \code{max_dist} parameter sets
+the maximum distance at which this pre-calculation is performed. If \code{max_dist}
 is \code{NULL}, it is set to 0.99 quantile from the \code{kernel_fun}.
 All distance calculations are always based on metres if the input maps are
 latitude/longitude. For planar input maps, distances are calculated in map
@@ -114,16 +114,16 @@ units, which are typically metres, but check the \code{\link[terra:crs]{crs()}}
 if in doubt.
 
 If the input maps are in the Cartesian coordinate system and the grid cells
-are squares,
+are squares, then
 the distances between cells are calculated using the \code{\link[terra:distance]{distance}}
-function from the \code{terra} package. These distances are then divided by the
+function from the \code{terra} package. These distances are later divided by the
 resolution of the input maps.
 
 For input maps with grid cells in shapes other than squares (e.g. with
 rectangular cells or longitude/latitude coordinate system), the distance
 resolution is calculated by finding the shortest distance between each
 "queen" type neighbor. All distances calculated by the \code{\link[terra:distance]{distance}}
-function are then divided by this distance resolution.
+function are further divided by this distance resolution.
 To avoid discontinuities in the distances at which the target cells are located,
 an additional parameter \code{dist_bin} is calculated as half of the maximum
 distance between each "queen" type neighbour. It is used to expand the

@@ -7,16 +7,17 @@
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 12 rows
 and 14 columns containing integer values 0-10 and NA's
-(indicating unsuitable areas).
+indicating unsuitable areas.
 }
 \source{
-Data generated in-house to serve as an example
+Data generated in-house to serve as an example.
 }
 \description{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object representing an abundance map
 at the first time step of the simulation projected to WGS 84 (CRS84) from the
 original raster \code{n1_small}. This map can be used as a simulation starting point
-to initialise data necessary to perform a simulation. It is compatible with the
+to \code{\link{initialise}} data necessary to perform a simulation with the \code{\link{sim}}
+function. It is compatible with the
 \code{K_small_lon_lat.tif} and \code{K_small_changing_lon_lat.tif} maps.
 }
 \examples{

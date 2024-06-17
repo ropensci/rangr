@@ -4,7 +4,7 @@
 #'
 #' @param x `sim_results` object; returned by [`sim`]
 #' @param template [`SpatRaster`][terra::SpatRaster-class] object;
-#' can be used as template to create returned object
+#' can be used as a template to create returned object
 #' @param time_points numeric vector; specifies points in time from which
 #' plots will be generated
 #' @param ... further arguments passed to [`terra::plot`]
