@@ -4,12 +4,12 @@
 #' capacity maps.
 #'
 #'
-#' To simulate dynamic environmental scenarios (i.e. climate change, land use
+#' To simulate dynamic environmental scenarios (e.g. climate change, land use
 #' change, ecological disturbance, etc.) one needs to provide time-varying
 #' carrying capacity maps.
 #'
-#' Either `K_time_points` or the `time` parameter is needed to calculate
-#' interpolation. If interpolation should be calculated between two carrying
+#' Either `K_time_points` or the `time` parameter is needed to perform
+#' interpolation. If the interpolation should be calculated between two carrying
 #' capacity maps, there is no need to pass the time points, because 1 will
 #' be set as the starting time point and `time` will be used as the ending point.
 #' On the other hand, in the absence of the `time` argument, the maximum element
@@ -24,7 +24,7 @@
 #' (this is defined when evoking the function `sim`).
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] object with number of layers
-#' equal to `time`
+#' equal to `time`.
 #'
 #'
 #' @export
@@ -69,9 +69,10 @@
 #'
 K_get_interpolation <- function(K_map, K_time_points = NULL, time = NULL) {
 
-  # arguments validation
+  # Validation of arguments
   check_results <- K_check(K_map, K_time_points, time)
 
+  # interpolation
   K_interpolated <- K_interpolate(
     K_map,
     check_results$K_time_points,
@@ -108,6 +109,10 @@ K_check <- function(K_map, K_time_points, time) {
   assert_that(inherits(K_map, "SpatRaster"))
 
   assert_that(
+    nlyr(K_map) > 1,
+    msg = "K_map has only one layer - nothing to interpolate")
+
+  assert_that(
     !is.null(time) || (!is.null(K_time_points)),
     msg = "Either \"K_time_points\" or \"time\" must be specified")
 
@@ -115,10 +120,10 @@ K_check <- function(K_map, K_time_points, time) {
     !any(duplicated(K_time_points)),
     msg = "\"K_time_points\" should contain only unique values")
 
-  # number of layers
+  # get number of layers
   nls <- nlyr(K_map)
 
-  # number of time points
+  # get number of time points
   ntp <- ifelse(is.null(K_time_points),
     0,
     ifelse(!is.numeric(K_time_points),
@@ -128,14 +133,19 @@ K_check <- function(K_map, K_time_points, time) {
   )
 
   #' @srrstats {G2.0, G2.2, G2.13} assert input length
-  # check time_points and number of layers
-  if (nls != ntp) { # number of layers and number of time points are different
 
+  # check if time_points and number of layers are compatible
+  if (nls != ntp) {
+    # number of layers and number of time points are different
+
+    # acceptable only if number time point are not provided
+    # and K_map has 2 layers - default time point are: 1 and time
     assert_that(
-      nls %in% c(1, 2) & ntp == 0,
+      nls == 2 & ntp == 0,
       msg = "Incorrect number of elements in \"K_time_points\"")
 
-  } else { # number of layers and number of time points are equal
+  } else {
+    # number of layers and number of time points are equal
 
     assert_that(
       K_time_points[1] == 1,
@@ -152,8 +162,9 @@ K_check <- function(K_map, K_time_points, time) {
   }
 
 
-  # set default value for time if possible
+  # check time
   if (is.null(time)) {
+    # set default value for time if necessary
 
     #' @srrstats {G2.9} add default time and show warning
 
@@ -164,15 +175,21 @@ K_check <- function(K_map, K_time_points, time) {
     time <- max(K_time_points)
 
   } else {
+    # check provided time
 
     #' @srrstats {G2.0, G2.2} assert input length
     #' @srrstats {G2.1, G2.3, G2.3a, G2.6} assert input type
+
     assert_that(length(time) == 1)
     assert_that(is.numeric(time))
 
-    if (ntp == 0 & nls == 2) {
-      K_time_points <- c(1, time) # default time points for 2-layered K_map
+    if (nls == 2 & ntp == 0) {
+
+      # default time points for 2-layered K_map
+      K_time_points <- c(1, time)
+
     } else {
+
       assert_that(
         max(K_time_points) == time,
         msg = "Last element of \"K_time_points\" should be equal to \"time\"")
@@ -206,17 +223,23 @@ K_check <- function(K_map, K_time_points, time) {
 #'
 K_interpolate <- function(K_map, K_time_points, time) {
 
+  # for every grid cell (across all layers)
   K_interpolated <- app(K_map, function(cell) {
 
+    # vector for interpolated values filled with NAs
     na_cell <- rep(NA, time)
 
     if (all(is.na(cell))) {
 
+      # if no values in current cell - return NAs
       return(na_cell)
 
     } else {
 
+      # assign known values to specified time point
       na_cell[K_time_points] <- cell
+
+      # interpolate values for other time points
       na.approx(na_cell, xout = seq_len(time))
 
     }

@@ -6,18 +6,17 @@
 \title{Example Of Carrying Capacity Map (Small)}
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 12 rows
-and 14 columns containing integer values 0-100 and NA's
-(indicating unsuitable areas).
+and 14 columns containing integer values 0-100 and NA's indicating unsuitable areas.
 }
 \source{
 Data generated in-house to serve as an example
-(using spatial autocorrelation)
+(using spatial autocorrelation).
 }
 \description{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object that represents a carrying
 capacity map projected to WGS 84 (CRS84) from the original raster \code{K_small}.
-This map can be used as a carrying capacity map to initialize data necessary
-to perform a simulation. It is compatible with the \code{n1_small_lon_lat.tif} raster.
+This map can be used as a carrying capacity map to \code{\link{initialise}} data necessary
+to perform a simulation with the \code{\link{sim}} function. It is compatible with the \code{n1_small_lon_lat.tif} raster.
 }
 \examples{
 system.file("input_maps/K_small_lon_lat.tif", package = "rangr")

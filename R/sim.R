@@ -50,8 +50,7 @@
 #' @param cl an optional cluster object created by
 #' [`makeCluster`][parallel::makeCluster()] needed for parallel calculations
 #' @param progress_bar logical vector of length 1 determines if progress bar
-#' for simulation
-#' should be displayed
+#' for simulation should be displayed
 #' @param quiet logical vector of length 1; determines if warnings should
 #' be displayed
 #'
@@ -92,15 +91,15 @@
 #' # simulation
 #' sim_1 <- sim(obj = sim_data, time = 20)
 #'
-#' # simulation with burned time steps and progress bar
-#' sim_2 <- sim(obj = sim_data, time = 20, burn = 10, progress_bar = TRUE)
+#' # simulation with burned time steps
+#' sim_2 <- sim(obj = sim_data, time = 20, burn = 10)
 #'
 #' # example with parallelization
 #' library(parallel)
 #' cl <- makeCluster(detectCores())
 #'
 #' # parallelized simulation
-#' sim_3 <- sim(obj = sim_data, time = 20, cl = cl, progress_bar = TRUE)
+#' sim_3 <- sim(obj = sim_data, time = 20, cl = cl)
 #' stopCluster(cl)
 #'
 #'
@@ -131,8 +130,8 @@
 #'   burn = 0,
 #'   return_mu = FALSE,
 #'   cl = NULL,
-#'   progress_bar = FALSE,
-#'   quiet = TRUE
+#'   progress_bar = TRUE,
+#'   quiet = FALSE
 #' )
 #'
 #' @srrstats {G1.4} uses roxygen documentation
@@ -144,10 +143,19 @@
 #' @srrstats {SP4.2} returned values are documented
 #'
 sim <- function(
-    obj, time, burn = 0, return_mu = FALSE, cl = NULL, progress_bar = FALSE, quiet = TRUE) {
+    obj, time, burn = 0, return_mu = FALSE, cl = NULL, progress_bar = TRUE, quiet = FALSE) {
+
+  # check if session is interactive
+  if(!interactive()) {
+    call_names <- names(match.call())
+
+    if(!("progress_bar" %in% call_names)) progress_bar <-  FALSE
+    if(!("quiet" %in% call_names)) quiet <-  TRUE
+  }
 
   #' @srrstats {G2.0, G2.2} assert input length
   #' @srrstats {G2.1, G2.6, SP2.7} assert input type
+
   # Validation of arguments
   ## obj
   assert_that(inherits(obj, "sim_data"))
@@ -183,6 +191,7 @@ sim <- function(
 
 
   # options
+  op <- options()
   options(warn = -1)
   pbo <- pboptions(type = "none")
   on.exit(pboptions(pbo))
@@ -203,8 +212,8 @@ sim <- function(
 
   # exports for parallel computations
   if (!is.null(cl)) {
-    obj$id <- wrap(id)
-    obj$K_map <- wrap(K_map)
+    # obj$id <- wrap(id)
+    # obj$K_map <- wrap(K_map)
 
     clusterExport(cl, c("obj"), envir = environment())
     clusterEvalQ(cl, {
@@ -224,34 +233,47 @@ sim <- function(
   }
 
   # Specify other necessary data
-  ## additional demographic stochasticity (time specific)
+
+  # Additional demographic stochasticity (time specific)
   r <- rnorm(time, r, r_sd)
 
+
+  # If changing environment
   if (changing_env) {
+
+    # check if K_map and time are compatible
     if (nlyr(K_map) != time) {
+
+      # restore users options
+      options(op)
+
+      # error
       stop("Number of layers in \"K_map\" and \"time\"  are not equal ")
     }
+
   } else {
+
+    # get initial K values
     K_map <- as.matrix(K_map, wide = TRUE)
   }
 
 
-  # Empty data structures to store simulation outputs
+  # empty data structures to store simulation outputs
   mu <- array(data = 0, dim = c(nrow(id), ncol(id), time)) # expectations
   N <- array(data = 0L, dim = c(nrow(id), ncol(id), time)) # numbers
 
 
-  # Matrix of population numbers at t = 1
+  # matrix of population numbers at t = 1
   N[, , 1] <- n1_map
 
 
-
-  # Loop through time
-
+  # progress bar set up
   if (progress_bar) {
     pb <- txtProgressBar(min = 1, max = time, style = 3, char = "+")
     setTxtProgressBar(pb, 1)
   }
+
+  # Loop through time
 
   for (t in 2:(time)) {
 
@@ -263,10 +285,13 @@ sim <- function(
     # Demographic processes
     mu[, , t - 1] <- dynamics(N[, , t - 1], r[t - 1], K, A)
 
-    if(return_mu) {
+    # if return expected values
+    if (return_mu) {
+      # round  expected values
       N[, , t] <- round(mu[, , t - 1])
+
     } else{
-      # demographic stochasticity (random numbers drown from a Poisson distribution) #nolint
+      # demographic stochasticity (random numbers drown from a Poisson distribution)
       # of number of individuals in each cell predicted by the deterministic model)
       N[, , t] <- rpois(ncells, mu[, , t - 1])
     }
@@ -274,25 +299,30 @@ sim <- function(
 
     # check for extinction
     if (extinction_status <- extinction_check(N, t)) {
+
+      # if extinct, check if burn threshold is reached
       if (t < burn) {
+        # if not - stop
         stop(
           "Simulation failed to reach specified time steps treshold ",
           "(by \"burn\" parameter) - nothing to return."
         )
       }
 
+      # if burn threshold is reached - break and leave the loop
       break
     }
 
 
 
-    # update data
+    # update data with current carrying capacity and abundance
     data_table[, "K"] <- as.numeric(K)
     data_table[, "N"] <- as.numeric(as.matrix(N[, , t]))
 
 
     # 2. Dispersal
 
+    # simulate dispersal
     m <- disp(
       N_t = N[, , t], id = id, id_matrix,
       data_table = data_table, kernel = obj$kernel,
@@ -305,21 +335,23 @@ sim <- function(
     # net effect (population numbers - emigration + immigration)
     N[, , t] <- N[, , t] - m[["em"]] + m[["im"]]
 
+    # update progress bar
     if (progress_bar) setTxtProgressBar(pb, t)
   }
+  # close progress bar
   if (progress_bar) close(pb)
 
-
+  # prepare list with extinction status, simulated time and abundances
   out <- list(
     extinction = extinction_status,
     simulated_time = t - burn,
     N_map = N[, , (burn + 1):t]
   )
 
-
+  # set class
   class(out) <- c("sim_results", class(out))
 
-
+  # if species extinct - print message to user
   if (extinction_status && !quiet) {
     ext_time_total <- paste0(out$simulated_time, "/", time)
     ext_time_after_burn <- paste0(
@@ -333,6 +365,8 @@ sim <- function(
     ))
   }
 
+  # restore users options
+  options(op)
 
   return(out)
 }
@@ -408,9 +442,10 @@ get_K <- function(K_map, t, changing_env) {
 #'
 extinction_check <- function(N, t) {
 
+  # if only zeros in current abundance matrix
   if (sum(N[, , t], na.rm = TRUE) == 0) {
-    return(TRUE)
+    return(TRUE) # species is extinct
   } else {
-    return(FALSE)
+    return(FALSE) # species is not extinct
   }
 }

@@ -4,7 +4,7 @@
 #'
 #' @param x `sim_results` object; returned by [`sim`]
 #' @param template [`SpatRaster`][terra::SpatRaster-class] object;
-#' can be used as template to create returned object
+#' can be used as a template to create returned object
 #' @param time_points numeric vector; specifies points in time from which
 #' plots will be generated
 #' @param ... further arguments passed to [`terra::plot`]
@@ -35,6 +35,7 @@
 #' )
 #' sim_res <- sim(sim_data, time = 10)
 #' plot(sim_res)
+#' plot(sim_res, template = n1_small, time_points = c(1, 10))
 #'
 #' # plot specific area
 #' plot(sim_res, xlim = c(4, 10), ylim = c(0, 10))
@@ -52,9 +53,11 @@
 plot.sim_results <- function(
     x, template = NULL, time_points = NULL, range, type, ...) {
 
+  # default number of layers to plot
   default_n_panels <- 4
 
   if (!is.null(time_points)) {
+    # check if time_points are within simulation time
     if (any(x$simulated_time < time_points)) {
       stop(
         "Invalid \"time_points\" argument: ",
@@ -62,32 +65,40 @@ plot.sim_results <- function(
       )
     }
   } else {
+    # time_points are not provided - generate default values
+
     if (x$simulated_time < default_n_panels) {
+      # not enough simulated time steps for default number of panels - plot all
+      # available time_steps
       warning(
         "There are not enough time points simulated to generate the default (",
         default_n_panels, ") number of maps. Ploting all available time points."
       )
       time_points <- seq(from = 1, to = x$simulated_time, by = 1)
     } else {
-      time_points <- round(seq(from = 1, to = x$simulated_time, length = 4))
+      # generate default number of time_points
+      time_points <- round(seq(from = 1, to = x$simulated_time, length = default_n_panels))
     }
   }
 
-
+  # default range - abundance range
   if(missing(range)) {
     range <- base::range(x$N_map, na.rm = TRUE)
   }
 
+  # default type - "continuous"
   if(missing(type)) {
     type <- "continuous"
   }
 
+  # define raster from simulated data
   x_rast <- to_rast(
     sim_results = x,
     time_points = time_points,
     template = unwrap(template)
   )
 
+  # plot simulated abundances
   plot(x_rast, type = type, range = range, ...)
 
   return(x_rast)

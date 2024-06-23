@@ -463,8 +463,7 @@ test_that("target ids precalculation works", {
     dist_resolution = test_sim_data$dist_resolution,
     dist_bin = test_sim_data$dist_bin,
     progress_bar = FALSE,
-    quiet = TRUE,
-    cl = NULL),
+    quiet = TRUE),
   dist_list_res)
 
   expect_null(calc_dist(
@@ -476,8 +475,7 @@ test_that("target ids precalculation works", {
     dist_resolution = test_sim_data$dist_resolution,
     dist_bin = test_sim_data$dist_bin,
     progress_bar = FALSE,
-    quiet = TRUE,
-    cl = NULL))
+    quiet = TRUE))
 
   expect_null(test_sim_data$dlist)
 
@@ -489,14 +487,28 @@ test_that("target ids precalculation works", {
       max_dist = test_max_dist,
       dist_resolution = test_resolution,
       dist_bin = test_sim_data$dist_bin,
-      progress_bar = FALSE,
-      cl = NULL),
+      progress_bar = FALSE),
     dist_list_res)
 
   expect_equal(
     target_ids(1, test_rast, test_data, 1, test_max_dist / test_resolution,
                test_resolution, test_sim_data$dist_bin, test_id_within),
     dist_list_res[[1]])
+
+  expect_equal(
+    get_bins(ids = 1,
+           ds = 2,
+           idx = NULL,
+           dist_bin = 2),
+    cbind(1, 1:4))
+
+  expect_equal(
+    get_bins(ids = 1,
+             ds = 2,
+             idx = 2,
+             dist_bin = 2),
+    cbind(c(rep(2, 3), rep(1, 4)),
+          c(0:2,1:4)))
 })
 
 
@@ -505,8 +517,18 @@ test_that("ncell_in_circle works", {
   test_rast <- classify(test_rast, cbind(NaN, NA))
   test_ncells_in_circle <-
     readRDS(test_path("fixtures", "test_ncells_in_circle_mini.rds"))
+  test_sim_data_lon_lat <-
+    readRDS(test_path("fixtures", "test_sim_data_lon_lat.rds"))
+  test_ncells_in_circle_lon_lat <-
+    readRDS(test_path("fixtures", "test_ncells_in_circle_lon_lat.rds"))
 
   expect_equal(ncell_in_circle_planar(test_rast, res(test_rast)[1]), test_ncells_in_circle)
+
+  expect_equal(
+  ncell_in_circle_lonlat(terra::unwrap(test_sim_data_lon_lat$id), test_sim_data_lon_lat$dist_resolution, test_sim_data_lon_lat$dist_bin, test_sim_data_lon_lat$id_within, test_sim_data_lon_lat$max_avl_dist, FALSE, TRUE),
+  test_ncells_in_circle_lon_lat
+  )
+
 })
 
 
@@ -560,4 +582,24 @@ test_that("K_add_stochasticity works", {
 
   expect_s4_class(test_sim_data_1$K_map, "PackedSpatRaster")
   expect_s4_class(test_sim_data_2$K_map, "PackedSpatRaster")
+})
+
+
+test_that("calculate_dist_params works", {
+  test_id_rast_lon_lat <- rast(test_path("fixtures", "test_id_rast_lon_lat.tif"))
+  test_data_table_lon_lat <- readRDS(test_path("fixtures", "test_data_table_lon_lat.rds"))
+
+  test_within_list_lon_lat <- !is.na(test_data_table_lon_lat[, "K"])
+  test_id_within_lon_lat <- test_data_table_lon_lat[test_within_list_lon_lat, "id"]
+
+  expect_equal(
+    calculate_dist_params(id = test_id_rast_lon_lat,
+                        id_within = test_id_within_lon_lat,
+                        data_table = test_data_tabl_lon_lat,
+                        progress_bar = FALSE,
+                        quiet = TRUE),
+    c(dist_bin = 1, dist_resolution = 4, max_avl_dist = 12)
+
+  )
+
 })

@@ -2,12 +2,12 @@
 % Please edit documentation in R/subset.sim_results.R
 \name{subset.sim_results}
 \alias{subset.sim_results}
-\title{Subset Of The Given Time Points From \code{sim_results} Object}
+\title{Subset of Given Time Points from \code{sim_results} Object}
 \usage{
 \method{subset}{sim_results}(x, from = NULL, time_points = NULL, ...)
 }
 \arguments{
-\item{x}{\code{sim_results} object; returned by \code{\link{sim}} function}
+\item{x}{\code{sim_results} object; returned by the \code{\link{sim}} function}
 
 \item{from}{numeric vector of length 1; indicates the starting time point
 from which all time point should be kept}
@@ -21,7 +21,7 @@ from which all time point should be kept}
 in the \code{N_map} slot
 }
 \description{
-Subset Of The Given Time Points From \code{sim_results} Object
+This function creates a subset of given time points from the \code{sim_results} object.
 }
 \details{
 Either \code{from} or \code{time_points} argument has to be specified.

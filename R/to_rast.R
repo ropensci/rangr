@@ -2,19 +2,21 @@
 #'
 #' This function transforms selected subset of abundance matrices from
 #' `sim_results` into [`SpatRaster`][terra::SpatRaster-class] object. Layers are
-#' specified by `time_points` that can be one point in time or many.
+#' specified by `time_points`, which can be one or multiple points in time.
+#'
+#'
 #'
 #' @param sim_results `sim_results` object created by [`sim`]
 #' @param time_points numeric vector of length 1 or more; specifies points in
-#' time from which [`SpatRaster`][terra::SpatRaster-class] will be created
-#' - as default the last year of simulation; if `length(time_points) > 0`
+#' time from which [`SpatRaster`][terra::SpatRaster-class] will be created - as
+#' default the last year of simulation; if `length(time_points) > 0`
 #' [`SpatRaster`][terra::SpatRaster-class] will be returned with layers for
 #' each element of `time_points`
 #' @param template [`SpatRaster`][terra::SpatRaster-class] object; can be used
-#' as template to create returned object
+#' as a template to create returned object
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] based on `sim_results` object
-#' with layers corresponding to `time_points`
+#' with layers corresponding to `time_points`.
 #' @export
 #'
 #' @examples
@@ -66,6 +68,7 @@ to_rast <- function(
   assert_that(inherits(sim_results, "sim_results"))
 
   if(is.null(template)) {
+    # if no template provide - make raster only with values
 
     #' @srrstats {G2.9} make default raster and show warning
 
@@ -73,6 +76,7 @@ to_rast <- function(
     out <- rast(sim_results$N_map[, , time_points])
 
   } else {
+    # if template provided
 
     # check if template and x have the same dimension
     if (!all(dim(sim_results$N_map)[c(1, 2)] == dim(template)[c(1, 2)])) {
@@ -80,13 +84,14 @@ to_rast <- function(
     }
 
 
-
-    out <- template
+    # make raster bases on the template
+    out <- unwrap(template)
     nlyr(out) <- length(time_points)
     values(out) <- sim_results$N_map[, , time_points]
 
   }
 
+  # name layers
   names(out) <- paste("t", time_points, sep = "_")
 
   return(out)

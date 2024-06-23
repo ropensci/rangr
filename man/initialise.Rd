@@ -2,7 +2,6 @@
 % Please edit documentation in R/initialise.R
 \name{initialise}
 \alias{initialise}
-\alias{initialize}
 \title{Prepare Data Required To Perform A Simulation}
 \usage{
 initialise(
@@ -20,29 +19,8 @@ initialise(
   max_dist = NA,
   calculate_dist = TRUE,
   dlist = NULL,
-  progress_bar = FALSE,
-  quiet = TRUE,
-  cl = NULL
-)
-
-initialize(
-  n1_map,
-  K_map,
-  K_sd = 0,
-  r,
-  r_sd = 0,
-  growth = "gompertz",
-  A = NA,
-  dens_dep = c("K2N", "K", "none"),
-  border = c("reprising", "absorbing"),
-  kernel_fun = "rexp",
-  ...,
-  max_dist = NA,
-  calculate_dist = TRUE,
-  dlist = NULL,
-  progress_bar = FALSE,
-  quiet = TRUE,
-  cl = NULL
+  progress_bar = TRUE,
+  quiet = FALSE
 )
 }
 \arguments{
@@ -107,11 +85,9 @@ will be precalculated}
 for every cell within the study area}
 
 \item{progress_bar}{logical vector of length 1; determines if progress bar
-for calculating distances should be displayed (used only if dlist is \code{NULL})}
+for calculating distances should be displayed}
 
 \item{quiet}{logical vector of length 1; determines if messages should be displayed}
-
-\item{cl}{cluster object created by \code{\link[parallel:makeCluster]{makeCluster}}}
 }
 \value{
 Object of class \code{sim_data} which inherits from \code{list}. This object
@@ -119,33 +95,35 @@ contains all necessary information to perform a simulation using
 \code{\link{sim}} function.
 }
 \description{
-This function generates a \code{sim_data} object which contains all the necessary
-information needed to run a simulation by the \code{\link{sim}} function. Note that the
+This funtion generates a \code{sim_data} object containing all the necessary
+information required to run a simulation by the \code{\link{sim}} function. The
 input maps (\code{n1_map} and \code{K_map}) can be in the Cartesian or longitude/latitude
 coordinate system.
 }
 \details{
 The most time-consuming part of computations performed by the \code{\link{sim}}
 function is the simulation of dispersal. To speed it up, a list containing
-indexes of target cells at a specified distance from a focal cell,
-is calculated in advance and stored in a \code{dlist} slot. This process can be
-parallelized, using
-a cluster object created by \code{\link[parallel:makeCluster]{makeCluster}},
-specified by the \code{cl} parameter. The parameter \code{max_dist} sets
-the maximum distance at which this pre-calculation  will be performed. If \code{max_dist}
+indexes of target cells at a specified distance from a focal cell
+is calculated in advance and stored in a \code{dlist} slot.
+The \code{max_dist} parameter sets
+the maximum distance at which this pre-calculation is performed. If \code{max_dist}
 is \code{NULL}, it is set to 0.99 quantile from the \code{kernel_fun}.
+All distance calculations are always based on metres if the input maps are
+latitude/longitude. For planar input maps, distances are calculated in map
+units, which are typically metres, but check the \code{\link[terra:crs]{crs()}}
+if in doubt.
 
 If the input maps are in the Cartesian coordinate system and the grid cells
-are squares,
+are squares, then
 the distances between cells are calculated using the \code{\link[terra:distance]{distance}}
-function from the \code{terra} package. These distances are then divided by the
+function from the \code{terra} package. These distances are later divided by the
 resolution of the input maps.
 
 For input maps with grid cells in shapes other than squares (e.g. with
 rectangular cells or longitude/latitude coordinate system), the distance
 resolution is calculated by finding the shortest distance between each
 "queen" type neighbor. All distances calculated by the \code{\link[terra:distance]{distance}}
-function are then divided by this distance resolution.
+function are further divided by this distance resolution.
 To avoid discontinuities in the distances at which the target cells are located,
 an additional parameter \code{dist_bin} is calculated as half of the maximum
 distance between each "queen" type neighbour. It is used to expand the
@@ -199,26 +177,12 @@ sim_data_3 <- initialise(
   rate = 1 / 1e3
 )
 
-# example with progress bar and messages
+# example without progress bar and messages
 sim_data_4 <- initialise(
   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
   r_sd = 4, growth = "ricker", rate = 1 / 200,
-  max_dist = 5000, dens_dep = "K2N", progress_bar = TRUE, quiet = FALSE
+  max_dist = 5000, dens_dep = "K2N", progress_bar = FALSE, quiet = TRUE
 )
-
-# example with parallelization
-library(parallel)
-cl <- makeCluster(detectCores())
-
-sim_data_5 <- initialise(
-  n1_map = n1_small,
-  K_map = K_small,
-  r = log(2),
-  rate = 1 / 1e3,
-  cl = cl,
-  progress_bar = TRUE,
-)
-stopCluster(cl)
 }
 
 

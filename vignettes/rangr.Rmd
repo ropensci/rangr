@@ -430,7 +430,7 @@ library(parallel)
 cl <- makeCluster(detectCores() - 2)
 
 sim_result_02 <- 
-  sim(obj = sim_data_02, time = 200, progress_bar = TRUE, cl = cl)
+  sim(obj = sim_data_02, time = 200, cl = cl)
 
 stopCluster(cl)
 ```

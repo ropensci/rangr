@@ -10,24 +10,22 @@ to_rast(sim_results, time_points = sim_results$simulated_time, template = NULL)
 \item{sim_results}{\code{sim_results} object created by \code{\link{sim}}}
 
 \item{time_points}{numeric vector of length 1 or more; specifies points in
-time from which \code{\link[terra:SpatRaster-class]{SpatRaster}} will be created
-\itemize{
-\item as default the last year of simulation; if \code{length(time_points) > 0}
+time from which \code{\link[terra:SpatRaster-class]{SpatRaster}} will be created - as
+default the last year of simulation; if \code{length(time_points) > 0}
 \code{\link[terra:SpatRaster-class]{SpatRaster}} will be returned with layers for
-each element of \code{time_points}
-}}
+each element of \code{time_points}}
 
 \item{template}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object; can be used
-as template to create returned object}
+as a template to create returned object}
 }
 \value{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} based on \code{sim_results} object
-with layers corresponding to \code{time_points}
+with layers corresponding to \code{time_points}.
 }
 \description{
 This function transforms selected subset of abundance matrices from
 \code{sim_results} into \code{\link[terra:SpatRaster-class]{SpatRaster}} object. Layers are
-specified by \code{time_points} that can be one point in time or many.
+specified by \code{time_points}, which can be one or multiple points in time.
 }
 \examples{
 \dontrun{

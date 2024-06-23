@@ -25,20 +25,20 @@ gompertz(x, r, K, A = NA)
 \item{A}{coefficient of Allee effect (A <= 0: weak, A > 0: strong, NA: none)}
 }
 \value{
-Object of the same dimensions as \code{x} containing expected number
+Object of the same dimensions as \code{x} that contains expected number
 of individuals in the next time step.
 }
 \description{
-Population growth functions that can be used during simulation
-conducted by \code{\link{sim}}.
-The user needs to specify the name of a growth function while initialising
+Population growth functions are used during simulation
+conducted by the \code{\link{sim}} function.
+The user is required  to specify the name of a growth function while initialising the
 \code{sim_data} object using \code{\link{initialise}}.
 }
 \details{
 \code{x} can be a vector, matrix, \code{\link[terra:SpatRaster-class]{SpatRaster}}
-or any other \code{R} object for which basic arithmetic operations make sense.
-These functions are intended to be used in \code{\link{sim}} function and there \code{x}
-is a matrix of the same dimensions as \code{\link[terra:SpatRaster-class]{SpatRaster}}
+or any other \code{R} object for which basic arithmetic operations produce valid results.
+These functions are intended to be used in the \code{\link{sim}} function, where \code{x}
+is a matrix of the same dimensions as the \code{\link[terra:SpatRaster-class]{SpatRaster}}
 object specified in \code{n1_map} parameter.
 }
 \examples{

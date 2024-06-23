@@ -17,19 +17,19 @@ carrying capacity maps for each \code{K_time_points}}
 }
 \value{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with number of layers
-equal to \code{time}
+equal to \code{time}.
 }
 \description{
 This function linearly interpolates values in a series of carrying
 capacity maps.
 }
 \details{
-To simulate dynamic environmental scenarios (i.e. climate change, land use
+To simulate dynamic environmental scenarios (e.g. climate change, land use
 change, ecological disturbance, etc.) one needs to provide time-varying
 carrying capacity maps.
 
-Either \code{K_time_points} or the \code{time} parameter is needed to calculate
-interpolation. If interpolation should be calculated between two carrying
+Either \code{K_time_points} or the \code{time} parameter is needed to perform
+interpolation. If the interpolation should be calculated between two carrying
 capacity maps, there is no need to pass the time points, because 1 will
 be set as the starting time point and \code{time} will be used as the ending point.
 On the other hand, in the absence of the \code{time} argument, the maximum element

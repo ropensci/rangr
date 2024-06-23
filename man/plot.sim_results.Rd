@@ -10,7 +10,7 @@
 \item{x}{\code{sim_results} object; returned by \code{\link{sim}}}
 
 \item{template}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object;
-can be used as template to create returned object}
+can be used as a template to create returned object}
 
 \item{time_points}{numeric vector; specifies points in time from which
 plots will be generated}
@@ -46,6 +46,7 @@ sim_data <- initialise(
 )
 sim_res <- sim(sim_data, time = 10)
 plot(sim_res)
+plot(sim_res, template = n1_small, time_points = c(1, 10))
 
 # plot specific area
 plot(sim_res, xlim = c(4, 10), ylim = c(0, 10))

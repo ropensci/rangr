@@ -30,10 +30,11 @@
 #'
 print.sim_data <- function(x, ...) {
 
-  # prepare output
+  # prepare input maps
   n1_sm <- summary(as.numeric(x$n1_map))
   K_sm <- unwrap(x$K_map)
 
+  # prepare other parameters
   names <- names(x)
   names <- names[(names %in% c(
     "resolution", "r", "r_sd", "K_sd", "growth", "A",

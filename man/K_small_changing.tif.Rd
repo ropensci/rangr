@@ -7,25 +7,22 @@
 \format{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with 3 layers,
 each has 15 rows and 10 columns containing integer values 0-170 and
-NA's (that indicates unsuitable areas).
+NA's that indicates unsuitable areas.
 }
 \source{
 Data generated in-house to serve as an example
-(using spatial autocorrelation)
+(using spatial autocorrelation).
 }
 \description{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used as carrying
-capacity maps to \code{\link{initialise}} data necessary to perform a \code{\link{sim}}ulation.
-To use those maps in \code{\link{initialise}}, the user first have to
+capacity maps to \code{\link{initialise}} data necessary to perform a simulation
+with the \code{\link{sim}} function.
+To utilise these maps in \code{\link{initialise}} the user first must
 use \code{\link{K_get_interpolation}} to generate a map for every time step
 of the simulation.
-These maps are compatible with \code{\link{n1_small.tif}}
-\itemize{
-\item \code{\link[terra:SpatRaster-class]{SpatRaster}} object that can be used
-as simulation starting point.
+These maps are compatible with \code{\link{n1_small.tif}}.
 Each subsequent map contains a virtual environment with greater
 carrying capacity than the previous one.
-}
 }
 \examples{
 system.file("input_maps/K_small_changing.tif", package = "rangr")

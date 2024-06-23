@@ -1,6 +1,6 @@
 test_that("sim works", {
 
-  test_time <- 50
+  test_time <- 20
   test_time_error <- -5
   test_rast <- rast(test_path("fixtures", "test_rast.tif"))
   # reclassify to remove NaNs (that were NAs before saving)
@@ -22,39 +22,39 @@ test_that("sim works", {
   # input parameters
   expect_error(
     sim("test_initialised_obj_ext", time = test_time),
-    msg = "obj does not inherit from class sim_data",
-    fixed = TRUE)
+    regexp = "obj does not inherit from class sim_data"
+    )
 
   expect_error(
     sim(test_initialised_obj, time = c(test_time, 5)),
-    msg = "length(time) not equal to 1",
-    fixed = TRUE)
+    regexp = "length\\(time\\) not equal to 1"
+    )
 
   expect_error(
     sim(test_initialised_obj, time = "test_time"),
-    msg = "time is not a numeric or integer vector",
-    fixed = TRUE)
+    regexp = "time is not a numeric or integer vector"
+    )
 
   expect_error(
     sim(test_initialised_obj, time = test_time_error),
-    msg = "time not greater than 1",
-    fixed = TRUE)
+    regexp = "time not greater than 1"
+    )
 
 
   expect_error(
     sim(test_initialised_obj, time = test_time, burn = c(test_time, 5)),
-    msg = "length(burn) not equal to 1",
-    fixed = TRUE)
+    regexp = "length\\(burn\\) not equal to 1"
+    )
 
   expect_error(
     sim(test_initialised_obj, time = test_time, burn = "test_time"),
-    msg = "burn is not a numeric or integer vector",
-    fixed = TRUE)
+    regexp = "burn is not a numeric or integer vector"
+    )
 
   expect_error(
     sim(test_initialised_obj, time = test_time, burn = -1),
-    msg = "burn not greater than 1",
-    fixed = TRUE)
+    regexp = "burn not greater than or equal to 0"
+    )
 
 
   #' @srrstats {G5.4, G5.4a} correctness tests: trivial cases
@@ -80,14 +80,13 @@ test_that("sim works", {
   # incorrect number of layers/time steps (with changing environment)
   expect_error(
     sim(test_initialised_obj_many_layers, time = test_time),
-    msg = "Number of layers in \"K_map\" and \"time\"  are not equal",
-    foxed = TRUE)
+    regexp = "Number of layers in \"K_map\" and \"time\"  are not equal")
 
   # incorrect burn
   expect_error(
-    sim(test_initialised_obj_ext, time = test_time, burn = 20),
-    "Simulation failed to reach specified time steps treshold (by \"burn\" parameter) - nothing to return.", #nolint
-    fixed = TRUE)
+    sim(test_initialised_obj_ext, time = test_time, burn = 15),
+    regexp = "Simulation failed to reach specified time steps treshold \\(by \"burn\" parameter\\) - nothing to return." #nolint
+    )
 
   #' @srrstats {G5.3} test for NaNs in sim_results
   # NaN in abundances
