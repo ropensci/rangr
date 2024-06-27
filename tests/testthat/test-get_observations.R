@@ -116,7 +116,7 @@ test_that("get_observations works", {
   expect_error(
     get_observations(test_sim_data, test_sim_res,
                      type = "from_data", points = test_points[, c(1, 2)]),
-    "ncol(points) not equal to 3",
+    "not enough columns in \"points\"",
     fixed = TRUE)
 
   expect_error(
@@ -126,7 +126,7 @@ test_that("get_observations works", {
                          X = test_points[, 1],
                          Y = test_points[, 2],
                          time = test_points[, 3])),
-    "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"", #nolint
+    "points parameter should contain columns with the following names: \"x\", \"y\", \"time_step\"", #nolint
     fixed = TRUE)
 
   expect_error(

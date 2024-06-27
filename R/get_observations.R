@@ -72,7 +72,7 @@
 #'
 #' @return `data.frame` object with geographic coordinates, time steps,
 #' estimated abundance, observation error (if `obs_error_param` is
-#' provided), and observer identifiers (if `type = "monitoring_based"`).
+#' provided), and observer identifiers (if `type = "monitoring_based"`). If `type = "from_data"`, returned object is sorted in the same order as the input `points`.
 #'
 #' @export
 #'
@@ -323,18 +323,22 @@ get_observations_from_data <- function(N_rast, points) {
   ## points
   assert_that(is.data.frame(points) || is.matrix(points))
   points <- as.data.frame(points)
-  assert_that(ncol(points) == 3)
+  assert_that(ncol(points) >= 3, msg = "not enough columns in \"points\"")
+  assert_that(
+    all(c("x", "y", "time_step") %in% names(points)),
+    msg = "points parameter should contain columns with the following names: \"x\", \"y\", \"time_step\"")
   assert_that(nrow(points) > 0)
+
+  points <- points[c("x", "y", "time_step")]
   assert_that(
     all(!is.na(points)),
     msg = "missing data found in \"points\"")
   assert_that(
-    all(names(points) == c("x", "y", "time_step")),
-    msg = "columns in points parameter should have the following names: \"x\", \"y\", \"time_step\"")
-  assert_that(
     all(apply(points, 2, is.numeric)),
     msg = "some element of point are not numeric")
 
+  points$order <- seq_len(nrow(points))
+  points <- points[order(points$time_step),]
   # get "observations" from cells given in points dataset
   value <- unlist(lapply(
     seq_len(nlyr(N_rast)),
@@ -348,6 +352,7 @@ get_observations_from_data <- function(N_rast, points) {
 
   # column bind points and "observations"
   out <- cbind(points, value = value)
+  out <- out[order(out$order),]
 }
 
 

@@ -86,7 +86,7 @@ used when \code{type = "monitoring_based"}
 \value{
 \code{data.frame} object with geographic coordinates, time steps,
 estimated abundance, observation error (if \code{obs_error_param} is
-provided), and observer identifiers (if \code{type = "monitoring_based"}).
+provided), and observer identifiers (if \code{type = "monitoring_based"}). If \code{type = "from_data"}, returned object is sorted in the same order as the input \code{points}.
 }
 \description{
 This function simulates an observation process. It accepts the \code{sim_results}
