@@ -200,10 +200,10 @@ get_observations <- function(
   if (!is.null(obs_error_param)) {
     if (obs_error == "rlnorm")
       # the log normal distribution
-      out$value <- rlnorm(nrow(out), log(out$value), obs_error_param)
+      out$n <- rlnorm(nrow(out), log(out$n), obs_error_param)
     else if(obs_error == "rbinom")
       # the binomial distribution
-      out$value <- rbinom(nrow(out), out$value, obs_error_param)
+      out$n <- rbinom(nrow(out), out$n, obs_error_param)
   }
 
   return(out)
@@ -263,7 +263,7 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
       out,
       direction = "long",
       varying = list(as.character(seq_len(nlyr(N_rast)))),
-      v.names = "value",
+      v.names = "n",
       idvar = c("x", "y"),
       timevar = "time_step",
       times = seq_len(nlyr(N_rast))))
@@ -279,7 +279,7 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
         N_layer <- N_rast[[i]]
         N_layer_sample <- cbind(
           spatSample(N_layer, size, xy = TRUE, na.rm = TRUE), i)
-        colnames(N_layer_sample) <- c("x", "y", "value", "time_step")
+        colnames(N_layer_sample) <- c("x", "y", "n", "time_step")
 
         return(N_layer_sample)
       }
@@ -289,7 +289,7 @@ get_observations_random <- function(N_rast, type, prop = 0.1) {
     out <- do.call(rbind, out)
   }
 
-  return(out[c("x", "y", "time_step", "value")])
+  return(out[c("x", "y", "time_step", "n")])
 }
 
 
@@ -340,7 +340,7 @@ get_observations_from_data <- function(N_rast, points) {
   points$order <- seq_len(nrow(points))
   points <- points[order(points$time_step),]
   # get "observations" from cells given in points dataset
-  value <- unlist(lapply(
+  n <- unlist(lapply(
     seq_len(nlyr(N_rast)),
     function(i) {
       tmp_points <- points[points$time_step == i, ]
@@ -351,7 +351,7 @@ get_observations_from_data <- function(N_rast, points) {
   ))
 
   # column bind points and "observations"
-  out <- cbind(points, value = value)
+  out <- cbind(points, n = n)
   out <- out[order(out$order),]
 }
 
@@ -469,7 +469,7 @@ get_observations_monitoring_based <- function(
   points <- points[!is.na(points$obs_id), ]
 
   # get "observations"
-  value <- lapply(
+  n <- lapply(
     # for each simulated time step
     seq_len(nlyr(N_rast)),
     function(i) {
@@ -481,12 +481,12 @@ get_observations_monitoring_based <- function(
         tmp_points[c("x", "y")])[, 2]
 
       # return coordinates with "observed" values
-      cbind(tmp_points, value = tmp_vals)
+      cbind(tmp_points, n = tmp_vals)
     }
   )
 
   # row bind results
-  out <- do.call(rbind, value)
+  out <- do.call(rbind, n)
 
   # sort results
   out <- out[order(as.numeric(rownames(out))),]

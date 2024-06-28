@@ -180,7 +180,7 @@ test_that("get_observations works", {
 
   # 1. random_one_layer
   expect_s3_class(sample_type_1, "data.frame")
-  expect_true(all(sample_type_1$value >= 0, na.rm = TRUE))
+  expect_true(all(sample_type_1$n >= 0, na.rm = TRUE))
   expect_equal(unique(sample_type_1$time_step), 1:test_sim_res$simulated_time)
   expect_true(all(sample_type_1[sample_type_1$time_step ==
                                   test_random_time_steps[1], c("x", "y")] ==
@@ -193,7 +193,7 @@ test_that("get_observations works", {
 
   # 2. random_all_layers
   expect_s3_class(sample_type_2, "data.frame")
-  expect_true(all(sample_type_2$value >= 0, na.rm = TRUE))
+  expect_true(all(sample_type_2$n >= 0, na.rm = TRUE))
   expect_equal(unique(sample_type_2$time_step), 1:test_sim_res$simulated_time)
   expect_false(all(sample_type_2[sample_type_2$time_step ==
                                    test_random_time_steps[1], c("x", "y")] ==
@@ -207,18 +207,18 @@ test_that("get_observations works", {
 
   # 3. from_data
   expect_s3_class(sample_type_3, "data.frame")
-  expect_true(all(sample_type_3$value >= 0, na.rm = TRUE))
+  expect_true(all(sample_type_3$n >= 0, na.rm = TRUE))
   expect_true(
     all(sample_type_3[, c("x", "y", "time_step")] ==
           test_points[, c("x", "y", "time_step")]))
 
   # 4. monitoring_based
   expect_s3_class(sample_type_4, "data.frame")
-  expect_true(all(sample_type_4$value >= 0, na.rm = TRUE))
+  expect_true(all(sample_type_4$n >= 0, na.rm = TRUE))
   expect_equal(ncol(sample_type_4), 5)
   expect_true(all(sample_type_4_points %in% test_points[["x.y"]]))
 
   # 5. noise
-  expect_false(all(sample_type_5$value == sample_type_3$value))
+  expect_false(all(sample_type_5$n == sample_type_3$n))
 })
 

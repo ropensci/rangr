@@ -477,7 +477,7 @@ points <- data.frame(
 str(points)
 ```
 
-We can see that for each data (study site and time step) an observation has been made and is now stored in the "value" column.
+We can see that for each data (study site and time step) an observation has been made and is now stored in the "n" column.
 
 Now that we have selected study sites along with time steps, we can pass this data to the `get_observations()` function.
 
