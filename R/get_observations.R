@@ -353,7 +353,7 @@ get_observations_from_data <- function(N_rast, points) {
   # column bind points and "observations"
   out <- cbind(points, n = n)
   out <- out[order(out$order),]
-  out <- out[c("x", "y", "time_step")]
+  out <- out[c("x", "y", "time_step", "n")]
 }
 
 
