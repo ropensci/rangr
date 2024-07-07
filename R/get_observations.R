@@ -337,8 +337,12 @@ get_observations_from_data <- function(N_rast, points) {
     all(apply(points, 2, is.numeric)),
     msg = "some element of point are not numeric")
 
+  # add order column to restore input row order later
   points$order <- seq_len(nrow(points))
+
+  # sort the points df based on time_step - necessary for the next step
   points <- points[order(points$time_step),]
+
   # get "observations" from cells given in points dataset
   n <- unlist(lapply(
     seq_len(nlyr(N_rast)),
@@ -352,7 +356,11 @@ get_observations_from_data <- function(N_rast, points) {
 
   # column bind points and "observations"
   out <- cbind(points, n = n)
+
+  # restore initial order of rows
   out <- out[order(out$order),]
+
+  # return only the necessary columns
   out <- out[c("x", "y", "time_step", "n")]
 }
 
