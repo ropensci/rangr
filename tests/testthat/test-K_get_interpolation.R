@@ -57,12 +57,12 @@ test_that("K_check works", {
 
   expect_error(
     K_check(K_small_changing, c(1, 5, 15), 20),
-    "Last element of \"K_time_points\" should be equal to \"time\"")
+    "Maximum of \"K_time_points\" should be equal to \"time\"")
 
 
   expect_warning(
     K_check(K_small_changing, c(1, 5, 15), NULL),
-    "Argument \"time\" is no specified - last number from \"K_time_points\" is used as \"time\"" #nolint
+    "Argument \"time\" is no specified - maximum from \"K_time_points\" is used as \"time\"" #nolint
   )
 
 
