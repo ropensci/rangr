@@ -19,7 +19,8 @@
 #'
 #' @param K_map [`SpatRaster`][terra::SpatRaster-class] object with
 #' carrying capacity maps for each `K_time_points`
-#' @param K_time_points integer vector; time for each layer in `K_map`
+#' @param K_time_points integer vector; time for each layer in `K_map`, should
+#' contain unique values
 #' @param time integer vector of length 1; number of total time steps required
 #' (this is defined when evoking the function `sim`).
 #'
@@ -170,7 +171,7 @@ K_check <- function(K_map, K_time_points, time) {
 
     warning(
       "Argument \"time\" is no specified - ",
-      "last number from \"K_time_points\" is used as \"time\""
+      "maximum from \"K_time_points\" is used as \"time\""
     )
     time <- max(K_time_points)
 
@@ -192,7 +193,7 @@ K_check <- function(K_map, K_time_points, time) {
 
       assert_that(
         max(K_time_points) == time,
-        msg = "Last element of \"K_time_points\" should be equal to \"time\"")
+        msg = "Maximum of \"K_time_points\" should be equal to \"time\"")
     }
   }
 
