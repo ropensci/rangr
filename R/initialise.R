@@ -50,7 +50,8 @@
 #' @param K_sd numeric vector of length 1 with value `>= 0` (default 0);
 #' this parameter can be used if additional environmental stochasticity
 #' is required; if `K_sd > 0`, a random numbers are generated from a log-normal
-#' distribution with the mean `K_map` and standard deviation `K_sd`
+#' distribution with the mean 0 and standard deviation `K_sd`; values from
+#' `K_map` are then multiplied by these random numbers
 #' @param r numeric vector of length 1; intrinsic population growth rate
 #' @param r_sd numeric vector of length 1 with value `>= 0` (default `0`);
 #' if additional demographic stochasticity is required, `r_sd > 0` is
@@ -143,7 +144,7 @@
 #'
 #' # example without progress bar and messages
 #' sim_data_4 <- initialise(
-#'   n1_map = n1_small, K_map = K_small, K_sd = 5, r = log(5),
+#'   n1_map = n1_small, K_map = K_small, K_sd = log(1.05), r = log(5),
 #'   r_sd = 4, growth = "ricker", rate = 1 / 200,
 #'   max_dist = 5000, dens_dep = "K2N", progress_bar = FALSE, quiet = TRUE
 #' )
@@ -272,7 +273,7 @@ initialise <- function(
   # apply environmental stochasticity if specified (space specific)
   if (K_sd > 0) {
     K_map <- app(K_map, function(x) {
-      suppressWarnings(rlnorm(length(x), log(x), log(K_sd)))
+      round(x * suppressWarnings(rlnorm(length(x), 0, K_sd)))
     })
   }
 

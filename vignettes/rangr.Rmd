@@ -404,7 +404,7 @@ To change these parameters (along with the carrying capacity map prepared in the
 sim_data_02 <- update(sim_data_01,
   n1_map = K_small,
   K_map = K_small_changing_interpolated,
-  K_sd = 1.1,
+  K_sd = log(1.02),
   r = log(5),
   r_sd = 0.05,
   growth = "ricker",

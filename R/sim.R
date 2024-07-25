@@ -386,9 +386,6 @@ sim <- function(
 #' (`changing_env = FALSE`). Otherwise `K_map` is
 #' an [`SpatRaster`][terra::SpatRaster-class] object.
 #'
-#' Environmental stochasticity is applied if `K_sd > 0`
-#' using [`rlnorm`][stats::rlnorm()].
-#'
 #' @param K_map numeric matrix or [`SpatRaster`][terra::SpatRaster-class]
 #' object; see 'Details' for more information
 #' @param t integer vector of length 1; positive integer value that represent
