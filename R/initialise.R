@@ -272,6 +272,7 @@ initialise <- function(
   # apply environmental stochasticity if specified (space specific)
   if (K_sd > 0) {
     K_map <- app(K_map, function(x) {
+      # multiply input K_map values by generated errors
       x * suppressWarnings(rlnorm(length(x), 0, K_sd))
     })
   }

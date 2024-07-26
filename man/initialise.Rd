@@ -33,9 +33,8 @@ time-varying)}
 
 \item{K_sd}{numeric vector of length 1 with value \verb{>= 0} (default 0);
 this parameter can be used if additional environmental stochasticity
-is required; if \code{K_sd > 0}, a random numbers are generated from a log-normal
-distribution with the mean 0 and standard deviation \code{K_sd}; values from
-\code{K_map} are then multiplied by these random numbers}
+is required; if \code{K_sd > 0}, random numbers are generated from a log-normal
+distribution with the mean \code{K_map} and standard deviation \code{K_sd}}
 
 \item{r}{numeric vector of length 1; intrinsic population growth rate}
 
@@ -180,7 +179,7 @@ sim_data_3 <- initialise(
 
 # example without progress bar and messages
 sim_data_4 <- initialise(
-  n1_map = n1_small, K_map = K_small, K_sd = log(1.05), r = log(5),
+  n1_map = n1_small, K_map = K_small, K_sd = 0.1, r = log(5),
   r_sd = 4, growth = "ricker", rate = 1 / 200,
   max_dist = 5000, dens_dep = "K2N", progress_bar = FALSE, quiet = TRUE
 )
