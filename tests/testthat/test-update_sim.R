@@ -7,7 +7,7 @@ test_that("update works", {
   test_id_rast <- rast(test_path("fixtures", "test_id_rast.tif"))
   test_sim_data$id <- test_id_rast
   test_sim_data$K_map <- test_rast
-  test_sim_data$n1_map <- test_rast
+  test_sim_data$n1_map <- as.matrix(test_rast, wide = TRUE)
 
   # get results
   test_sim_data_updated_01 <- update(test_sim_data, border = "reprising")
