@@ -105,6 +105,12 @@ update.sim_data <- function(object, ..., evaluate = TRUE) {
       call$K_map <- unwrap(object$K_map)
     }
 
+    if(!"n1_map" %in% names(extras)) {
+      n1_map <- unwrap(object$K_map)
+      values(n1_map) <- object$n1_map
+      call$n1_map <- n1_map
+    }
+
     # transform call to call object
     call <- as.call(call)
 
