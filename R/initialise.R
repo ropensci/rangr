@@ -1,6 +1,6 @@
 #' Prepare Data Required To Perform A Simulation
 #'
-#' This funtion generates a `sim_data` object containing all the necessary
+#' This function generates a `sim_data` object containing all the necessary
 #' information required to run a simulation by the [`sim`] function. The
 #' input maps (`n1_map` and `K_map`) can be in the Cartesian or longitude/latitude
 #' coordinate system.
@@ -97,7 +97,7 @@
 #' [`sim`] function.
 #'
 #' @export
-#'
+#' @seealso [update][rangr::update.sim_data()]
 #'
 #' @examples
 #' \dontrun{
@@ -252,7 +252,7 @@ initialise <- function(
   # classify NaN to NA for input maps
   if ((any(is.nan(values(n1_map))) || any(is.nan(values(K_map)))) && !quiet) {
 
-    message("NaN values were found in input maps and replaced with NA (cells outside the study area)") #nolint
+    # message("NaN values were found in input maps and replaced with NA (cells outside the study area)") #nolint
     n1_map <- classify(n1_map, cbind(NaN, NA))
     K_map <- classify(K_map, cbind(NaN, NA))
 

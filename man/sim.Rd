@@ -143,3 +143,6 @@ plot(
 }
 
 }
+\seealso{
+\link[=get_observations]{get_observations}
+}

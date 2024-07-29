@@ -70,7 +70,7 @@
 #' the `burn` threshold, then nothing can be returned and an error occurs.
 #'
 #' @export
-#'
+#' @seealso [get_observations][rangr::get_observations]
 #'
 #' @examples
 #' \dontrun{

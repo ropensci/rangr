@@ -95,7 +95,7 @@ contains all necessary information to perform a simulation using
 \code{\link{sim}} function.
 }
 \description{
-This funtion generates a \code{sim_data} object containing all the necessary
+This function generates a \code{sim_data} object containing all the necessary
 information required to run a simulation by the \code{\link{sim}} function. The
 input maps (\code{n1_map} and \code{K_map}) can be in the Cartesian or longitude/latitude
 coordinate system.
@@ -186,4 +186,7 @@ sim_data_4 <- initialise(
 }
 
 
+}
+\seealso{
+\link[=update.sim_data]{update}
 }

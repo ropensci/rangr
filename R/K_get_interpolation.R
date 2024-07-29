@@ -22,7 +22,7 @@
 #' @param K_time_points integer vector; time for each layer in `K_map`, should
 #' contain unique values
 #' @param time integer vector of length 1; number of total time steps required
-#' (this is defined when evoking the function `sim`).
+#' (this is defined when evoking the function [`sim`]).
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] object with number of layers
 #' equal to `time`.

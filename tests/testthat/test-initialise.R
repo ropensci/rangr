@@ -41,23 +41,23 @@ test_that("initialise works", {
     ),
     "number of rows and/or columns do not match")
 
-  expect_message(
-    initialise(
-      n1_map = test_rast,
-      K_map = test_rast_with_nan,
-      r = log(1.2),
-      quiet = FALSE
-    ),
-    "NaN values were found in input maps and replaced with NA")
-
-  expect_message(
-    initialise(
-      n1_map = test_rast_with_nan,
-      K_map = test_rast,
-      r = log(1.2),
-      quiet = FALSE
-    ),
-    "NaN values were found in input maps and replaced with NA")
+  # expect_message(
+  #   initialise(
+  #     n1_map = test_rast,
+  #     K_map = test_rast_with_nan,
+  #     r = log(1.2),
+  #     quiet = FALSE
+  #   ),
+  #   "NaN values were found in input maps and replaced with NA")
+  #
+  # expect_message(
+  #   initialise(
+  #     n1_map = test_rast_with_nan,
+  #     K_map = test_rast,
+  #     r = log(1.2),
+  #     quiet = FALSE
+  #   ),
+  #   "NaN values were found in input maps and replaced with NA")
 
   expect_error(
     initialise(

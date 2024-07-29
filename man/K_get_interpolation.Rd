@@ -14,7 +14,7 @@ carrying capacity maps for each \code{K_time_points}}
 contain unique values}
 
 \item{time}{integer vector of length 1; number of total time steps required
-(this is defined when evoking the function \code{sim}).}
+(this is defined when evoking the function \code{\link{sim}}).}
 }
 \value{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} object with number of layers
