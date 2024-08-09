@@ -102,6 +102,9 @@
 #' @references Hijmans R (2024). terra: Spatial Data Analysis. R package version
 #' 1.7-81, \url{https://rspatial.github.io/terra/}, \url{https://rspatial.org/}
 #'
+#' Solymos P, Zawadzki Z (2023). pbapply: Adding Progress Bar to '*apply' Functions. R
+#' package version 1.7-2, \url{https://CRAN.R-project.org/package=pbapply}.
+#'
 #' @examples
 #' \dontrun{
 #'

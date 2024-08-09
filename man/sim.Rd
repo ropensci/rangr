@@ -143,6 +143,10 @@ plot(
 }
 
 }
+\references{
+Solymos P, Zawadzki Z (2023). pbapply: Adding Progress Bar to '*apply' Functions. R
+package version 1.7-2, \url{https://CRAN.R-project.org/package=pbapply}.
+}
 \seealso{
 \link[=get_observations]{get_observations}
 }

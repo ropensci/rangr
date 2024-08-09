@@ -134,6 +134,9 @@
 #'   quiet = FALSE
 #' )
 #'
+#' @references Solymos P, Zawadzki Z (2023). pbapply: Adding Progress Bar to '*apply' Functions. R
+#' package version 1.7-2, \url{https://CRAN.R-project.org/package=pbapply}.
+
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation
 #' @srrstats {G2.1a, SP2.6} documented types expectation
