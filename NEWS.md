@@ -1,3 +1,16 @@
+# rangr 1.0.5 (2024-08-09)
+
+### Minor improvements
+
+-   Added references to documentation (`growth`, `initialise`, `to_rast`)
+
+-   Added more comments inside functions
+
+-   Updated readme (lon/lat data)
+
+-   Updated documentation (examples and some clarifications)
+
+
 # rangr 1.0.4 (2024-05-30)
 
 ### Major improvements
