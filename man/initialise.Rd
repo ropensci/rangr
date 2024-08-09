@@ -187,6 +187,10 @@ sim_data_4 <- initialise(
 
 
 }
+\references{
+Hijmans R (2024). terra: Spatial Data Analysis. R package version
+1.7-81, \url{https://rspatial.github.io/terra/}, \url{https://rspatial.org/}
+}
 \seealso{
 \link[=update.sim_data]{update}
 }

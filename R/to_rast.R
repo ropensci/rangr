@@ -19,6 +19,9 @@
 #' with layers corresponding to `time_points`.
 #' @export
 #'
+#' @references Hijmans R (2024). terra: Spatial Data Analysis. R package version
+#' 1.7-81, \url{https://rspatial.github.io/terra/}, \url{https://rspatial.org/}
+#'
 #' @examples
 #' \dontrun{
 #'

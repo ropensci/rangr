@@ -23,7 +23,23 @@
 #' @references Boukal, D. S., & Berec, L. (2002). Single-species models
 #' of the Allee effect: extinction boundaries, sex ratios and mate encounters.
 #' Journal of Theoretical Biology, 218(3), 375-394.
-#'  https://doi.org/10.1006/jtbi.2002.3084
+#'  \url{https://doi.org/10.1006/jtbi.2002.3084}
+#'
+#' Gompertz, B. (1825) On the Nature of the Function Expressive of the Law
+#' of Human Mortality, and on a New Mode of Determining the Value of Life
+#' Contigencies. Philosophical Transactions of the Royal Society of London,
+#' 115, 513-583. \url{http://dx.doi.org/10.1098/rstl.1825.0026}
+#'
+#' Ricker, W.E. (1954) Stock and Recruitment. Journal of the Fisheries
+#' Research Board of Canada, 11, 559-623. \url{http://dx.doi.org/10.1139/f54-039}
+#'
+#' Hostetler, J.A. and Chandler, R.B. (2015), Improved state-space models
+#' for inference about spatial and temporal variation in abundance from
+#' count data. Ecology, 96: 1713-1723. \url{https://doi.org/10.1890/14-1487.1}
+#'
+#' Courchamp, F., L. Berec and J. Gascoigne. 2008. Allee Effects in Ecology
+#' and Conservation. Oxford University Press, New York. 256 pp. ISBN
+#' 978-0-19-857030-1
 #'
 #' @return Object of the same dimensions as `x` that contains expected number
 #' of individuals in the next time step.

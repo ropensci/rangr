@@ -59,3 +59,7 @@ plot(my_rast, range = range(sim_1$N_map, na.rm = TRUE))
 }
 
 }
+\references{
+Hijmans R (2024). terra: Spatial Data Analysis. R package version
+1.7-81, \url{https://rspatial.github.io/terra/}, \url{https://rspatial.org/}
+}
