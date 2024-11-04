@@ -27,8 +27,8 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Tad Dallas (@taddallas) [reviewer]
-  \item Joanne Potts (@TheAnalyticalEdge) [reviewer]
+  \item Tad Dallas (github: @taddallas) [reviewer]
+  \item Joanne Potts (github: @TheAnalyticalEdge) [reviewer]
 }
 
 }
