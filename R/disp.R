@@ -253,6 +253,9 @@ dists_tab <- function(N_pos, kernel, dist_resolution) {
 #' @noRd
 #'
 
+utils::globalVariables(c("id_within", "dlist", "id", "dist_resolution",
+                         "dist_bin", "dens_dep", "ncells_in_circle",
+                         "border", "planar"))
 sq_disp <- function(
     i, disp_dist, id_ok, data_table, is_parallel, ...) {
 

@@ -215,8 +215,6 @@ sim <- function(
 
   # exports for parallel computations
   if (!is.null(cl)) {
-    # obj$id <- wrap(id)
-    # obj$K_map <- wrap(K_map)
 
     clusterExport(cl, c("obj"), envir = environment())
     clusterEvalQ(cl, {
