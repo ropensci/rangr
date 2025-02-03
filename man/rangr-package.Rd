@@ -13,6 +13,7 @@ Useful links:
 \itemize{
   \item \url{https://github.com/ropensci/rangr}
   \item \url{https://docs.ropensci.org/rangr/}
+  \item \doi{10.1111/2041-210X.14475}
   \item Report bugs at \url{https://github.com/ropensci/rangr/issues}
 }
 
@@ -27,8 +28,8 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Tad Dallas (github: @taddallas) [reviewer]
-  \item Joanne Potts (github: @TheAnalyticalEdge) [reviewer]
+  \item Tad Dallas [reviewer]
+  \item Joanne Potts [reviewer]
 }
 
 }

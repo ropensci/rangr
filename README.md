@@ -9,8 +9,10 @@ Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://app.codecov.io/gh/ropensci/rangr)
+[![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://codecov.io/gh/ropensci/rangr)
 [![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367)
+[![Static
+Badge](https://img.shields.io/badge/Publication-10.1111%2F2041--210X.14475-94ae63)](https://doi.org/10.1111/2041-210X.14475)
 
 <!-- badges: end -->
 
@@ -133,7 +135,7 @@ summary(sim_data_01)
 #> kernel_fun        rexp
 #> dens_dep           K2N
 #> border       reprising
-#> max_dist          5000
+#> max_dist          4000
 #> changing_env     FALSE
 #> dlist             TRUE
 ```
