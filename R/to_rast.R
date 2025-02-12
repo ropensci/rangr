@@ -23,7 +23,7 @@
 #' 1.7-81, \url{https://rspatial.github.io/terra/}, \url{https://rspatial.org/}
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' # data preparation
 #' library(terra)

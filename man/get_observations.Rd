@@ -95,7 +95,7 @@ ecologist approach on the \code{N_map} component of the object. The function
 returns a \code{data.frame} with the 'observed' abundances.
 }
 \examples{
-\dontrun{
+\donttest{
 
 library(terra)
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))

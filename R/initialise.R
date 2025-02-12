@@ -106,7 +106,7 @@
 #' package version 1.7-2, \url{https://CRAN.R-project.org/package=pbapply}.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' # input maps
 #' library(terra)

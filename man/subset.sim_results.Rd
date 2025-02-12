@@ -29,7 +29,6 @@ Time point passed by the \code{from} argument will be set as a cutoff point
 and all abundances for previous time points will be discarded.
 }
 \examples{
-\dontrun{
 # data preparation
 library(terra)
 
@@ -49,6 +48,6 @@ summary(sim_results)
 
 sim_results_cropped <- subset(sim_results, time_points = c(1:2))
 summary(sim_results_cropped)
-}
+
 
 }

@@ -10,7 +10,6 @@
 #' @method print sim_results
 #'
 #' @examples
-#' \dontrun{
 #' library(terra)
 #'
 #' n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
@@ -24,7 +23,7 @@
 #' )
 #' sim_res <- sim(obj = sim_data, time = 20, burn = 5)
 #' print(sim_res)
-#' }
+#'
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {SP2.3} load data in spatial formats

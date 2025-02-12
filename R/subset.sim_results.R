@@ -21,7 +21,6 @@
 #' @method subset sim_results
 #'
 #' @examples
-#' \dontrun{
 #' # data preparation
 #' library(terra)
 #'
@@ -41,7 +40,7 @@
 #'
 #' sim_results_cropped <- subset(sim_results, time_points = c(1:2))
 #' summary(sim_results_cropped)
-#' }
+#'
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation

@@ -77,7 +77,7 @@
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' library(terra)
 #' n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))

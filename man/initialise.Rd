@@ -136,7 +136,7 @@ over time. This may be useful, when simulating environmental change or
 exploring the effects of ecological disturbances.
 }
 \examples{
-\dontrun{
+\donttest{
 
 # input maps
 library(terra)

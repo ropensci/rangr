@@ -73,7 +73,7 @@
 #' @seealso [get_observations][rangr::get_observations]
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' # data preparation
 #' library(terra)
@@ -96,7 +96,7 @@
 #'
 #' # example with parallelization
 #' library(parallel)
-#' cl <- makeCluster(detectCores())
+#' cl <- makeCluster(2)
 #'
 #' # parallelized simulation
 #' sim_3 <- sim(obj = sim_data, time = 20, cl = cl)
@@ -194,8 +194,6 @@ sim <- function(
 
 
   # options
-  op <- options()
-  options(warn = -1)
   pbo <- pboptions(type = "none")
   on.exit(pboptions(pbo))
 
@@ -244,9 +242,6 @@ sim <- function(
 
     # check if K_map and time are compatible
     if (nlyr(K_map) != time) {
-
-      # restore users options
-      options(op)
 
       # error
       stop("Number of layers in \"K_map\" and \"time\"  are not equal ")
@@ -366,8 +361,6 @@ sim <- function(
     ))
   }
 
-  # restore users options
-  options(op)
 
   return(out)
 }

@@ -92,7 +92,7 @@ to a randomly chosen cell at this distance apart from the current location.
 For more details, see the \code{\link{disp}} function.
 }
 \examples{
-\dontrun{
+\donttest{
 
 # data preparation
 library(terra)
@@ -115,7 +115,7 @@ sim_2 <- sim(obj = sim_data, time = 20, burn = 10)
 
 # example with parallelization
 library(parallel)
-cl <- makeCluster(detectCores())
+cl <- makeCluster(2)
 
 # parallelized simulation
 sim_3 <- sim(obj = sim_data, time = 20, cl = cl)

@@ -23,7 +23,7 @@ otherwise the updated call.
 This function updates a \code{sim_data} object.
 }
 \examples{
-\dontrun{
+\donttest{
 
 # data preparation
 library(terra)

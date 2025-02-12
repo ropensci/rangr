@@ -28,7 +28,7 @@ This function transforms selected subset of abundance matrices from
 specified by \code{time_points}, which can be one or multiple points in time.
 }
 \examples{
-\dontrun{
+\donttest{
 
 # data preparation
 library(terra)

@@ -32,7 +32,6 @@
 #'
 #'
 #' @examples
-#' \dontrun{
 #'
 #' # data preparation
 #' library(terra)
@@ -55,7 +54,6 @@
 #'   time = 15
 #' )
 #'
-#' }
 #'
 #' @srrstats {G1.4} uses roxygen documentation
 #' @srrstats {G2.0a} documented lengths expectation

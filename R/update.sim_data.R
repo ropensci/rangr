@@ -15,7 +15,7 @@
 #' @method update sim_data
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'
 #' # data preparation
 #' library(terra)

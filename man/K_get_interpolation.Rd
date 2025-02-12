@@ -37,7 +37,6 @@ On the other hand, in the absence of the \code{time} argument, the maximum eleme
 of \code{K_time_points} is considered to be the ending point for the interpolation.
 }
 \examples{
-\dontrun{
 
 # data preparation
 library(terra)
@@ -60,6 +59,5 @@ K_interpolated_02 <- K_get_interpolation(
   time = 15
 )
 
-}
 
 }
