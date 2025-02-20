@@ -18,9 +18,11 @@ test_that("to_rast works", {
     test_sim_res, 1:test_sim_res$simulated_time, test_id_rast)) ==
       ext(test_id_rast))
 
-  expect_equal(crs(to_rast(test_sim_res)),  crs(test_rast_no_template))
-  expect_equal(dim(to_rast(test_sim_res)),  dim(test_rast_no_template))
+  expect_warning(test_sim_res_rat_no_templ <- to_rast(test_sim_res),
+                 regexp = "No template provided")
+  expect_equal(crs(test_sim_res_rat_no_templ),  crs(test_rast_no_template))
+  expect_equal(dim(test_sim_res_rat_no_templ),  dim(test_rast_no_template))
 
-  expect_warning(to_rast(test_sim_res),  regexp = "No template provided")
+
   expect_error(to_rast(test_sim_res, template = rast(ncol = 5, nrow = 5)))
 })
