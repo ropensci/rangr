@@ -289,7 +289,7 @@ sim <- function(
     } else{
       # demographic stochasticity (random numbers drown from a Poisson distribution)
       # of number of individuals in each cell predicted by the deterministic model)
-      N[, , t] <- rpois(ncells, mu[, , t - 1])
+      suppressWarnings(N[, , t] <- rpois(ncells, mu[, , t - 1]))
     }
 
 
