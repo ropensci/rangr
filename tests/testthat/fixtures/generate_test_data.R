@@ -91,11 +91,17 @@ test_sim_data_lon_lat <- initialise(
   n1_map = test_rast_lon_lat, K_map = test_rast_lon_lat, r = log(2), rate = 1 / 1e3)
 test_sim_res <- sim(obj = test_sim_data, time = test_time, burn = test_burn)
 
+
 test_ncells_in_circle <- rangr:::ncell_in_circle_planar(test_rast, res(test_id_rast)[1])
+
+
+test_rast_lon_lat_circle <- test_rast_lon_lat[1:2,1:3, drop = FALSE]
+test_sim_data_lon_lat_circle <- initialise(
+  n1_map = test_rast_lon_lat_circle, K_map = test_rast_lon_lat_circle, r = log(2), rate = 1 / 1e3)
 test_ncells_in_circle_lon_lat <- rangr:::ncell_in_circle_lonlat(
-  test_rast_lon_lat, test_sim_data_lon_lat$dist_resolution,
-  test_sim_data$dist_bin, test_sim_data$id_within, test_sim_data_lon_lat$max_avl_dist,
-  FALSE, TRUE)
+  test_rast_lon_lat_circle, test_sim_data_lon_lat_circle$dist_resolution,
+  test_sim_data_lon_lat_circle$dist_bin, test_sim_data_lon_lat_circle$id_within,
+  test_sim_data_lon_lat_circle$max_avl_dist, FALSE, TRUE)
 
 
 
@@ -143,6 +149,9 @@ saveRDS(
 saveRDS(
   test_ncells_in_circle_lon_lat,
   file = "tests/testthat/fixtures/test_ncells_in_circle_lon_lat.rds")
+saveRDS(
+  test_sim_data_lon_lat_circle,
+  file = "tests/testthat/fixtures/test_sim_data_lon_lat_circle.rds")
 saveRDS(
   test_sim_data,
   file = "tests/testthat/fixtures/test_sim_data.rds")

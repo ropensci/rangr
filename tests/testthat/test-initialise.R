@@ -517,15 +517,15 @@ test_that("ncell_in_circle works", {
   test_rast <- classify(test_rast, cbind(NaN, NA))
   test_ncells_in_circle <-
     readRDS(test_path("fixtures", "test_ncells_in_circle_mini.rds"))
-  test_sim_data_lon_lat <-
-    readRDS(test_path("fixtures", "test_sim_data_lon_lat.rds"))
+  test_sim_data_lon_lat_circle <-
+    readRDS(test_path("fixtures", "test_sim_data_lon_lat_circle.rds"))
   test_ncells_in_circle_lon_lat <-
     readRDS(test_path("fixtures", "test_ncells_in_circle_lon_lat.rds"))
 
   expect_equal(ncell_in_circle_planar(test_rast, res(test_rast)[1]), test_ncells_in_circle)
 
   expect_equal(
-  ncell_in_circle_lonlat(terra::unwrap(test_sim_data_lon_lat$id), test_sim_data_lon_lat$dist_resolution, test_sim_data_lon_lat$dist_bin, test_sim_data_lon_lat$id_within, test_sim_data_lon_lat$max_avl_dist, FALSE, TRUE),
+  ncell_in_circle_lonlat(terra::unwrap(test_sim_data_lon_lat_circle$id), test_sim_data_lon_lat_circle$dist_resolution, test_sim_data_lon_lat_circle$dist_bin, test_sim_data_lon_lat_circle$id_within, test_sim_data_lon_lat_circle$max_avl_dist, FALSE, TRUE),
   test_ncells_in_circle_lon_lat
   )
 
