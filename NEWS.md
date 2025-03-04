@@ -1,3 +1,12 @@
+# rangr 1.0.6 (2025-02-26)
+
+### Minor improvements
+
+-   Updated Description
+
+-   Updated tests
+
+
 # rangr 1.0.5 (2024-08-09)
 
 ### Minor improvements
