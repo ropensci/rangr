@@ -195,6 +195,7 @@ initialise <- function(
 
   changing_env <- nlyr(K_map) != 1
   K_n1_map_check(K_map, n1_map, changing_env)
+  assert_that(crs(K_map) != "", msg = "CRS is missing from the input maps (n1_map, K_map)")
 
   ## K_sd
   assert_that(length(K_sd) == 1)
