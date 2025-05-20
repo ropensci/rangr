@@ -2,64 +2,27 @@
 % Please edit documentation in R/to_rast.R
 \name{to_rast}
 \alias{to_rast}
-\title{Transformation \code{sim_results} To Raster}
+\title{Generic conversion to SpatRaster}
 \usage{
-to_rast(sim_results, time_points = sim_results$simulated_time, template = NULL)
+to_rast(obj, ...)
 }
 \arguments{
-\item{sim_results}{\code{sim_results} object created by \code{\link{sim}}}
+\item{obj}{An object to convert.}
 
-\item{time_points}{numeric vector of length 1 or more; specifies points in
-time from which \code{\link[terra:SpatRaster-class]{SpatRaster}} will be created - as
-default the last year of simulation; if \code{length(time_points) > 0}
-\code{\link[terra:SpatRaster-class]{SpatRaster}} will be returned with layers for
-each element of \code{time_points}}
-
-\item{template}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object; can be used
-as a template to create returned object}
+\item{...}{Additional arguments passed to methods.}
 }
 \value{
-\code{\link[terra:SpatRaster-class]{SpatRaster}} based on \code{sim_results} object
-with layers corresponding to \code{time_points}.
+A \code{\link[terra:SpatRaster-class]{SpatRaster}} or a list of such objects.
 }
 \description{
-This function transforms selected subset of abundance matrices from
-\code{sim_results} into \code{\link[terra:SpatRaster-class]{SpatRaster}} object. Layers are
-specified by \code{time_points}, which can be one or multiple points in time.
+A generic method to convert simulation result objects into
+\code{\link[terra:SpatRaster-class]{SpatRaster}} format.
 }
 \examples{
-\donttest{
-
-# data preparation
-library(terra)
-
-n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
-K_small <- rast(system.file("input_maps/K_small.tif", package = "rangr"))
-
-sim_data <- initialise(
-  n1_map = n1_small,
-  K_map = K_small,
-  r = log(2),
-  rate = 1 / 1e3
-)
-
-# simulation
-sim_1 <- sim(obj = sim_data, time = 100)
-
-# raster construction
-my_rast <- to_rast(
-  sim_1,
-  time_points = c(1, 10, 20, 100),
-  template = sim_data$K_map
-)
-
-# visualization
-plot(my_rast, range = range(sim_1$N_map, na.rm = TRUE))
-
+\dontrun{
+to_rast(sim_results_object)
 }
-
 }
-\references{
-Hijmans R (2024). terra: Spatial Data Analysis. R package version
-1.7-81, \url{https://rspatial.github.io/terra/}, \url{https://rspatial.org/}
+\seealso{
+\code{\link[=to_rast.sim_results]{to_rast.sim_results()}}
 }

@@ -1,6 +1,28 @@
-#' Transformation `sim_results` To Raster
+#' Generic conversion to SpatRaster
 #'
-#' This function transforms selected subset of abundance matrices from
+#' A generic method to convert simulation result objects into
+#' [`SpatRaster`][terra::SpatRaster-class] format.
+#'
+#' @param obj An object to convert.
+#' @param ... Additional arguments passed to methods.
+#'
+#' @return A [`SpatRaster`][terra::SpatRaster-class] or a list of such objects.
+#' @export
+#'
+#' @seealso [`to_rast.sim_results()`]
+#'
+#' @examples
+#' \dontrun{
+#' to_rast(sim_results_object)
+#' }
+to_rast <- function(obj, ...) {
+  UseMethod("to_rast")
+}
+
+
+#' Convert `sim_results` To SpatRaster
+#'
+#' Converts selected subset of abundance matrices from
 #' `sim_results` into [`SpatRaster`][terra::SpatRaster-class] object. Layers are
 #' specified by `time_points`, which can be one or multiple points in time.
 #'
@@ -18,6 +40,8 @@
 #' @return [`SpatRaster`][terra::SpatRaster-class] based on `sim_results` object
 #' with layers corresponding to `time_points`.
 #' @export
+#'
+#' @method to_rast sim_results
 #'
 #' @references Hijmans R (2024). terra: Spatial Data Analysis. R package version
 #' 1.7-81, \url{https://rspatial.github.io/terra/}, \url{https://rspatial.org/}
@@ -64,7 +88,7 @@
 #' (if the template is provided)
 #' @srrstats {SP4.2} returned values are documented
 #'
-to_rast <- function(
+to_rast.sim_results <- function(
     sim_results, time_points = sim_results$simulated_time, template = NULL) {
 
   #' @srrstats {SP2.7} validate input class
