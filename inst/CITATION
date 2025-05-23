@@ -1,13 +1,17 @@
 citHeader("To cite rangr in publications use:")
 
 bibentry(
-  key = "rangr",
-  bibtype = "manual",
-  title = "rangr: simulating range dynamics of virtual species",
+  bibtype = "Article",
+  title = "rangr: An R package for mechanistic, spatially explicit simulation of species range dynamics",
   author = c(
     person("Katarzyna", "Markowska"),
-    person("Lechosław", "Kuczyński")),
-  year = "2023",
-  note = "R package version 1.0.5",
-  url = "https://github.com/ropensci/rangr"
+    person("Katarzyna", "Malinowska"),
+    person("Lechosław", "Kuczyński")
+  ),
+  journal = "Methods in Ecology and Evolution",
+  year = 2025,
+  volume = "16",
+  number = "3",
+  pages = "468-476",
+  doi = "10.1111/2041-210X.14475"
 )
