@@ -4,10 +4,10 @@
 \alias{to_rast.sim_results}
 \title{Convert \code{sim_results} To SpatRaster}
 \usage{
-\method{to_rast}{sim_results}(sim_results, time_points = sim_results$simulated_time, template = NULL)
+\method{to_rast}{sim_results}(obj, time_points = obj$simulated_time, template = NULL)
 }
 \arguments{
-\item{sim_results}{\code{sim_results} object created by \code{\link{sim}}}
+\item{obj}{\code{sim_results} object created by \code{\link{sim}}}
 
 \item{time_points}{numeric vector of length 1 or more; specifies points in
 time from which \code{\link[terra:SpatRaster-class]{SpatRaster}} will be created - as

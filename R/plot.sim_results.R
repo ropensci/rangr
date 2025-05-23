@@ -92,7 +92,7 @@ plot.sim_results <- function(
 
   # define raster from simulated data
   x_rast <- to_rast(
-    sim_results = x,
+    obj = x,
     time_points = time_points,
     template = unwrap(template)
   )

@@ -28,7 +28,7 @@ to_rast <- function(obj, ...) {
 #'
 #'
 #'
-#' @param sim_results `sim_results` object created by [`sim`]
+#' @param obj `sim_results` object created by [`sim`]
 #' @param time_points numeric vector of length 1 or more; specifies points in
 #' time from which [`SpatRaster`][terra::SpatRaster-class] will be created - as
 #' default the last year of simulation; if `length(time_points) > 0`
@@ -89,10 +89,10 @@ to_rast <- function(obj, ...) {
 #' @srrstats {SP4.2} returned values are documented
 #'
 to_rast.sim_results <- function(
-    sim_results, time_points = sim_results$simulated_time, template = NULL) {
+    obj, time_points = obj$simulated_time, template = NULL) {
 
   #' @srrstats {SP2.7} validate input class
-  assert_that(inherits(sim_results, "sim_results"))
+  assert_that(inherits(obj, "sim_results"))
 
   if(is.null(template)) {
     # if no template provide - make raster only with values
@@ -100,13 +100,13 @@ to_rast.sim_results <- function(
     #' @srrstats {G2.9} make default raster and show warning
 
     warning("No template provided. Returned SpatRaster lacks geographical information (you can use one of the input maps from the sim_data object as template)") #nolint
-    out <- rast(sim_results$N_map[, , time_points])
+    out <- rast(obj$N_map[, , time_points])
 
   } else {
     # if template provided
 
     # check if template and x have the same dimension
-    if (!all(dim(sim_results$N_map)[c(1, 2)] == dim(template)[c(1, 2)])) {
+    if (!all(dim(obj$N_map)[c(1, 2)] == dim(template)[c(1, 2)])) {
       stop("sim_resulst and template are not compatible with each other - dimensions of the study area do not match")
     }
 
@@ -114,7 +114,7 @@ to_rast.sim_results <- function(
     # make raster bases on the template
     out <- unwrap(template)
     nlyr(out) <- length(time_points)
-    values(out) <- sim_results$N_map[, , time_points]
+    values(out) <- obj$N_map[, , time_points]
 
   }
 
