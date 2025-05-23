@@ -31,6 +31,14 @@ The study is supported by the National Science Centre, Poland, grant no.
 
 # Installation
 
+## Released version
+
+**rangr** is available from CRAN, so you can install it with:
+
+``` r
+install.packages("rangr")
+```
+
 ## Development version
 
 You can install the development version from R-universe or GitHub with:

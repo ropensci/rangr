@@ -47,7 +47,7 @@ In this chapter we will show you how to perform basic simulation using maps prov
 First we need to install and load the `rangr` package.
 
 ```{r load_rangr, eval = FALSE}
-devtools::install_github("ropensci/rangr")
+install.packages("rangr")
 library(rangr)
 ```
 
