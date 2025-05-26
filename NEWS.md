@@ -1,3 +1,11 @@
+# rangr 1.0.7 (2025-05-23)
+
+### Minor improvements
+
+-   `to_rast` is now a method of `sim_results`
+
+-   Updated installation instructions
+
 # rangr 1.0.6 (2025-02-26)
 
 ### Minor improvements
@@ -5,7 +13,6 @@
 -   Updated Description
 
 -   Updated tests
-
 
 # rangr 1.0.5 (2024-08-09)
 
@@ -18,7 +25,6 @@
 -   Updated readme (lon/lat data)
 
 -   Updated documentation (examples and some clarifications)
-
 
 # rangr 1.0.4 (2024-05-30)
 
