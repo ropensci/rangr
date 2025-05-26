@@ -8,7 +8,7 @@
   "codeRepository": "https://github.com/ropensci/rangr",
   "issueTracker": "https://github.com/ropensci/rangr/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -193,11 +193,11 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "4694.924KB",
+  "fileSize": "4696.766KB",
   "citation": [
     {
-      "@type": "SoftwareSourceCode",
-      "datePublished": "2023",
+      "@type": "ScholarlyArticle",
+      "datePublished": "2025",
       "author": [
         {
           "@type": "Person",
@@ -206,13 +206,39 @@
         },
         {
           "@type": "Person",
+          "givenName": "Katarzyna",
+          "familyName": "Malinowska"
+        },
+        {
+          "@type": "Person",
           "givenName": "Lechosław",
           "familyName": "Kuczyński"
         }
       ],
-      "name": "rangr: simulating range dynamics of virtual species",
-      "url": "https://github.com/ropensci/rangr",
-      "description": "R package version 1.0.5"
+      "name": "rangr: An R package for mechanistic, spatially explicit simulation of species range dynamics",
+      "identifier": "10.1111/2041-210X.14475",
+      "pagination": "468-476",
+      "@id": "https://doi.org/10.1111/2041-210X.14475",
+      "sameAs": "https://doi.org/10.1111/2041-210X.14475",
+      "isPartOf": {
+        "@type": "PublicationIssue",
+        "issueNumber": "3",
+        "datePublished": "2025",
+        "isPartOf": {
+          "@type": ["PublicationVolume", "Periodical"],
+          "volumeNumber": "16",
+          "name": "Methods in Ecology and Evolution"
+        }
+      }
     }
-  ]
+  ],
+  "releaseNotes": "https://github.com/ropensci/rangr/blob/master/NEWS.md",
+  "readme": "https://github.com/ropensci/rangr/blob/main/README.md",
+  "contIntegration": ["https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml", "https://app.codecov.io/gh/ropensci/rangr"],
+  "developmentStatus": "https://www.repostatus.org/#active",
+  "review": {
+    "@type": "Review",
+    "url": "https://github.com/ropensci/software-review/issues/595",
+    "provider": "https://ropensci.org"
+  }
 }
