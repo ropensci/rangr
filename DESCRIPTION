@@ -1,7 +1,7 @@
 Package: rangr
 Type: Package
 Title: Mechanistic Simulation of Species Range Dynamics
-Version: 1.0.6
+Version: 1.0.7
 Authors@R: c(
     person("Katarzyna", "Markowska", email = "katarzyna.markowska@amu.edu.pl", role = c("aut", "cre")),
     person("Lechosław", "Kuczyński", email = "lechu@amu.edu.pl", role = "aut"),

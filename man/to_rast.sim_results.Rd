@@ -4,7 +4,7 @@
 \alias{to_rast.sim_results}
 \title{Convert \code{sim_results} To SpatRaster}
 \usage{
-\method{to_rast}{sim_results}(obj, time_points = obj$simulated_time, template = NULL)
+\method{to_rast}{sim_results}(obj, time_points = obj$simulated_time, template = NULL, ...)
 }
 \arguments{
 \item{obj}{\code{sim_results} object created by \code{\link{sim}}}
@@ -17,6 +17,8 @@ each element of \code{time_points}}
 
 \item{template}{\code{\link[terra:SpatRaster-class]{SpatRaster}} object; can be used
 as a template to create returned object}
+
+\item{...}{Currently unused.}
 }
 \value{
 \code{\link[terra:SpatRaster-class]{SpatRaster}} based on \code{sim_results} object

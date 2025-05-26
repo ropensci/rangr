@@ -36,6 +36,7 @@ to_rast <- function(obj, ...) {
 #' each element of `time_points`
 #' @param template [`SpatRaster`][terra::SpatRaster-class] object; can be used
 #' as a template to create returned object
+#' @param ... Currently unused.
 #'
 #' @return [`SpatRaster`][terra::SpatRaster-class] based on `sim_results` object
 #' with layers corresponding to `time_points`.
@@ -89,7 +90,7 @@ to_rast <- function(obj, ...) {
 #' @srrstats {SP4.2} returned values are documented
 #'
 to_rast.sim_results <- function(
-    obj, time_points = obj$simulated_time, template = NULL) {
+    obj, time_points = obj$simulated_time, template = NULL, ...) {
 
   #' @srrstats {SP2.7} validate input class
   assert_that(inherits(obj, "sim_results"))
