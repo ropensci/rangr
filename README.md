@@ -3,6 +3,8 @@
 
 <!-- badges: start -->
 
+[![CRAN
+release](https://www.r-pkg.org/badges/version/rangr?color=green)](https://cran.r-project.org/package=rangr)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595)
 [![Project Status: Active – The project has reached a stable, usable
@@ -143,7 +145,7 @@ summary(sim_data_01)
 #> kernel_fun        rexp
 #> dens_dep           K2N
 #> border       reprising
-#> max_dist          5000
+#> max_dist          4000
 #> changing_env     FALSE
 #> dlist             TRUE
 ```

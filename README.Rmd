@@ -26,9 +26,7 @@ library(rangr)
 
 <!-- badges: start -->
 
-[![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595) [![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://app.codecov.io/gh/ropensci/rangr) [![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367) 
-[![Static Badge](https://img.shields.io/badge/Publication-10.1111%2F2041--210X.14475-94ae63)](https://doi.org/10.1111/2041-210X.14475)
-
+[![CRAN release](https://www.r-pkg.org/badges/version/rangr?color=green)](https://cran.r-project.org/package=rangr) [![Status at rOpenSci Software Peer Review](https://badges.ropensci.org/595_status.svg)](https://github.com/ropensci/software-review/issues/595) [![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) [![R-CMD-check](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/rangr/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/ropensci/rangr/graph/badge.svg?token=noq7E0HSe2)](https://app.codecov.io/gh/ropensci/rangr) [![DOI](https://zenodo.org/badge/645848364.svg)](https://zenodo.org/doi/10.5281/zenodo.10569367) [![Static Badge](https://img.shields.io/badge/Publication-10.1111%2F2041--210X.14475-94ae63)](https://doi.org/10.1111/2041-210X.14475)
 
 <!-- badges: end -->
 
@@ -45,7 +43,6 @@ The study is supported by the National Science Centre, Poland, grant no. 2018/29
 ```{r instalation_cran, eval=FALSE}
 install.packages("rangr")
 ```
-
 
 ## Development version
 
