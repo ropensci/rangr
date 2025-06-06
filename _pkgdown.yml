@@ -17,6 +17,7 @@ reference:
   - title: Results
   - contents:
     - get_observations
+    - to_rast
     - to_rast.sim_results
     - plot.sim_results
     - summary.sim_results
