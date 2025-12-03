@@ -234,7 +234,7 @@ dists_tab <- function(N_pos, kernel, dist_resolution) {
 
 #' Dispersal From Non-Empty Grid Cells
 #'
-#' This function calls [sq_disp_calc] with arguments passed from [disp] or
+#' This function calls `sq_disp_calc` with arguments passed from [disp] or
 #' without them (in case of parallel computations).
 #'
 #' Arguments for parallel computation are exported to clusters in [sim].
@@ -273,7 +273,7 @@ sq_disp <- function(
 #' Calculate Dispersal From Non-Empty Grid Cells
 #'
 #' This function calculates more possible target cells available
-#' from source cell `i` (if needed). Then, it uses [one_dist_sq_disp] function
+#' from source cell `i` (if needed). Then, it uses `one_dist_sq_disp` function
 #' to find cells that individuals will emigrate to.
 #'
 #' @param i integer vector of length 1; number of current source cell

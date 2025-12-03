@@ -1,13 +1,13 @@
 
 #' Get Indexes Of Target Cells
 #'
-#' [target_ids] finds all target cells available from given focal cell,
+#' `target_ids` finds all target cells available from given focal cell,
 #' that lie within the maximum distance threshold (`max_dist`).
 #'
 #' @param idx integer vector of length 1; id of cell
-#' @param data integer matrix; necessary data (defined in [dist_list])
+#' @param data integer matrix; necessary data (defined in `dist_list`)
 #' @param id_within integer vector; indexes of cells inside study area
-#' (defined in [dist_list])
+#' (defined in `dist_list`)
 #' @inheritParams dist_list
 #'
 #' @return List of target cells for each distance or `NULL` if there isn't any
@@ -95,7 +95,7 @@ get_vect_from_xy <- function(template, xy_cell, idx = NULL) {
 #' @param xy_vect [`SpatVector`][terra::SpatVector-class] object; represents current cell
 #' @param dist_resolution integer vector of length 1; dimension of one side of
 #' one cell of `id`; in case of an irregular grid or lon/lat raster it is
-#' calculated by [`calculate_dist_params`]
+#' calculated by `calculate_dist_params`
 #' @param min_dist_scaled integer vector of length 1; minimum distance to calculate target cell scaled by `dist_resolution`
 #' @param max_dist_scaled integer vector of length 1; maximum distance to calculate target cell scaled by `dist_resolution`
 #'
@@ -129,7 +129,7 @@ get_ds <- function(template, xy_vect, id_within, dist_resolution,
   ids <- id_within[in_range]
   ds <- d_within[in_range]
 
-  return(matrix(c(ids, ds), ncol = 2))
+  return(matrix(as.integer(c(ids, ds)), ncol = 2))
 }
 
 

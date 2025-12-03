@@ -373,7 +373,11 @@ initialise <- function(
 
   # output list ---------------------------------------------
   out <- list(
-    n1_map = as.matrix(n1_map, wide = TRUE),
+    n1_map = matrix(
+      data = as.integer(values(n1_map)),
+      nrow = nrow(n1_map),
+      ncol = ncol(n1_map),
+      byrow = TRUE),
     id = wrap(id),
     dist_bin = dist_bin,
     dist_resolution = dist_resolution,
@@ -454,7 +458,7 @@ K_n1_map_check <- function(K_map, n1_map, changing_env) {
 
 #' Get Carrying Capacity For The First Time Step
 #'
-#' [K_get_init_values] returns all values from map of carrying capacity
+#' `K_get_init_values` returns all values from map of carrying capacity
 #' in the first time step.
 #'
 #' @inheritParams K_n1_map_check
@@ -484,19 +488,19 @@ K_get_init_values <- function(K_map, changing_env) {
 
 #' Check For Precalculating Target Cells
 #'
-#' [calc_dist] checks if target cells should be precalculated
-#' and if so calls [dist_list].
+#' `calc_dist` checks if target cells should be precalculated
+#' and if so calls `dist_list`.
 #'
 #' @param id [`SpatRaster`][terra::SpatRaster-class]; contains all cells ids
 #' @param data_table matrix; contains information about all cells in current
 #' time points
 #' @param dist_resolution integer vector of length 1; dimension of one side of
 #' one cell of `id`; in case of an irregular grid or lon/lat raster it is calculated during [`initialisation`][`initialise`]
-#' calculated by [`calculate_dist_params`]
+#' calculated by `calculate_dist_params`
 #' @param dist_bin numeric vector of length 1 with value `>= 0`; in case of an irregular grid or lon/lat raster it is
-#' calculated by [`calculate_dist_params`]
+#' calculated by `calculate_dist_params`
 #' is equal to 0 if  input maps are planar raster; if input maps are lon/lat it is calculated by
-#' rasters, `dist_bin` is calculated by [`calculate_dist_params`]
+#' rasters, `dist_bin` is calculated by `calculate_dist_params`
 #' @param id_within numeric vector; ids of cells inside the study area
 #' @inheritParams initialise
 #'
@@ -538,7 +542,7 @@ calc_dist <- function(
 #' Precalculating Target Cells For Dispersal
 #'
 #' `dist_list` prepares data for precalculation of target cells ids
-#' and then uses [`target_ids`] for calculation
+#' and then uses `target_ids` for calculation
 #'
 #' @inheritParams calc_dist
 #'
@@ -651,7 +655,7 @@ calculate_dist_params <- function(id, id_within, data_table, progress_bar, quiet
 #' from any cells of template `r`. It takes raster's dist_resolution into account.
 #'
 #' @param template template [`SpatRaster`][terra::SpatRaster-class] object
-#' @param dist_resolution parameter calculated by [`calculate_dist_params`] function
+#' @param dist_resolution parameter calculated by `calculate_dist_params` function
 #'
 #' @return numeric vector; numbers of target cells on every possible distance
 #' range
