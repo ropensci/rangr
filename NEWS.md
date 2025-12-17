@@ -1,3 +1,9 @@
+# rangr 1.0.8 (2025-12-03)
+
+### Minor improvements
+
+-   `N_map` slot stored as integer instead of double in `sim_results`
+
 # rangr 1.0.7 (2025-05-23)
 
 ### Minor improvements

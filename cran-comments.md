@@ -6,8 +6,4 @@
 
 ## Changes
 
--   Added new generic called `to_rast`
-
--   Old function `to_rast` is now a method of `sim_results`
-
--   Updated installation instructions
+-    `N_map` slot stored as integer instead of double in `sim_results`
