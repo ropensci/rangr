@@ -1,3 +1,9 @@
+# rangr 1.0.9  (2026-01-22)
+
+-   Updated DESCRIPTION: Added funding information
+
+-   Changed `n1_map` slot in `sim_data` object to integer matrix
+
 # rangr 1.0.8 (2025-12-03)
 
 ### Minor improvements

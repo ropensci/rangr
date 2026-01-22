@@ -6,7 +6,7 @@
 \alias{rangr-package}
 \title{rangr: Mechanistic Simulation of Species Range Dynamics}
 \description{
-Integrates population dynamics and dispersal into a mechanistic virtual species simulator. The package can be used to study the effects of environmental change on population growth and range shifts. It allows for simple and straightforward definition of population dynamics (including positive density dependence), extensive possibilities for defining dispersal kernels, and the ability to generate virtual ecologist data. Learn more about the 'rangr' at \url{https://docs.ropensci.org/rangr/}.
+Integrates population dynamics and dispersal into a mechanistic virtual species simulator. The package can be used to study the effects of environmental change on population growth and range shifts. It allows for simple and straightforward definition of population dynamics (including positive density dependence), extensive possibilities for defining dispersal kernels, and the ability to generate virtual ecologist data. Learn more about the 'rangr' at \url{https://docs.ropensci.org/rangr/}. This work was supported by the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking Centre (grant no. pl0090-01).
 }
 \seealso{
 Useful links:
