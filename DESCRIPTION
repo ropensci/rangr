@@ -15,9 +15,7 @@ Description: Integrates population dynamics and dispersal into a
     population dynamics (including positive density dependence), extensive
     possibilities for defining dispersal kernels, and the ability to
     generate virtual ecologist data. Learn more about the 'rangr' at
-    <https://docs.ropensci.org/rangr/>. This work was supported by 
-    the National Science Centre, Poland, grant no. 2018/29/B/NZ8/00066 and 
-    the Poznań Supercomputing and Networking Centre (grant no. pl0090-01).
+    <https://docs.ropensci.org/rangr/>.
 License: MIT + file LICENSE
 URL: https://github.com/ropensci/rangr, https://docs.ropensci.org/rangr/,
     https://doi.org/10.1111/2041-210X.14475
@@ -47,4 +45,4 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("namespace", "rd",
     "srr::srr_stats_roclet"))
-RoxygenNote: 7.3.3
+Config/roxygen2/version: 8.0.0

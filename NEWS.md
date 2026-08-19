@@ -1,3 +1,9 @@
+# rangr 1.0.10  (2026-08-18)
+
+-   Fixed bug with `update` when `sim_data` has `K_sim` with more than 1 layer
+
+-   Updated documentation
+
 # rangr 1.0.9  (2026-01-22)
 
 -   Updated DESCRIPTION: Added funding information

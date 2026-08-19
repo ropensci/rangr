@@ -29,10 +29,6 @@ changes. By using different sampling schemes and observational error
 distributions, the structure of the original survey data can be
 reproduced, or pure random sampling can be mimicked.
 
-The study is supported by the National Science Centre, Poland, grant no.
-2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking Centre
-(grant no. 403).
-
 # Installation
 
 ## Released version
@@ -281,6 +277,12 @@ To cite `rangr` use `citation()` function:
 library(rangr)
 citation("rangr")
 ```
+
+# Funding
+
+This work was supported by the National Science Centre, Poland, grant
+no. 2018/29/B/NZ8/00066 and the Poznań Supercomputing and Networking
+Centre (grant no. pl0090-01).
 
 # Code of Conduct
 

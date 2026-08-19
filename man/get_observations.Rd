@@ -33,21 +33,21 @@ three columns: "x", "y" and "time_step".
 abundances are sampled; the user is required to provide a matrix object
 with two columns: "x" and "y"; the abundance from given cell is sampled
 by different virtual observers in different time steps; a geometric
-distribution (\code{\link[stats:Geometric]{rgeom}}) is employed to define whether
+distribution (\code{\link[stats:rgeom]{rgeom}}) is employed to define whether
 a survey will be conducted by the same observer for several years or
 not conducted at all.
 }}
 
 \item{obs_error}{character vector of length 1; type of the distribution
-that defines the observation process: "\code{\link[stats:Lognormal]{rlnorm}}" (the log
-normal distribution) or "\code{\link[stats:Binomial]{rbinom}}" (the binomial
+that defines the observation process: "\code{\link[stats:rlnorm]{rlnorm}}" (the log
+normal distribution) or "\code{\link[stats:rbinom]{rbinom}}" (the binomial
 distribution)}
 
 \item{obs_error_param}{numeric vector of length 1; standard deviation
 (on a log scale) of the random noise in observation process generated from
-the log-normal distribution (\code{\link[stats:Lognormal]{rlnorm}}) or probability of
+the log-normal distribution (\code{\link[stats:rlnorm]{rlnorm}}) or probability of
 detection (success) when the binomial distribution
-("\code{\link[stats:Binomial]{rbinom}}") is used.}
+("\code{\link[stats:rbinom]{rbinom}}") is used.}
 
 \item{...}{other necessary internal parameters:
 \itemize{
@@ -71,7 +71,7 @@ coordinates; used when \code{type = "monitoring_based"}
 \item \code{prob}
 
 numeric vector of length 1; a parameter defining the shape of
-\code{\link[stats:Geometric]{rgeom}} distribution; defines whether an observation
+\code{\link[stats:rgeom]{rgeom}} distribution; defines whether an observation
 will be made by the same observer for several years, and whether it
 will not be made at all (default \code{prob = 0.3});
 used when \code{type = "monitoring_based"}

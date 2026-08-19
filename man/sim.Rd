@@ -25,7 +25,7 @@ simulated}
 steps that are discarded from the output}
 
 \item{return_mu}{logical vector of length 1; if \code{TRUE} demographic
-process return expected values; if \code{FALSE} the \code{\link[stats:Poisson]{rpois}} function
+process return expected values; if \code{FALSE} the \code{\link[stats:rpois]{rpois}} function
 should be used}
 
 \item{cl}{an optional cluster object created by
@@ -148,5 +148,5 @@ Solymos P, Zawadzki Z (2023). pbapply: Adding Progress Bar to '*apply' Functions
 package version 1.7-2, \url{https://CRAN.R-project.org/package=pbapply}.
 }
 \seealso{
-\link[=get_observations]{get_observations}
+\link{get_observations}
 }
