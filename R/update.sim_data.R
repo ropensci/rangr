@@ -107,6 +107,10 @@ update.sim_data <- function(object, ..., evaluate = TRUE) {
 
     if(!"n1_map" %in% names(extras)) {
       n1_map <- unwrap(object$K_map)
+
+      if (nlyr(n1_map) > 1)
+        n1_map <- subset(n1_map, 1)
+
       values(n1_map) <- object$n1_map
       call$n1_map <- n1_map
     }
