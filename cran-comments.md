@@ -1,11 +1,11 @@
 ## Changes:
-* Updated DESCRIPTION: Added funding information
-* Changed `n1_map` slot in `sim_data` object to integer matrix
+* Fixed bug with `update` when `sim_data` has `K_sim` with more than 1 layer
+* Updated documentation
 
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 note
 
 
 ## revdepcheck results
