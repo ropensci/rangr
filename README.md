@@ -90,7 +90,7 @@ and their dimensions, you can use the following commands:
 
 ``` r
 library(terra)
-#> terra 1.9.27
+#> terra 1.9.34
 
 n1_small <- rast(system.file("input_maps/n1_small.tif", package = "rangr"))
 K_small <-  rast(system.file("input_maps/K_small.tif", package = "rangr"))
